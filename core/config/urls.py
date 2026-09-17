@@ -20,13 +20,16 @@ import os
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 from dotenv import load_dotenv
 
 load_dotenv()
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("", include("apps.users.urls")),
+    path("", include("apps.blog.urls")),
+    path("", include("apps.cms.urls")),
 ]
 
 
