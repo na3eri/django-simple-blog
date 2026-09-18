@@ -31,12 +31,12 @@ def login_view(request):
             return redirect("/")
 
         messages.error(request, "Your email or password is invalid")
-        return redirect("users:signin")
+        return redirect("signin")
 
     context = {}
     return render(request, "users/login.html", context)
 
 
-def logout_view(request):
+def signout_view(request):
     logout(request)
     return redirect("/")
