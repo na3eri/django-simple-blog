@@ -52,14 +52,16 @@ class Profile(models.Model):
         CONTENT_EDITOR = "content_editor", "Content Editor"
         ADMIN = "admin", "Admin"
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="profile", editable=False
+    )
 
     image = models.ImageField(
         upload_to="article",
         default="placeholder.png",
     )
     full_name = models.CharField(max_length=150)
-    email = models.EmailField(max_length=200, unique=True)
+    email = models.EmailField(max_length=200, unique=True, editable=False)
     role = models.CharField(
         max_length=30, choices=ProfileRole.choices, default=ProfileRole.CONTENT_EDITOR
     )
