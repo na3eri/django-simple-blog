@@ -5,8 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>{% block title %}{% endblock title %}</title>
-    <title>Starter Page - Naseri.Dev-Simple-Blog</title>
+    <title>{% block title %}{% endblock title %} - Naseri.Dev-Simple-Blog</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
 
@@ -90,7 +89,7 @@
                             </li>
                             <li><a href="#">Messages</a></li>
                             <li><a href="#">Profile Settings</a></li>
-                            <li><a href="#">Logout</a></li>
+                            <li><a href="#">Signout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -119,9 +118,9 @@
                     <ol>
                         <li><a href="#">Home</a></li>
 
-                        {% block blockname %}
+                        {% block page_name_crumbs %}
                         <li class="current">Base Page</li>
-                        {% endblock blockname %}
+                        {% endblock page_name_crumbs %}
                     </ol>
                 </nav>
             </div>
