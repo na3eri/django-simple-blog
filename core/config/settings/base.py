@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "apps.users.apps.UsersConfig",
     "apps.blog.apps.BlogConfig",
     "apps.cms.apps.CmsConfig",
+    "taggit",
 ]
 
 MIDDLEWARE = [
