@@ -1,6 +1,7 @@
 from apps.blog.models import Article
 from apps.blog.services.aboutpage_service import AboutPageService
 from apps.blog.services.article_service import ArticleService
+from apps.blog.services.contact_service import ContactPageService
 from apps.blog.services.homepage_service import HomePageService
 from apps.cms.models import HomePageCategory, HomePageSlider
 from django.shortcuts import get_object_or_404, render
@@ -37,3 +38,12 @@ def about_view(request):
         "team_members": service.build_team(),
     }
     return render(request, "blog/about.html", context)
+
+
+def contact_view(request):
+    service = ContactPageService()
+
+    context = {
+        "contact_data": service.build_data(),
+    }
+    return render(request, "blog/contact.html", context)

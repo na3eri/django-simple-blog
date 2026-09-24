@@ -1,4 +1,5 @@
 from apps.blog.models import Article
+from django.http import Http404
 
 
 class ArticleService:
