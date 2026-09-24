@@ -17,13 +17,15 @@
   {% for component_type, data in components.items %}
     
     {% if component_type == 'component_a' %}
-      {% include 'blog/components/homepage/category_component_a.html' with component_a=data.1 %}
+      {% include 'blog/components/homepage/category_component_a.html' with component_a=data %}
+    {% endif %}
+
+    {% if component_type == 'component_b' %}
+      {% include 'blog/components/homepage/category_component_b.html' with component_b=data %}
     {% endif %}
 
   {% endfor %}
 
-
-  {% include 'blog/components/homepage/category_component_b.html' %}
 
   {% include 'blog/components/homepage/category_component_c.html' %}
 
