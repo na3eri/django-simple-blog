@@ -24,9 +24,10 @@
       {% include 'blog/components/homepage/category_component_b.html' with component_b=data %}
     {% endif %}
 
+    {% if component_type == 'component_c' %}
+      {% include 'blog/components/homepage/category_component_c.html' with component_c=data %}
+    {% endif %}
+
   {% endfor %}
-
-
-  {% include 'blog/components/homepage/category_component_c.html' %}
 
 {% endblock content %}

@@ -83,16 +83,17 @@ class ComponentB(Component):
 
 class ComponentC(Component):
     def _query(self, category_name: str) -> list:
-        return list(Article.objects.published().by_category(category_name))
+        return list(Article.objects.published().by_category(category_name)[:15])
 
     def _parse_data(self, category_name: str, data: list) -> dict:
         return {
             "category_name": category_name,
-            "head_article": data[0],
-            "second_article": data[1],
-            "third_article": data[2],
-            "fourth_article": data[3],
-            "column_articles": data[4:],
+            "head_article": self.get_item(data, 0),
+            "second_article": self.get_item(data, 1),
+            "third_article": self.get_item(data, 2),
+            "first_column": self.get_item(data, start=3, end=6),
+            "second_column": self.get_item(data, start=6, end=9),
+            "third_column": self.get_item(data, start=9),
         }
 
     def build(self) -> dict:
