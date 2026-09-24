@@ -9,18 +9,6 @@ from django.shortcuts import get_object_or_404, render
 def home_view(request):
     service = HomePageService()
 
-    articles = Article.objects.all()[:7]
-    most_viewed_articles = Article.objects.all().order_by("-views")[:5]
-
-    categories = HomePageCategory.objects.all()
-    articles_per_category = {}
-
-    for category in categories:
-        articles_per_category[category.component_type] = (
-            category.category.name,
-            Article.objects.filter(category=category.category)[:10],
-        )
-
     context = {
         "sliders": service.build_slider(),
         "popular": service.build_popular(),
