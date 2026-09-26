@@ -1,6 +1,7 @@
 from apps.blog.models import Article
 from apps.blog.services.aboutpage_service import AboutPageService
 from apps.blog.services.article_service import ArticleService
+from apps.blog.services.articles_list_service import ArticleListPageService
 from apps.blog.services.contact_service import ContactPageService
 from apps.blog.services.homepage_service import HomePageService
 from apps.cms.models import HomePageCategory, HomePageSlider
@@ -26,7 +27,11 @@ def about_view(request):
 def single_view(request, slug):
     service = ArticleService()
     article = service.get_published_article(slug)
-    return render(request, "blog/single-post.html")
+
+    context = {
+        "article": article,
+    }
+    return render(request, "blog/single-post.html", context)
 
 
 def about_view(request):
@@ -47,3 +52,52 @@ def contact_view(request):
         "contact_data": service.build_data(),
     }
     return render(request, "blog/contact.html", context)
+
+
+def articles_list_view(request, category_slug=None, tag_slug=None):
+
+    service = ArticleListPageService()
+
+    search_query = request.GET.get("q")
+
+    if search_query:
+        custom_range, articles = service.build_articles(
+            request=request,
+            search=search_query,
+        )
+        title = f"Search: {search_query}"
+
+    elif category_slug:
+        custom_range, articles = service.build_articles(
+            request=request,
+            category=category_slug,
+        )
+        title = f"Category: {category_slug}"
+
+    elif tag_slug:
+        custom_range, articles = service.build_articles(
+            request=request,
+            tag=tag_slug,
+        )
+        title = f"Tag: {tag_slug}"
+
+    else:
+        custom_range, articles = service.build_articles(
+            request=request,
+        )
+        title = "All Articles"
+
+    context = {
+        "title": title,
+        "articles": articles,
+        "custom_range": custom_range,
+        "categories": service.build_categories(),
+        "recent_posts": service.build_recent_posts(),
+        "tags": service.build_tags(),
+    }
+
+    return render(
+        request,
+        "blog/articles-list.html",
+        context,
+    )

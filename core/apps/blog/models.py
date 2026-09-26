@@ -25,6 +25,9 @@ class ArticleQuerySet(models.QuerySet):
     def by_slug(self, slug: str):
         return self.get(slug=slug)
 
+    def by_tag(self, tag_slug: str):
+        return self.filter(tags__slug=tag_slug)
+
 
 # Create your models here.
 class Category(models.Model):
@@ -87,6 +90,9 @@ class Article(models.Model):
     tags = TaggableManager(blank=True)
 
     objects = ArticleQuerySet.as_manager()
+
+    class Meta:
+        ordering = ("-published_at",)
 
     def save(self, *args, **kwargs):
         base_slug = slugify(self.title)

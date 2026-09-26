@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}{{ title }}{% endblock title %}
+{% block page_name %}{{ title }}{% endblock page_name %}
+{% block page_name_crumbs %}{{ title }}{% endblock page_name_crumbs %}
+
+
+
+{% block content %}
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col-lg-8">
+
+          <!-- Blog Posts Section -->
+          <section id="blog-posts" class="blog-posts section">
+
+            <div class="container">
+              <div class="row gy-4">
+                
+                
+                {% for article in articles %}
+                  
+                  <div class="col-lg-6">
+                    <article class="position-relative h-100">
+
+                      <div class="post-img position-relative overflow-hidden">
+                        <img src="{{ article.image.url }}" class="img-fluid" alt="">
+                        <span class="post-date">{{ article.published_at|date:"M d" }}</span>
+                      </div>
+
+                      <div class="post-content d-flex flex-column">
+
+                        <h3 class="post-title">{{ article.title }}</h3>
+
+                        <div class="meta d-flex align-items-center">
+                          <div class="d-flex align-items-center">
+                            <i class="bi bi-person"></i> <span class="ps-2">{{ article.user_profile.full_name }}</span>
+                          </div>
+                          <span class="px-3 text-black-50">/</span>
+                          <div class="d-flex align-items-center">
+                            <i class="bi bi-folder2"></i> <span class="ps-2">{{ article.category.name }}</span>
+                          </div>
+                        </div>
+
+                        <p>
+                          {{ article.excerpt }}
+                        </p>
+
+                        <hr>
+
+                        <a href="{{ article.get_absolute_url }}" class="readmore stretched-link"><span>Read More</span><i
+                            class="bi bi-arrow-right"></i></a>
+
+                      </div>
+
+                    </article>
+                  </div><!-- End post list item -->
+                  
+                {% endfor %}
+                
+                
+                {% if not articles %}
+                  <h2>Nothing Found</h2>
+                {% endif %}
+                  
+              </div>
+            </div>
+
+          </section><!-- /Blog Posts Section -->
+
+          {% include 'blog/components/article_list/paginator.html' with page_obj=articles custom_range=custom_range %}
+        </div>
+
+        {% include 'blog/components/article_list/sidebar.html' %}
+        <script type="text/javascript" src="{% static 'js/pagination.js' %}"></script>
+
+      </div>
+    </div>
+
+{% endblock content %}
