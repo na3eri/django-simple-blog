@@ -3,7 +3,7 @@
 {% load static %}
 {% block title %}{{ title }}{% endblock title %}
 {% block page_name %}{{ title }}{% endblock page_name %}
-{% block page_name_crumbs %}{{ title }}{% endblock page_name_crumbs %}
+{% block page_name_crumbs %}{{ place|title|safe }}{% endblock page_name_crumbs %}
 
 
 

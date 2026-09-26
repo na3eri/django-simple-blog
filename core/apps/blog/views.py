@@ -55,9 +55,7 @@ def contact_view(request):
 
 
 def articles_list_view(request, category_slug=None, tag_slug=None):
-
     service = ArticleListPageService()
-
     search_query = request.GET.get("q")
 
     if search_query:
@@ -66,6 +64,7 @@ def articles_list_view(request, category_slug=None, tag_slug=None):
             search=search_query,
         )
         title = f"Search: {search_query}"
+        place = f'Search <li><a href="#"></a></li> {search_query}'
 
     elif category_slug:
         custom_range, articles = service.build_articles(
@@ -73,6 +72,7 @@ def articles_list_view(request, category_slug=None, tag_slug=None):
             category=category_slug,
         )
         title = f"Category: {category_slug}"
+        place = f'Category <li><a href="#"></a></li> {category_slug}'
 
     elif tag_slug:
         custom_range, articles = service.build_articles(
@@ -80,15 +80,18 @@ def articles_list_view(request, category_slug=None, tag_slug=None):
             tag=tag_slug,
         )
         title = f"Tag: {tag_slug}"
+        place = f'Tag <li><a href="#"></a></li> {tag_slug}'
 
     else:
         custom_range, articles = service.build_articles(
             request=request,
         )
         title = "All Articles"
+        place = "All Articles"
 
     context = {
         "title": title,
+        "place": place,
         "articles": articles,
         "custom_range": custom_range,
         "categories": service.build_categories(),
@@ -101,3 +104,16 @@ def articles_list_view(request, category_slug=None, tag_slug=None):
         "blog/articles-list.html",
         context,
     )
+
+
+def single_view(request, slug):
+    article_service = ArticleService()
+    article_list_service = ArticleListPageService()
+
+    context = {
+        "article": article_service.get_published_article(slug),
+        "categories": article_list_service.build_categories(),
+        "recent_posts": article_list_service.build_recent_posts(),
+        "tags": article_list_service.build_tags(),
+    }
+    return render(request, "blog/single-post.html", context)
