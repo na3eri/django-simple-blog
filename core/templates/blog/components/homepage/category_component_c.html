@@ -1,0 +1,90 @@
+{% load static %}
+<!-- Lifestyle Category Section -->
+<section id="lifestyle-category" class="lifestyle-category section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+    <div class="section-title-container d-flex align-items-center justify-content-between">
+        <h2>{{ component_c.category_name|title }}</h2>
+        <p><a href="categories.html">See All {{ component_c.category_name|title }}</a></p>
+    </div>
+    </div><!-- End Section Title -->
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+    <div class="row g-5">
+        <div class="col-lg-4">
+        <div class="post-list lg">
+            <a href="blog-details.html"><img src="{{ component_c.head_article.image.url }}" alt="" class="img-fluid"></a>
+            <div class="post-meta"><span class="date">{{ component_c.head_article.category.name }}</span> <span class="mx-1">•</span> <span>{{ component_c.head_article.published_at|date:"M d, Y" }}</span></div>
+            <h2><a href="{{ component_c.head_article.get_absolute_url }}">{{ component_c.head_article.title }}</a></h2>
+            <p class="mb-4 d-block">{{ component_c.head_article.excerpt }}</p>
+
+            <div class="d-flex align-items-center author">
+            <div class="photo"><img src="{{ component_c.head_article.user_profile.image.url }}" alt="" class="img-fluid"></div>
+            <div class="name">
+                <h3 class="m-0 p-0">{{ component_c.head_article.user_profile.full_name }}</h3>
+            </div>
+            </div>
+        </div>
+
+        <div class="post-list border-bottom">
+            <div class="post-meta"><span class="date">{{ component_c.second_article.category.name }}</span> <span class="mx-1">•</span> <span>{{ component_c.second_article.published_at|date:"M d, Y" }}</span></div>
+            <h2 class="mb-2"><a href="{{ component_c.second_article.get_absolute_url }}">{{ component_c.second_article.title }}</a>
+            </h2>
+            <span class="author mb-3 d-block">{{ component_c.second_article.user_profile.full_name }}</span>
+        </div>
+
+        
+        <div class="post-list">
+            <div class="post-meta"><span class="date">{{ component_c.third_article.category.name }}</span> <span class="mx-1">•</span> <span>{{ component_c.third_article.published_at|date:"M d, Y" }}</span></div>
+            <h2 class="mb-2"><a href="{{ component_c.third_article.get_absolute_url }}">{{ component_c.third_article.title }}</a>
+            </h2>
+            <span class="author mb-3 d-block">{{ component_c.third_article.user_profile.full_name }}</span>
+        </div>
+
+        </div>
+
+        <div class="col-lg-8">
+        <div class="row g-5">
+            <div class="col-lg-4 border-start custom-border">
+                
+                {% for article in component_c.first_column %}
+                    <div class="post-list">
+                        <a href="{{ article.get_absolute_url }}"><img src="{{ article.image.url }}" alt="" class="img-fluid"></a>
+                        <div class="post-meta"><span class="date">{{ article.category.name }}</span> <span class="mx-1">•</span> <span>{{ article.published_at|date:"M d, Y" }}</span></div>
+                        <h2><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
+                    </div>
+                {% endfor %}
+                    
+            </div>
+            <div class="col-lg-4 border-start custom-border">
+                
+                {% for article in component_c.second_column %}
+                    <div class="post-list">
+                        <a href="{{ article.get_absolute_url }}"><img src="{{ article.image.url }}" alt="" class="img-fluid"></a>
+                        <div class="post-meta"><span class="date">{{ article.category.name }}</span> <span class="mx-1">•</span> <span>{{ article.published_at|date:"M d, Y" }}</span></div>
+                        <h2><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
+                    </div>
+                {% endfor %}
+
+            </div>
+            <div class="col-lg-4">
+                
+                {% for article in component_c.third_column %}
+                    <div class="post-list border-bottom">
+                        <div class="post-meta"><span class="date">{{ article.category.name }}</span> <span class="mx-1">•</span> <span>{{ article.published_at|date:"M d, Y" }}</span></div>
+                        <h2 class="mb-2"><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
+                        <span class="author mb-3 d-block">{{ article.user_profile.full_name }}</span>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+        </div>
+
+    </div>
+
+    </div>
+
+</section><!-- /Lifestyle Category Section -->
