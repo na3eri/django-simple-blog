@@ -118,7 +118,7 @@
             <div class="post-item">
             <img src="{{ post.image.url }}" alt="" class="flex-shrink-0">
             <div>
-                <h4><a href="blog-details.html">{{ post.title }}</a></h4>
+                <h4><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h4>
                 <time datetime="2020-01-01">{{ post.published_at|date:"M d, Y" }}</time>
             </div>
             </div><!-- End recent post item-->

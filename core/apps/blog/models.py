@@ -1,6 +1,5 @@
 from apps.users.models import Profile
 from django.db import models
-from django.shortcuts import get_list_or_404
 from django.urls import reverse
 from slugify import slugify
 from taggit.managers import TaggableManager
@@ -27,6 +26,20 @@ class ArticleQuerySet(models.QuerySet):
 
     def by_tag(self, tag_slug: str):
         return self.filter(tags__slug=tag_slug)
+
+
+class CommentQuerySet(models.QuerySet):
+    def approved(self):
+        return self.filter(is_approved=True)
+
+    def root(self):
+        return self.filter(parent__isnull=True)
+
+    def for_article(self, article):
+        return self.filter(article=article)
+
+    def by_id(self, id: int):
+        return self.get(id=id)
 
 
 # Create your models here.
@@ -147,6 +160,8 @@ class Comment(models.Model):
     approved_at = models.DateTimeField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = CommentQuerySet.as_manager()
 
     def __str__(self):
         return self.name

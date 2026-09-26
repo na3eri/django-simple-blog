@@ -1,3 +1,4 @@
+from apps.blog.forms import CommentForm
 from apps.blog.models import Article
 from apps.blog.services.aboutpage_service import AboutPageService
 from apps.blog.services.article_service import ArticleService
@@ -5,7 +6,7 @@ from apps.blog.services.articles_list_service import ArticleListPageService
 from apps.blog.services.contact_service import ContactPageService
 from apps.blog.services.homepage_service import HomePageService
 from apps.cms.models import HomePageCategory, HomePageSlider
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 
 # Create your views here.
@@ -110,10 +111,40 @@ def single_view(request, slug):
     article_service = ArticleService()
     article_list_service = ArticleListPageService()
 
+    article = article_service.get_published_article(slug)
+
     context = {
-        "article": article_service.get_published_article(slug),
+        "article": article,
         "categories": article_list_service.build_categories(),
         "recent_posts": article_list_service.build_recent_posts(),
         "tags": article_list_service.build_tags(),
+        "form": article_service.build_form(),
+        "comments": article_service.get_comments(article),
     }
-    return render(request, "blog/single-post.html", context)
+
+    if request.method == "POST":
+        user_data = None
+
+        if request.user.is_authenticated:
+            user_data = {
+                "full_name": request.user.profile.full_name,
+                "email": request.user.profile.email,
+                "user_profile": request.user.profile,
+            }
+
+        result = article_service.handle_comment(
+            request.POST,
+            article,
+            user_data,
+        )
+
+        if result["status"]:
+            return redirect(article.get_absolute_url())
+
+        context["form"] = result["form"]
+
+    return render(
+        request,
+        "blog/single-post.html",
+        context,
+    )
