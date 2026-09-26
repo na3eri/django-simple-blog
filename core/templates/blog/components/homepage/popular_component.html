@@ -1,0 +1,88 @@
+{% load static %}
+
+<!-- Trending Category Section -->
+<section id="trending-category" class="trending-category section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+    <div class="container" data-aos="fade-up">
+        <div class="row g-5">
+        <div class="col-lg-4">
+
+            <div class="post-entry lg">
+                <a href="{{ popular.head_article.get_absolute_url }}"><img src="{{ popular.head_article.image.url }}" alt="" class="img-fluid"></a>
+                <div class="post-meta">
+                <span class="date">
+                    {{ popular.head_article.category.name }}
+                </span>
+                <span class="mx-1">•</span>
+                <span>{{ popular.head_article.published_at|date:"M d, Y" }}</span>
+                </div>
+                <h2><a href="{{ popular.head_article.get_absolute_url }}">{{ popular.head_article.title }}</a></h2>
+                <p class="mb-4 d-block">
+                {{ popular.head_article.excerpt }}
+                </p>
+
+                <div class="d-flex align-items-center author">
+                <div class="photo"><img src="{{ popular.head_article.user_profile.image.url }}" alt="" class="img-fluid"></div>
+                <div class="name">
+                    <h3 class="m-0 p-0">
+                    {{ popular.head_article.user_profile.full_name }}
+                    </h3>
+                </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-lg-8">
+            <div class="row g-5">
+            <div class="col-lg-4 border-start custom-border">
+                {% for article in popular.first_column %}
+                <div class="post-entry">
+                    <a href="{{ article.get_absolute_url }}"><img src="{{ article.image.url }}" alt="" class="img-fluid"></a>
+                    <div class="post-meta"><span class="date">{{ article.category.name }}</span> <span class="mx-1">•</span> <span>{{ article.published_at|date:"M d, Y" }}</span></div>
+                    <h2><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="col-lg-4 border-start custom-border">
+                {% for article in popular.second_column %}
+                <div class="post-entry">
+                    <a href="{{ article.get_absolute_url }}"><img src="{{ article.image.url }}" alt="" class="img-fluid"></a>
+                    <div class="post-meta"><span class="date">{{ article.category.name }}</span> <span class="mx-1">•</span> <span>{{ article.published_at|date:"M d, Y" }}</span></div>
+                    <h2><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Trending Section -->
+            <div class="col-lg-4">
+
+                <div class="trending">
+                <h3>Trending</h3>
+                <ul class="trending-post">
+                    {% for article in popular.most_viewed %}
+                    <li>
+                    <a href="{{ article.get_absolute_url }}">
+                        <span class="number">{{ forloop.counter0 }}</span>
+                        <h3>{{ article.title }}</h3>
+                        <span class="author">{{ article.user_profile.full_name }}</span>
+                    </a>
+                    </li>
+                    
+                    {% endfor %}
+
+                </ul>
+                </div>
+
+            </div> <!-- End Trending Section -->
+            </div>
+        </div>
+
+        </div> <!-- End .row -->
+    </div>
+
+    </div>
+
+</section><!-- /Trending Category Section -->

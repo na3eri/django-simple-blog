@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}Single{% endblock title %}
+{% block page_name %}Single: {{ article.title|truncatechars:50 }}{% endblock page_name %}
+{% block page_name_crumbs %}Single{% endblock page_name_crumbs %}
+
+
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+
+    <div class="col-lg-8">
+
+      <!-- Blog Details Section -->
+      <section id="blog-details" class="blog-details section">
+        <div class="container">
+
+          <article class="article">
+
+            <div class="post-img">
+              <img src="{{ article.image.url }}" alt="" class="img-fluid">
+            </div>
+
+            <h2 class="title">{{ article.title }}</h2>
+
+            <div class="meta-top">
+              <ul>
+                <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="javascript:void">{{ article.user_profile.full_name }}</a></li>
+                <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="javascript:void">{{     article.published_at|date:"M d, Y" }}</a></li>
+                <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="javascript:void">{{ article.article_comments.count }}
+                    Comments</a></li>
+              </ul>
+            </div><!-- End meta top -->
+
+            <div class="content">
+              {{ article.content|markdown|safe }}
+            </div><!-- End post content -->
+
+            <div class="meta-bottom">
+              <i class="bi bi-folder"></i>
+              <ul class="cats">
+                <li><a href="{% url 'category' category_slug=article.category.slug %}">{{ article.category.name|title }}</a></li>
+              </ul>
+
+              <i class="bi bi-tags"></i>
+              <ul class="tags">
+
+                {% for tag in article.tags.all %}
+                <li><a href="{% url 'tag' tag_slug=tag.slug %}">{{ tag.name|title }}</a></li>
+                {% endfor %}
+              </ul>
+            </div><!-- End meta bottom -->
+
+          </article>
+
+        </div>
+      </section><!-- /Blog Details Section -->
+
+      <!-- Blog Comments Section -->
+      <section id="blog-comments" class="blog-comments section">
+
+        <div class="container">
+
+          <h4 class="comments-count">{{ article.article_comments.count }} Comments</h4>
+
+
+          {% for comment in comments %}
+          <div id="comment" class="comment">
+            <div class="d-flex">
+
+
+              <div class="comment-img">
+
+                {% if comment.user_profile %}
+                <img src="{{ comment.user_profile.image.url }}" alt="">
+              </div>
+              {% else %}
+              <img src="{{ MEDIA_URL }}placeholder.png" alt="">
+            </div>
+            {% endif %}
+
+            <div>
+              <h5><a href="">{{ comment.name }}</a> <a href="#comment-form" class="reply reply-btn" data-comment-id="{{ comment.id }}" data-comment-name="{{ comment.name }}"><i class="bi bi-reply-fill"></i>
+                  Reply</a></h5>
+              {{ comment.approved_at|date:"M d, Y" }}
+              <p>
+                {{ comment.body }}
+              </p>
+            </div>
+          </div>
+
+
+          {% if comment.sub_comments.all %}
+
+          <div id="comment-reply-1" class="comment comment-reply">
+
+            {% for sub_comment_1 in comment.sub_comments.all %}
+
+            <div class="d-flex">
+              {% if sub_comment_1.user_profile %}
+              <div class="comment-img"><img src="{{ sub_comment_1.user_profile.image.url }}" alt=""></div>
+              {% else %}
+              <div class="comment-img"><img src="{{ MEDIA_URL }}placeholder.png" alt=""></div>
+              {% endif %}
+              <div>
+                <h5><a href="">{{ sub_comment_1.name }}</a> <a href="#comment-form" class="reply reply-btn" data-comment-id="{{ sub_comment_1.id }}" data-comment-name="{{ sub_comment_1.name }}"><i class="bi bi-reply-fill"></i>
+                  Reply</a></h5>
+                {{ sub_comment_1.approved_at|date:"M d, Y" }}
+                <p>
+                  {{ sub_comment_1.body }}
+                </p>
+              </div>
+            </div>
+
+            {% if sub_comment_1.sub_comments.all %}
+
+
+            {% for sub_comment_2 in sub_comment_1.sub_comments.all %}
+
+            <div id="comment-reply-2" class="comment comment-reply">
+              <div class="d-flex">
+
+                {% if sub_comment_2.user_profile %}
+                <div class="comment-img"><img src="{{ sub_comment_2.user_profile.image.url }}" alt=""></div>
+                {% else %}
+                <div class="comment-img"><img src="{{ MEDIA_URL }}placeholder.png" alt=""></div>
+                {% endif %}
+                <div>
+                  {{ sub_comment_2.approved_at|date:"M d, Y" }}
+                  <p>
+                    {{ sub_comment_2.body }}
+                  </p>
+                </div>
+              </div>
+            </div><!-- End comment reply #2-->
+
+            {% endfor %}
+
+            {% endif %}
+
+            {% endfor %}
+
+          </div><!-- End comment reply #1-->
+
+          {% endif %}
+
+
+        </div><!-- End comment #3 -->
+
+        {% endfor %}
+
+    </div>
+
+    </section><!-- /Blog Comments Section -->
+
+    <!-- Comment Form Section -->
+    <section id="comment-form" class="comment-form section">
+      <div class="container">
+
+        <form action="" method="post">
+          {% csrf_token %}
+
+          <h4>Post Comment</h4>
+          <p>Your email address will not be published. Required fields are marked * </p>
+          <div class="row">
+
+            {{ form.parent_id }}
+
+            {% if form.parent_id.errors %}
+                <div class="text-danger">
+                    {% for error in form.parent_id.errors %}
+                        <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if not request.user.is_authenticated %}
+
+              <div class="col-md-6 form-group">
+                {{ form.name }}
+
+                {% if form.name.errors %}
+                  <div class="text-danger">
+                      {% for error in form.name.errors %}
+                          <small>{{ error }}</small>
+                      {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="col-md-6 form-group">
+                {{ form.email}}
+
+                {% if form.email.errors %}
+                    <div class="text-danger">
+                        {% for error in form.email.errors %}
+                            <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+              </div>
+
+            {% endif %}
+          </div>
+          <div class="row">
+            <div class="col form-group">
+              {{ form.body }}
+
+              {% if form.body.errors %}
+                <div class="text-danger">
+                    {% for error in form.body.errors %}
+                        <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <br>
+          {% if form.non_field_errors %}
+              <div class="alert alert-danger">
+                  {% for error in form.non_field_errors %}
+                      <div>{{ error }}</div>
+                  {% endfor %}
+              </div>
+          {% endif %}
+          <br>
+
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary">Post Comment</button>
+          </div>
+
+        </form>
+
+      </div>
+    </section><!-- /Comment Form Section -->
+
+  </div>
+
+
+  {% include 'blog/components/article_list/sidebar.html' %}
+
+</div>
+</div>
+<script src="{% static 'js/comments.js' %}"></script>
+{% endblock content %}

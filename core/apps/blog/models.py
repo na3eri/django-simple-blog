@@ -1,7 +1,45 @@
 from apps.users.models import Profile
 from django.db import models
+from django.urls import reverse
 from slugify import slugify
 from taggit.managers import TaggableManager
+
+
+# ==========  Custom Managers  ==========
+class ArticleQuerySet(models.QuerySet):
+    def published(self):
+        return self.filter(
+            status=Article.StatusChoices.PUBLISHED,
+            is_deleted=False,
+        )
+
+    def popular(self):
+        return self.order_by("-views")
+
+    def by_category(self, category_name: str):
+        return self.filter(
+            category__name=category_name,
+        )
+
+    def by_slug(self, slug: str):
+        return self.get(slug=slug)
+
+    def by_tag(self, tag_slug: str):
+        return self.filter(tags__slug=tag_slug)
+
+
+class CommentQuerySet(models.QuerySet):
+    def approved(self):
+        return self.filter(is_approved=True)
+
+    def root(self):
+        return self.filter(parent__isnull=True)
+
+    def for_article(self, article):
+        return self.filter(article=article)
+
+    def by_id(self, id: int):
+        return self.get(id=id)
 
 
 # Create your models here.
@@ -64,6 +102,11 @@ class Article(models.Model):
     )
     tags = TaggableManager(blank=True)
 
+    objects = ArticleQuerySet.as_manager()
+
+    class Meta:
+        ordering = ("-published_at",)
+
     def save(self, *args, **kwargs):
         base_slug = slugify(self.title)
         slug = base_slug
@@ -76,6 +119,12 @@ class Article(models.Model):
         self.slug = slug
 
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse(
+            "single",
+            kwargs={"slug": self.slug},
+        )
 
     def __str__(self):
         return self.title
@@ -111,6 +160,8 @@ class Comment(models.Model):
     approved_at = models.DateTimeField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = CommentQuerySet.as_manager()
 
     def __str__(self):
         return self.name
