@@ -22,20 +22,6 @@ def home_view(request):
 
 
 def about_view(request):
-    return render(request, "blog/about.html")
-
-
-def single_view(request, slug):
-    service = ArticleService()
-    article = service.get_published_article(slug)
-
-    context = {
-        "article": article,
-    }
-    return render(request, "blog/single-post.html", context)
-
-
-def about_view(request):
     service = AboutPageService()
 
     context = {
