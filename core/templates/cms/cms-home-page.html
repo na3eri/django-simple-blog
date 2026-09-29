@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}CMS (Home Page){% endblock title %}
+{% block page_name %}CMS (Home Page){% endblock page_name %}
+{% block page_name_crumbs %}CMS (Home Page){% endblock page_name_crumbs %}
+
+
+
+{% block content %}
+
+    <section class="section cms-home-page">
+      <div class="container" data-aos="fade-up">
+
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+          <div>
+            <h2>Home Page</h2>
+            <p class="text-muted mb-0">Manage homepage content and sections</p>
+          </div>
+          <div class="d-flex gap-2 mt-3 mt-md-0">
+            <button class="btn btn-primary" type="button">Save</button>
+            <a href="index.html" class="btn btn-outline-info">Preview</a>
+            <a href="cms-dashboard.html" class="btn btn-outline-secondary">Back to CMS</a>
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+          <div>
+            <h4>Homepage Sliders</h4>
+            <span class="text-muted">3 of 4 slots used</span>
+          </div>
+          <button class="btn btn-sm btn-primary" id="add-slider-btn" data-bs-toggle="modal"
+            data-bs-target="#sliderModal">Add Slider</button>
+        </div>
+
+        <div class="row g-4 mb-5" id="slider-list">
+          <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="assets/img/post-slide-1.jpg" class="img-fluid rounded-start" alt="Slider 1">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                      <div>
+                        <h6 class="card-title">The Best Homemade Masks for Face</h6>
+                        <p class="text-muted small mb-1"><strong>Subtitle:</strong> Keep the Pimples Away</p>
+                        <p class="text-muted small mb-1"><strong>Alt text:</strong> Homemade face mask</p>
+                        <p class="text-muted small mb-1"><strong>URL:</strong> /single-post.html</p>
+                        <span class="badge bg-secondary">Order: 1</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer bg-white border-top-0 d-flex justify-content-end gap-2">
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                  data-bs-target="#sliderModal">Edit</button>
+                <button class="btn btn-sm btn-outline-danger btn-delete-slider">Delete</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="assets/img/post-slide-2.jpg" class="img-fluid rounded-start" alt="Slider 2">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                      <div>
+                        <h6 class="card-title">17 Pictures of Medium Length Hair</h6>
+                        <p class="text-muted small mb-1"><strong>Subtitle:</strong> Inspiring New Haircut</p>
+                        <p class="text-muted small mb-1"><strong>Alt text:</strong> Medium length hair styles</p>
+                        <p class="text-muted small mb-1"><strong>URL:</strong> /single-post.html</p>
+                        <span class="badge bg-secondary">Order: 2</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer bg-white border-top-0 d-flex justify-content-end gap-2">
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                  data-bs-target="#sliderModal">Edit</button>
+                <button class="btn btn-sm btn-outline-danger btn-delete-slider">Delete</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="assets/img/post-slide-3.jpg" class="img-fluid rounded-start" alt="Slider 3">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                      <div>
+                        <h6 class="card-title">13 Amazing Poems from Shel Silverstein</h6>
+                        <p class="text-muted small mb-1"><strong>Subtitle:</strong> Valuable Life Lessons</p>
+                        <p class="text-muted small mb-1"><strong>Alt text:</strong> Poems book cover</p>
+                        <p class="text-muted small mb-1"><strong>URL:</strong> /single-post.html</p>
+                        <span class="badge bg-secondary">Order: 3</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer bg-white border-top-0 d-flex justify-content-end gap-2">
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                  data-bs-target="#sliderModal">Edit</button>
+                <button class="btn btn-sm btn-outline-danger btn-delete-slider">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+          <div>
+            <h4>Homepage Categories</h4>
+            <span class="text-muted">3 of 3 slots used</span>
+          </div>
+          <button class="btn btn-sm btn-primary" id="add-category-btn" data-bs-toggle="modal"
+            data-bs-target="#categoryModal" disabled>Add Category Section</button>
+        </div>
+
+        <div class="row g-4 mb-5" id="category-list">
+          <div class="col-lg-4">
+            <div class="card border-0 shadow-sm">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                  <div>
+                    <h6 class="card-title mb-1">Culture</h6>
+                    <span class="badge bg-info">Component A</span>
+                    <span class="badge bg-secondary ms-1">Order: 1</span>
+                  </div>
+                </div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                    data-bs-target="#categoryModal">Edit</button>
+                  <button class="btn btn-sm btn-outline-danger btn-delete-category">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card border-0 shadow-sm">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                  <div>
+                    <h6 class="card-title mb-1">Business</h6>
+                    <span class="badge bg-info">Component B</span>
+                    <span class="badge bg-secondary ms-1">Order: 2</span>
+                  </div>
+                </div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                    data-bs-target="#categoryModal">Edit</button>
+                  <button class="btn btn-sm btn-outline-danger btn-delete-category">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card border-0 shadow-sm">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                  <div>
+                    <h6 class="card-title mb-1">Lifestyle</h6>
+                    <span class="badge bg-info">Component C</span>
+                    <span class="badge bg-secondary ms-1">Order: 3</span>
+                  </div>
+                </div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                    data-bs-target="#categoryModal">Edit</button>
+                  <button class="btn btn-sm btn-outline-danger btn-delete-category">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+{% endblock content %}

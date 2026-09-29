@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}CMS Dashboard{% endblock title %}
+{% block page_name %}CMS Dashboard{% endblock page_name %}
+{% block page_name_crumbs %}CMS Dashboard{% endblock page_name_crumbs %}
+
+
+
+{% block content %}
+
+    <section class="section cms-dashboard">
+      <div class="container" data-aos="fade-up">
+
+        <h2 class="mb-4">CMS Dashboard Overview</h2>
+
+
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-body text-center">
+                <i class="bi bi-journal-text fs-1 text-primary mb-3"></i>
+                <h5>Home Page</h5>
+                <p class="text-muted">Manage home page slider images and category sections</p>
+                <a href="cms-home-page.html" class="btn btn-sm btn-primary">Manage Home Page</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-body text-center">
+                <i class="bi bi-folder fs-1 text-info mb-3"></i>
+                <h5>About Page</h5>
+                <p class="text-muted">Manage About Page Unique Data and Images</p>
+                <a href="cms-home-page.html" class="btn btn-sm btn-info">Mange About Page</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-body text-center">
+                <i class="bi bi-chat-square fs-1 text-warning mb-3"></i>
+                <h5>Contact</h5>
+                <p class="text-muted">Manage Contact Page and Unique Data</p>
+                <a href="cms-home-page.html" class="btn btn-sm btn-warning">Manage Contact Page</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+{% endblock content %}

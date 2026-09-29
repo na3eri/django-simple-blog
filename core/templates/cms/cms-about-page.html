@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}CMS (About){% endblock title %}
+{% block page_name %}CMS (About){% endblock page_name %}
+{% block page_name_crumbs %}CMS (About){% endblock page_name_crumbs %}
+
+
+
+{% block content %}
+
+    <section class="section cms-about-page">
+      <div class="container" data-aos="fade-up">
+
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+          <div>
+            <h2>About Page</h2>
+            <p class="text-muted mb-0">Manage about page content</p>
+          </div>
+          <div class="d-flex gap-2 mt-3 mt-md-0">
+            <button class="btn btn-primary" type="button">Save</button>
+            <a href="about.html" class="btn btn-outline-info">Preview</a>
+            <a href="cms-dashboard.html" class="btn btn-outline-secondary">Back to CMS</a>
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <h4 class="mb-3">About Page Data</h4>
+        <form class="row g-3 mb-5" data-aos="fade-up" data-aos-delay="100">
+          <div class="col-md-6">
+            <label for="about-title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="about-title" value="Unleashing Potential with Creative Strategy">
+          </div>
+          <div class="col-md-6">
+            <label for="about-subtitle" class="form-label">Subtitle</label>
+            <input type="text" class="form-control" id="about-subtitle" value="Who We Are">
+          </div>
+          <div class="col-12">
+            <label for="about-desc1" class="form-label">First Description</label>
+            <textarea class="form-control" id="about-desc1" rows="3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</textarea>
+          </div>
+          <div class="col-12">
+            <label for="about-desc2" class="form-label">Second Description</label>
+            <textarea class="form-control" id="about-desc2" rows="3">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</textarea>
+          </div>
+          <div class="col-12">
+            <label for="about-desc3" class="form-label">Third Description</label>
+            <textarea class="form-control" id="about-desc3" rows="3">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</textarea>
+          </div>
+        </form>
+
+        <hr class="my-4">
+
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+          <div>
+            <h4>About Page Images</h4>
+            <span class="text-muted">2 of 3 slots used</span>
+          </div>
+          <button class="btn btn-sm btn-primary" id="add-image-btn" data-bs-toggle="modal"
+            data-bs-target="#imageModal">Add Image</button>
+        </div>
+
+        <div class="row g-4 mb-5" id="about-image-list">
+          <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="assets/img/about-company-1.jpg" class="img-fluid rounded-start" alt="About Image 1">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h6 class="card-title">About Image 1</h6>
+                    <p class="text-muted small mb-1"><strong>Alt text:</strong> Company office</p>
+                    <p class="text-muted small mb-1"><strong>Dimensions:</strong> 800 x 600 px</p>
+                    <span class="badge bg-secondary">Active</span>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer bg-white border-top-0 d-flex justify-content-end gap-2">
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                  data-bs-target="#imageModal">Edit</button>
+                <button class="btn btn-sm btn-outline-danger btn-delete-image">Delete</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="assets/img/about-company-2.jpg" class="img-fluid rounded-start" alt="About Image 2">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h6 class="card-title">About Image 2</h6>
+                    <p class="text-muted small mb-1"><strong>Alt text:</strong> Team meeting</p>
+                    <p class="text-muted small mb-1"><strong>Dimensions:</strong> 800 x 600 px</p>
+                    <span class="badge bg-secondary">Active</span>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer bg-white border-top-0 d-flex justify-content-end gap-2">
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                  data-bs-target="#imageModal">Edit</button>
+                <button class="btn btn-sm btn-outline-danger btn-delete-image">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+{% endblock content %}
