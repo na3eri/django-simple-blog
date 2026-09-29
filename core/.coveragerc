@@ -1,0 +1,10 @@
+[report]
+exclude_also =
+    @abstractmethod
+
+[run]
+omit =
+    */manage.py
+    */config/asgi.py
+    */config/wsgi.py
+    */tests/factories.py

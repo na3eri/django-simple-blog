@@ -17,7 +17,8 @@ class TestUsersSigninView:
         assert response.status_code == 302
         assert response.url == "/"
 
-    def test_signin_success(self, client, user):
+    def test_signin_success(self, client, user_factory):
+        user = user_factory(email="test@example.com")
         url = reverse("signin")
         response = client.post(
             url,
@@ -30,7 +31,8 @@ class TestUsersSigninView:
         assert response.url == "/"
         assert client.session["_auth_user_id"] == str(user.pk)
 
-    def test_remember_off_session_expiry(self, client, user):
+    def test_remember_off_session_expiry(self, client, user_factory):
+        user = user_factory(email="test@example.com")
         url = reverse("signin")
         response = client.post(
             url,
@@ -44,7 +46,8 @@ class TestUsersSigninView:
         assert client.session["_auth_user_id"] == str(user.pk)
         assert client.session.get_expiry_age() == 300
 
-    def test_remember_on_session_expiry(self, client, user):
+    def test_remember_on_session_expiry(self, client, user_factory):
+        user = user_factory(email="test@example.com")
         url = reverse("signin")
         response = client.post(
             url,
@@ -59,7 +62,8 @@ class TestUsersSigninView:
         assert client.session["_auth_user_id"] == str(user.pk)
         assert client.session.get_expiry_age() == 60 * 60 * 24 * 30
 
-    def test_invalid_credentials(self, client, user):
+    def test_invalid_credentials(self, client, user_factory):
+        user = user_factory(email="test@example.com")
         url = reverse("signin")
         response = client.post(
             url,
