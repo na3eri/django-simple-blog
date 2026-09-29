@@ -5,7 +5,7 @@ pytestmark = pytest.mark.django_db
 
 class TestUserModel:
     def test_str_return(self, user_factory):
-        user = user_factory()
+        user = user_factory(email="test@example.com")
         assert user.__str__() == "test@example.com"
 
 

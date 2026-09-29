@@ -125,7 +125,7 @@ class HomePageCategory(models.Model):
         choices=Components.choices,
         default=Components.COMPONENT_A,
     )
-    order = models.PositiveIntegerField()
+    order: models.PositiveIntegerField = models.PositiveIntegerField()
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

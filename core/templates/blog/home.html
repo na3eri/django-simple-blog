@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}Home{% endblock title %}
+{% block page_name %}Home{% endblock page_name %}
+{% block page_name_crumbs %}Index{% endblock page_name_crumbs %}
+
+
+
+{% block content %}
+
+  {% include 'blog/components/homepage/slider_component.html' %}
+
+  {% include 'blog/components/homepage/popular_component.html' with popular=popular %}
+
+  {% comment %} {{ components }} {% endcomment %}
+  {% for component_type, data in components.items %}
+    
+    {% if component_type == 'component_a' %}
+      {% include 'blog/components/homepage/category_component_a.html' with component_a=data %}
+    {% endif %}
+
+    {% if component_type == 'component_b' %}
+      {% include 'blog/components/homepage/category_component_b.html' with component_b=data %}
+    {% endif %}
+
+    {% if component_type == 'component_c' %}
+      {% include 'blog/components/homepage/category_component_c.html' with component_c=data %}
+    {% endif %}
+
+  {% endfor %}
+
+{% endblock content %}

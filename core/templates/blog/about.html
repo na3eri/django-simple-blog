@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}About{% endblock title %}
+{% block page_name %}About{% endblock page_name %}
+{% block page_name_crumbs %}About{% endblock page_name_crumbs %}
+
+
+
+{% block content %}
+    <!-- About Section -->
+    <section id="about" class="about section">
+
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="100">
+            <p class="who-we-are">Who We Are</p>
+            <h3>{{ about_data.title }}</h3>
+            <p class="fst-italic">
+              {{ about_data.subtitle }}
+            </p>
+            <ul>
+              <li><i class="bi bi-check-circle"></i> <span>{{ about_data.first_description }}</span></li>
+              <li><i class="bi bi-check-circle"></i> <span>{{ about_data.second_description }}</span></li>
+              <li><i class="bi bi-check-circle"></i> <span>{{ about_data.third_description }}</span></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-6 about-images" data-aos="fade-up" data-aos-delay="200">
+            <div class="row gy-4">
+              
+              {% if about_images.first_image %}  
+                <div class="col-lg-6">
+                  <img src="{{ about_images.first_image.image.url }}" class="img-fluid" alt="{{ about_images.first_image.alt_message }}">
+                </div>
+              {% endif %}
+              
+              {% if about_images.second_image or about_image.third_image %}
+                <div class="col-lg-6">
+                  <div class="row gy-4">
+                    
+                    {% if about_images.second_image %}
+                      <div class="col-lg-12">
+                        <img src="{{ about_images.second_image.image.url }}" class="img-fluid" alt="{{ about_images.second_image.alt_message }}">
+                      </div>
+                    {% endif %}
+                    
+                    {% if about_images.third_image %}
+                      <div class="col-lg-12">
+                        <img src="{{ about_images.third_image.image.url }}" class="img-fluid" alt="{{ about_images.third_image.alt_message }}">
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- /About Section -->
+
+    <!-- Team Section -->
+    <section id="team" class="team section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <div class="section-title-container d-flex align-items-center justify-content-between">
+          <h2>Team</h2>
+          <p>OUR TEAM MEMBERS</p>
+        </div>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="row gy-4">
+          
+          {% for member in team_members %}
+            
+            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+              <div class="team-member d-flex align-items-start">
+                <div class="pic"><img src="{{ member.image.url }}" class="img-fluid" alt=""></div>
+                <div class="member-info">
+                  <h4>{{ member.full_name }}</h4>
+                  <span>{{ member.job_title }}</span>
+                  <p>{{ member.short_bio }}</p>
+                  <div class="social">
+                    
+                    {% if member.x_url %}
+                      <a href="{{ member.x_url }}"><i class="bi bi-twitter-x"></i></a>
+                    {% endif %}
+
+                    {% if member.facebook_url %}
+                      <a href="{{ member.facebook_url }}"><i class="bi bi-facebook"></i></a>
+                    {% endif %}
+                    
+                    {% if member.instagram_url %}
+                      <a href="{{ member.instagram_url }}"><i class="bi bi-instagram"></i></a>
+                    {% endif %}
+                    
+                    {% if member.linkedin_url %}
+                      <a href="{{ member.linkedin_url }}"> <i class="bi bi-linkedin"></i> </a>
+                    {% endif %}
+
+                  </div>
+                </div>
+              </div>
+            </div><!-- End Team Member -->
+            
+          {% endfor %}
+
+        </div>
+
+      </div>
+
+    </section><!-- /Team Section -->
+
+{% endblock content %}
