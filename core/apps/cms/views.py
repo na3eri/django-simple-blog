@@ -1,8 +1,11 @@
-from apps.cms.services.cms_homepage_service import CMSHomePageService
+from apps.cms.services.cms_contactpage_service import (
+    CMSContactPageService,
+)
+from apps.cms.services.cms_homepage_service import (
+    CMSHomePageService,
+)
 from django.contrib import messages
 from django.shortcuts import redirect, render
-
-# Create your views here.
 
 
 def cms_dashboard_view(request):
@@ -32,24 +35,26 @@ def cms_home_page_view(request):
 def cms_home_page_handle_slider_view(request, pk=None):
     service = CMSHomePageService()
 
-    if request.method == "POST":
-        result = service.handle_form(
-            form_type="slider_form",
-            post_data=request.POST,
-            files_data=request.FILES,
-            pk=pk,
-        )
+    if request.method != "POST":
+        return redirect("cms_homepage")
 
-        if result["status"]:
-            messages.success(
-                request,
-                result["detail"],
-            )
-        else:
-            messages.error(
-                request,
-                result["detail"],
-            )
+    result = service.handle_form(
+        form_type="slider_form",
+        post_data=request.POST,
+        files_data=request.FILES,
+        pk=pk,
+    )
+
+    if result["status"]:
+        messages.success(
+            request,
+            result["detail"],
+        )
+    else:
+        messages.error(
+            request,
+            result["detail"],
+        )
 
     return redirect("cms_homepage")
 
@@ -57,13 +62,15 @@ def cms_home_page_handle_slider_view(request, pk=None):
 def cms_home_page_delete_slider_view(request, pk):
     service = CMSHomePageService()
 
-    if request.method == "POST":
-        service.delete_slider(pk=pk)
+    if request.method != "POST":
+        return redirect("cms_homepage")
 
-        messages.success(
-            request,
-            "Slider deleted successfully.",
-        )
+    service.delete_slider(pk=pk)
+
+    messages.success(
+        request,
+        "Slider deleted successfully.",
+    )
 
     return redirect("cms_homepage")
 
@@ -71,24 +78,26 @@ def cms_home_page_delete_slider_view(request, pk):
 def cms_home_page_handle_category_view(request, pk=None):
     service = CMSHomePageService()
 
-    if request.method == "POST":
-        result = service.handle_form(
-            form_type="category_form",
-            post_data=request.POST,
-            files_data=request.FILES,
-            pk=pk,
-        )
+    if request.method != "POST":
+        return redirect("cms_homepage")
 
-        if result["status"]:
-            messages.success(
-                request,
-                result["detail"],
-            )
-        else:
-            messages.error(
-                request,
-                result["detail"],
-            )
+    result = service.handle_form(
+        form_type="category_form",
+        post_data=request.POST,
+        files_data=request.FILES,
+        pk=pk,
+    )
+
+    if result["status"]:
+        messages.success(
+            request,
+            result["detail"],
+        )
+    else:
+        messages.error(
+            request,
+            result["detail"],
+        )
 
     return redirect("cms_homepage")
 
@@ -96,21 +105,59 @@ def cms_home_page_handle_category_view(request, pk=None):
 def cms_home_page_delete_category(request, pk):
     service = CMSHomePageService()
 
-    if request.method == "POST":
-        service.delete_category(pk=pk)
+    if request.method != "POST":
+        return redirect("cms_homepage")
 
-        messages.success(
-            request,
-            "Category deleted successfully.",
-        )
+    service.delete_category(pk=pk)
+
+    messages.success(
+        request,
+        "Category deleted successfully.",
+    )
 
     return redirect("cms_homepage")
 
 
 def cms_contact_page_view(request):
+    service = CMSContactPageService()
+
+    if request.method == "POST":
+        result = service.handle_form(
+            post_data=request.POST,
+            files_data=request.FILES,
+        )
+
+        if result["status"]:
+            messages.success(
+                request,
+                result["detail"],
+            )
+
+            form = service.build_form(
+                instance=service.contact_data_instance,
+            )
+
+        else:
+            messages.error(
+                request,
+                result["detail"],
+            )
+
+            form = result["form"]
+
+    else:
+        form = service.build_form(
+            instance=service.contact_data_instance,
+        )
+
+    context = {
+        "form": form,
+    }
+
     return render(
         request,
         "cms/cms-contact-page.html",
+        context,
     )
 
 

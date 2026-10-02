@@ -5,117 +5,22 @@ from apps.cms.forms import (
 from apps.cms.models import (
     HomePageCategory,
     HomePageSlider,
-    Page,
 )
-from django.db import IntegrityError, transaction
-from django.shortcuts import get_object_or_404
-
-
-class BaseService:
-    model = None
-    form = None
-    max_items = None
-
-    def __init__(self):
-
-        try:
-            self.page = Page.objects.get(name="home")
-
-        except Page.DoesNotExist:
-            self.page = Page.objects.create(name="home")
-
-    def get_all(self):
-
-        return self.model.objects.filter(page=self.page)
-
-    def get_one(self, pk):
-
-        try:
-            return self.model.objects.get(
-                pk=pk,
-                page=self.page,
-            )
-
-        except self.model.DoesNotExist:
-            return None
-
-    def build_form(
-        self,
-        post_data=None,
-        files_data=None,
-        instance=None,
-    ):
-
-        return self.form(
-            data=post_data,
-            files=files_data,
-            instance=instance,
-        )
-
-    def can_add(self):
-
-        if self.max_items is None:
-            return True
-
-        return self.get_all().count() < self.max_items
-
-    def handle_form(
-        self,
-        post_data,
-        files_data=None,
-        pk=None,
-    ):
-
-        instance = self.get_one(pk) if pk is not None else None
-
-        if pk is not None and instance is None:
-            return False
-
-        if pk is None and not self.can_add():
-            return False
-
-        form = self.build_form(
-            post_data=post_data,
-            files_data=files_data,
-            instance=instance,
-        )
-
-        if not form.is_valid():
-            return False
-
-        instance = form.save(commit=False)
-        instance.page = self.page
-
-        try:
-            with transaction.atomic():
-                instance.save()
-
-        except IntegrityError:
-            return False
-
-        return True
-
-    def delete(self, pk):
-
-        instance = get_object_or_404(
-            self.model,
-            pk=pk,
-            page=self.page,
-        )
-
-        instance.delete()
+from apps.cms.services.base_service import BaseService
 
 
 class SlidersService(BaseService):
     model = HomePageSlider
     form = HomePageSliderForm
     max_items = 4
+    page_name = "home"
 
 
 class CategoryService(BaseService):
     model = HomePageCategory
     form = HomePageCategoryForm
     max_items = 3
+    page_name = "home"
 
 
 class CMSHomePageService:
@@ -191,10 +96,11 @@ class CMSHomePageService:
         )
 
         return {
-            "status": result,
+            "status": result["status"],
+            "form": result["form"],
             "detail": (
                 "Form was processed successfully"
-                if result
+                if result["status"]
                 else "Form processing failed"
             ),
         }
