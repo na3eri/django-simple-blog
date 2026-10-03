@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 
 from django.conf.global_settings import STATICFILES_DIRS
+from django.contrib import messages
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     "apps.blog.apps.BlogConfig",
     "apps.cms.apps.CmsConfig",
     "taggit",
+    "django_htmx",
 ]
 
 MIDDLEWARE = [
@@ -59,6 +61,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -158,3 +161,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get("DJANGO_EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("DJANGO_EMAIL_HOST_PASSWORD")
+
+
+MESSAGE_TAGS = {
+    messages.ERROR: "danger",
+}

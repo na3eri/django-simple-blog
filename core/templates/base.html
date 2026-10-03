@@ -29,9 +29,23 @@
     <!-- Main CSS File -->
     <link href="{% static 'css/main.css' %}" rel="stylesheet">
 
+    {% block extra_head %}
+        
+    {% endblock extra_head %}
+        
 </head>
 
 <body class="starter-page-page">
+    {% if messages %}
+    <div id="flash-messages">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show shadow" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 
     <header id="header" class="header d-flex align-items-center sticky-top">
         <div class="container position-relative d-flex align-items-center justify-content-between">
@@ -222,6 +236,12 @@
     <!-- Preloader -->
     <div id="preloader"></div>
 
+    
+    {% block extra_modals %}
+        
+    {% endblock extra_modals %}
+        
+
     <!-- Vendor JS Files -->
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
@@ -230,6 +250,12 @@
 
     <!-- Main JS File -->
     <script src="{% static 'js/main.js' %}"></script>
+
+    
+    {% block extra_scripts %}
+        
+    {% endblock extra_scripts %}
+
 
 </body>
 

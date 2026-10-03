@@ -27,9 +27,9 @@ load_dotenv()
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("", include("apps.cms.urls")),
     path("", include("apps.users.urls")),
     path("", include("apps.blog.urls")),
-    path("", include("apps.cms.urls")),
 ]
 
 
