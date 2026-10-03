@@ -1,4 +1,10 @@
-from apps.cms.models import ContactPageData, HomePageCategory, HomePageSlider
+from apps.cms.models import (
+    AboutPageData,
+    AboutPageImage,
+    ContactPageData,
+    HomePageCategory,
+    HomePageSlider,
+)
 from django.db.models import TextField
 from django.forms import (
     ClearableFileInput,
@@ -173,6 +179,81 @@ class ContactPageDataForm(ModelForm):
                     "class": "form-control",
                     "id": "contact-map",
                     "placeholder": "https://www.google.com/maps/something/",
+                }
+            ),
+        }
+
+
+class AboutPageImageForm(ModelForm):
+    class Meta:
+        model = AboutPageImage
+        fields = [
+            "image",
+            "alt_message",
+        ]
+        widgets = {
+            "image": ClearableFileInput(
+                attrs={
+                    "class": "form-control",
+                    "id": "image-upload",
+                    "accept": "image/*",
+                    "data-preview": "true",
+                }
+            ),
+            "alt_message": TextInput(
+                attrs={
+                    "class": "form-control",
+                    "id": "image-alt",
+                    "placeholder": "Image alt text",
+                }
+            ),
+        }
+
+
+class AboutPageDataForm(ModelForm):
+    class Meta:
+        model = AboutPageData
+        fields = [
+            "title",
+            "subtitle",
+            "first_description",
+            "second_description",
+            "third_description",
+        ]
+        widgets = {
+            "title": TextInput(
+                attrs={
+                    "class": "form-control",
+                    "id": "about-title",
+                    "placeholder": "Title",
+                }
+            ),
+            "subtitle": TextInput(
+                attrs={
+                    "class": "form-control",
+                    "id": "about-subtitle",
+                    "placeholder": "Subtitle",
+                }
+            ),
+            "first_description": TextInput(
+                attrs={
+                    "class": "form-control",
+                    "id": "about-desc1",
+                    "placeholder": "First description",
+                }
+            ),
+            "second_description": TextInput(
+                attrs={
+                    "class": "form-control",
+                    "id": "about-desc2",
+                    "placeholder": "Second description",
+                }
+            ),
+            "third_description": TextInput(
+                attrs={
+                    "class": "form-control",
+                    "id": "about-desc3",
+                    "placeholder": "Third description",
                 }
             ),
         }

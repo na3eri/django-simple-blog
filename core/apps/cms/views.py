@@ -1,3 +1,4 @@
+from apps.cms.services.cms_aboutpage_service import CMSAboutPageService
 from apps.cms.services.cms_contactpage_service import (
     CMSContactPageService,
 )
@@ -162,7 +163,63 @@ def cms_contact_page_view(request):
 
 
 def cms_about_page_view(request):
+    service = CMSAboutPageService()
+
+    if request.method == "POST":
+        result = service.handle_form(
+            form_type="about_data",
+            post_data=request.POST,
+        )
+        if result["status"]:
+            messages.success(request, result["detail"])
+            data_form = service.build_form(
+                form_type="about_data",
+                instance=service.about_data_instance,
+            )
+        else:
+            messages.error(request, result["detail"])
+            data_form = result["form"]
+    else:
+        data_form = service.build_form(
+            form_type="about_data",
+            instance=service.about_data_instance,
+        )
+
+    context = {
+        "data_form": data_form,
+        "image_form": service.build_form(form_type="about_image"),
+        "images": service.build_images(),
+    }
     return render(
         request,
         "cms/cms-about-page.html",
+        context,
     )
+
+
+def cms_about_page_handle_image_view(request, pk=None):
+    service = CMSAboutPageService()
+
+    if request.method != "POST":
+        return redirect("cms_aboutpage")
+
+    result = service.handle_form(
+        form_type="about_image",
+        post_data=request.POST,
+        files_data=request.FILES,
+        pk=pk,
+    )
+
+    if result["status"]:
+        messages.success(
+            request,
+            result["detail"],
+        )
+
+    else:
+        messages.error(
+            request,
+            result["detail"],
+        )
+
+    return redirect("cms_aboutpage")

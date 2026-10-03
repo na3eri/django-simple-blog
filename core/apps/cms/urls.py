@@ -33,8 +33,18 @@ urlpatterns = [
         views.cms_home_page_delete_category,
         name="cms_homepage_delete_category",
     ),
+    path(
+        "cms/about/images/add/",
+        views.cms_about_page_handle_image_view,
+        name="cms_about_page_add_image",
+    ),
+    path(
+        "cms/about/images/<int:pk>/edit/",
+        views.cms_about_page_handle_image_view,
+        name="cms_about_page_edit_image",
+    ),
+    path("cms/about/", views.cms_about_page_view, name="cms_aboutpage"),
     path("cms/homepage/", views.cms_home_page_view, name="cms_homepage"),
     path("cms/contact/", views.cms_contact_page_view, name="cms_contactpage"),
-    path("cms/about/", views.cms_about_page_view, name="cms_aboutpage"),
     path("cms/dashboard/", views.cms_dashboard_view, name="cms_dashboard"),
 ]
