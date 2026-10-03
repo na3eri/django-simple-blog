@@ -1,0 +1,292 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}CMS (Home Page){% endblock title %}
+{% block page_name %}CMS (Home Page){% endblock page_name %}
+{% block page_name_crumbs %}CMS (Home Page){% endblock page_name_crumbs %}
+
+
+{% block content %}
+
+<section class="section cms-home-page">
+  <div class="container" data-aos="fade-up">
+
+    <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+      <div>
+        <h2>Home Page</h2>
+        <p class="text-muted mb-0">Manage homepage content and sections</p>
+      </div>
+      <div class="d-flex gap-2 mt-3 mt-md-0">
+        <a href="{% url 'home' %}" class="btn btn-outline-info">Preview</a>
+        <a href="{% url 'cms_dashboard' %}" class="btn btn-outline-secondary">Back to CMS Dashbaord</a>
+      </div>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+      <div>
+        <h4>Homepage Sliders</h4>
+        <span class="text-muted">{{ sliders.count }} of 4 slots used</span>
+      </div>
+      <button class="btn btn-sm btn-primary" id="add-slider-btn" data-bs-toggle="modal"
+        data-action="{% url 'cms_homepage_add_slider' %}" data-bs-target="#sliderModal">Add Slider</button>
+    </div>
+
+    <div class="row g-4 mb-5" id="slider-list">
+      
+      {% for slider in sliders %}
+
+        <div class="col-lg-6">
+          <div class="card border-0 shadow-sm">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="{{ slider.image.url }}" class="img-fluid rounded-start" alt="Slider {{ slider.id }}">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <h6 class="card-title">{{ slider.title }}</h6>
+                      <p class="text-muted small mb-1"><strong>Subtitle:</strong> {{ slider.subtitle }}</p>
+                      <p class="text-muted small mb-1"><strong>Alt text:</strong> {{ slider.alt_message }}</p>
+                      <p class="text-muted small mb-1"><strong>URL:</strong> {{ slider.url }}</p>
+                      <span class="badge bg-secondary">Order: {{ slider.order }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer bg-white border-top-0 d-flex justify-content-end gap-2">
+              <button
+                  type="button"
+                  class="btn btn-sm btn-outline-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#sliderModal"
+                  data-action="{% url 'cms_homepage_edit_slider' slider.pk %}">
+                  Edit
+              </button>
+
+              <form
+                  method="post"
+                  action="{% url 'cms_homepage_delete_slider' slider.pk %}"
+                  class="d-inline btn-delete-slider-form">
+
+                  {% csrf_token %}
+
+                  <button
+                      type="submit"
+                      class="btn btn-sm btn-outline-danger">
+                      Delete
+                  </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      {% endfor %}
+
+    </div>
+
+    <hr class="my-4">
+
+    <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+      <div>
+        <h4>Homepage Categories</h4>
+        <span class="text-muted">{{ categories.count }} of 3 slots used</span>
+      </div>
+      <button
+          type="button"
+          class="btn btn-sm btn-primary"
+          id="add-category-btn"
+          data-bs-toggle="modal"
+          data-bs-target="#categoryModal"
+          data-action="{% url 'cms_homepage_add_category' %}">
+          Add Category Section
+      </button>
+    </div>
+
+    <div class="row g-4 mb-5" id="category-list">
+      
+      {% for category in categories %}
+        <div class="col-lg-4">
+          <div class="card border-0 shadow-sm">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                  <h6 class="card-title mb-1">{{ category.category.name|title }}</h6>
+                  <span class="badge bg-info">{{ category.component_type }}</span>
+                  <span class="badge bg-secondary ms-1">Order: {{ category.order }}</span>
+                </div>
+              </div>
+              <div class="d-flex gap-2">
+                <button
+                    type="button"
+                    class="btn btn-sm btn-outline-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#categoryModal"
+                    data-action="{% url 'cms_homepage_edit_category' category.pk %}">
+                    Edit
+                </button>
+                
+                <form
+                  method="post"
+                  action="{% url 'cms_homepage_delete_category' category.pk %}"
+                  class="d-inline btn-delete-category-form">
+
+                  {% csrf_token %}
+
+                  <button
+                      type="submit"
+                      class="btn btn-sm btn-outline-danger">
+                      Delete
+                  </button>
+              </form>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+
+      {% endfor %}
+        
+    </div>
+
+  </div>
+</section>
+
+{% endblock content %}
+
+
+
+
+{% block extra_modals %}
+
+<div class="modal fade" id="sliderModal" tabindex="-1" aria-labelledby="sliderModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+
+    <form id="slider-form" action="" method="post" enctype="multipart/form-data" class="modal-content">
+      {% csrf_token %}
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="sliderModalLabel">
+          Add / Edit Slider
+        </h5>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="mb-3">
+          <label class="form-label">Image</label>
+
+          {{ slider_form.image }}
+
+          <div class="cms-image-preview mt-2"></div>
+        </div>
+
+        <div class="mb-3">
+          <label for="slider-title" class="form-label">
+            Title
+          </label>
+
+          {{ slider_form.title }}
+
+        </div>
+
+        <div class="mb-3">
+          <label for="slider-subtitle" class="form-label">
+            Subtitle
+          </label>
+
+          {{ slider_form.subtitle }}
+        </div>
+
+        <div class="mb-3">
+          <label for="slider-alt" class="form-label">
+            Alt text
+          </label>
+
+          {{ slider_form.alt_message }}
+
+        </div>
+
+        <div class="mb-3">
+          <label for="slider-url" class="form-label">
+            URL
+          </label>
+
+          {{ slider_form.url }}
+        </div>
+
+        <div class="mb-3">
+          <label for="slider-order" class="form-label">
+            Order
+          </label>
+
+          {{ slider_form.order }}
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+
+        <button type="submit" class="btn btn-primary">
+          Save
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+<div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="categoryModalLabel">Add / Edit Category Section</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="{{ category_form.category.id_for_label }}" class="form-label">Category</label>
+                        {{ category_form.category }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ category_form.component_type.id_for_label }}" class="form-label">Component Type</label>
+                        {{ category_form.component_type }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ category_form.order.id_for_label }}" class="form-label">Order</label>
+                        {{ category_form.order }}
+                    </div>
+
+                    <div class="modal-footer px-0 pb-0">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock extra_modals %}
+
+
+{% block extra_scripts %}
+<script src="{% static 'js/cms.js' %}"></script>
+{% endblock extra_scripts %}

@@ -1,0 +1,644 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+    CMS (About)
+{% endblock title %}
+
+
+{% block page_name %}
+    CMS (About)
+{% endblock page_name %}
+
+
+{% block page_name_crumbs %}
+    CMS (About)
+{% endblock page_name_crumbs %}
+
+
+{% block content %}
+
+<section class="section cms-about-page">
+
+    <div class="container" data-aos="fade-up">
+
+
+        <!-- ============================================ -->
+        <!-- Page Header -->
+        <!-- ============================================ -->
+
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+
+            <div>
+
+                <h2>
+                    About Page
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Manage about page content
+                </p>
+
+            </div>
+
+
+            <div class="d-flex gap-2 mt-3 mt-md-0">
+
+                <a
+                    href="{% url 'about' %}"
+                    class="btn btn-outline-info"
+                >
+                    Preview
+                </a>
+
+                <a
+                    href="{% url 'cms_dashboard' %}"
+                    class="btn btn-outline-secondary"
+                >
+                    Back to CMS Dashboard
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <hr class="my-4">
+
+
+        <!-- ============================================ -->
+        <!-- About Page Data -->
+        <!-- ============================================ -->
+
+        <form
+            method="POST"
+            action="{% url 'cms_aboutpage' %}"
+            class="row g-3 mb-5"
+            data-aos="fade-up"
+            data-aos-delay="100"
+        >
+
+            {% csrf_token %}
+
+
+            <div class="d-flex align-items-center justify-content-between mb-3">
+
+                <h4 class="mb-0">
+                    About Page Information
+                </h4>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    <i class="bi bi-save me-2"></i>
+                    Save Changes
+                </button>
+
+            </div>
+
+
+            <!-- Non-field errors -->
+
+            {% if data_form.non_field_errors %}
+
+                <div
+                    class="alert alert-danger"
+                    role="alert"
+                >
+
+                    <ul class="mb-0">
+
+                        {% for error in data_form.non_field_errors %}
+
+                            <li>
+                                {{ error }}
+                            </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- Title -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="about-title"
+                    class="form-label"
+                >
+                    Title
+                </label>
+
+                {{ data_form.title }}
+
+
+                {% if data_form.title.errors %}
+
+                    <div class="invalid-feedback d-block">
+
+                        {% for error in data_form.title.errors %}
+
+                            <div>
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Subtitle -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="about-subtitle"
+                    class="form-label"
+                >
+                    Subtitle
+                </label>
+
+                {{ data_form.subtitle }}
+
+
+                {% if data_form.subtitle.errors %}
+
+                    <div class="invalid-feedback d-block">
+
+                        {% for error in data_form.subtitle.errors %}
+
+                            <div>
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- First Description -->
+
+            <div class="col-12">
+
+                <label
+                    for="about-desc1"
+                    class="form-label"
+                >
+                    First Description
+                </label>
+
+                {{ data_form.first_description }}
+
+
+                {% if data_form.first_description.errors %}
+
+                    <div class="invalid-feedback d-block">
+
+                        {% for error in data_form.first_description.errors %}
+
+                            <div>
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Second Description -->
+
+            <div class="col-12">
+
+                <label
+                    for="about-desc2"
+                    class="form-label"
+                >
+                    Second Description
+                </label>
+
+                {{ data_form.second_description }}
+
+
+                {% if data_form.second_description.errors %}
+
+                    <div class="invalid-feedback d-block">
+
+                        {% for error in data_form.second_description.errors %}
+
+                            <div>
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Third Description -->
+
+            <div class="col-12">
+
+                <label
+                    for="about-desc3"
+                    class="form-label"
+                >
+                    Third Description
+                </label>
+
+                {{ data_form.third_description }}
+
+
+                {% if data_form.third_description.errors %}
+
+                    <div class="invalid-feedback d-block">
+
+                        {% for error in data_form.third_description.errors %}
+
+                            <div>
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </form>
+
+
+        <hr class="my-4">
+
+
+        <!-- ============================================ -->
+        <!-- About Page Images Header -->
+        <!-- ============================================ -->
+
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+
+            <div>
+
+                <h4>
+                    About Page Images
+                </h4>
+
+                <span class="text-muted">
+                    {{ images.count }} of 3 slots used
+                </span>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="btn btn-sm btn-primary"
+                id="add-image-btn"
+                data-bs-toggle="modal"
+                data-bs-target="#imageModal"
+                data-action="{% url 'cms_about_page_add_image' %}"
+            >
+                Add Image
+            </button>
+
+        </div>
+
+
+        <!-- ============================================ -->
+        <!-- About Page Images List -->
+        <!-- ============================================ -->
+
+        <div
+            class="row g-4 mb-5"
+            id="about-image-list"
+        >
+
+            {% for image in images %}
+
+                <div class="col-lg-6">
+
+                    <div class="card border-0 shadow-sm">
+
+
+                        <div class="row g-0">
+
+
+                            <!-- Image -->
+
+                            <div class="col-md-4">
+
+                                <img
+                                    src="{{ image.image.url }}"
+                                    class="img-fluid rounded-start"
+                                    alt="{{ image.alt_message }}"
+                                >
+
+                            </div>
+
+
+                            <!-- Image Information -->
+
+                            <div class="col-md-8">
+
+                                <div class="card-body">
+
+                                    <p class="text-muted small mb-1">
+
+                                        <strong>
+                                            Alt text:
+                                        </strong>
+
+                                        {{ image.alt_message }}
+
+                                    </p>
+
+
+                                    <p class="text-muted small mb-1">
+
+                                        <strong>
+                                            Dimensions:
+                                        </strong>
+
+                                        {{ image.image.width }}
+                                        x
+                                        {{ image.image.height }}
+                                        px
+
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Card Actions -->
+
+                        <div
+                            class="card-footer bg-white border-top-0 d-flex justify-content-end gap-2"
+                        >
+
+                            <!-- Edit -->
+
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-outline-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#imageModal"
+                                data-action="{% url 'cms_about_page_edit_image' image.pk %}"
+                            >
+                                Edit
+                            </button>
+
+
+                            <!-- Delete -->
+
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-outline-danger btn-delete-image"
+                            >
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <div class="col-12">
+
+                    <div class="alert alert-light border">
+
+                        No images have been added yet.
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock content %}
+
+
+{% block extra_modals %}
+
+
+<!-- ============================================ -->
+<!-- About Image Modal -->
+<!-- ============================================ -->
+
+<div
+    class="modal fade"
+    id="imageModal"
+    tabindex="-1"
+    aria-labelledby="imageModalLabel"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+
+            <!-- Modal Header -->
+
+            <div class="modal-header">
+
+                <h5
+                    class="modal-title"
+                    id="imageModalLabel"
+                >
+                    Add / Edit Image
+                </h5>
+
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+
+            </div>
+
+
+            <!-- Modal Form -->
+
+            <form
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                {% csrf_token %}
+
+
+                <!-- Modal Body -->
+
+                <div class="modal-body">
+
+
+                    <!-- Non-field errors -->
+
+                    {% if image_form.non_field_errors %}
+
+                        <div class="alert alert-danger">
+
+                            {% for error in image_form.non_field_errors %}
+
+                                <div>
+                                    {{ error }}
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- Image -->
+
+                    <div class="mb-3">
+
+                        <label
+                            for="{{ image_form.image.id_for_label }}"
+                            class="form-label"
+                        >
+                            Image
+                        </label>
+
+
+                        {{ image_form.image }}
+
+
+                        {% if image_form.image.errors %}
+
+                            <div class="invalid-feedback d-block">
+
+                                {% for error in image_form.image.errors %}
+
+                                    <div>
+                                        {{ error }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <div class="cms-image-preview mt-2"></div>
+
+                    </div>
+
+
+                    <!-- Alt Text -->
+
+                    <div class="mb-3">
+
+                        <label
+                            for="{{ image_form.alt_message.id_for_label }}"
+                            class="form-label"
+                        >
+                            Alt text
+                        </label>
+
+
+                        {{ image_form.alt_message }}
+
+
+                        {% if image_form.alt_message.errors %}
+
+                            <div class="invalid-feedback d-block">
+
+                                {% for error in image_form.alt_message.errors %}
+
+                                    <div>
+                                        {{ error }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- Modal Footer -->
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        <i class="bi bi-save me-1"></i>
+                        Save
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock extra_modals %}
+
+
+{% block extra_scripts %}
+<script src="{% static 'js/cms.js' %}"></script>
+{% endblock extra_scripts %}
