@@ -13,6 +13,7 @@ from tests.factories import (
     PageFactory,
     ProfileFactory,
     TagFactory,
+    TestServiceModelFactory,
     UserFactory,
 )
 
@@ -29,3 +30,4 @@ register(TagFactory)
 register(ContactPageDataFactory)
 register(HomePageSliderFactory)
 register(HomePageCategoryFactory)
+register(TestServiceModelFactory)
