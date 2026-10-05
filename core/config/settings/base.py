@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "apps.users.apps.UsersConfig",
     "apps.blog.apps.BlogConfig",
     "apps.cms.apps.CmsConfig",
+    "apps.teammember_profile.apps.TeammemberProfileConfig",
     "taggit",
     "django_htmx",
 ]

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Team Member - Naseri.Dev-Simple-Blog Bootstrap Template</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <style>
+    .member-hero {
+      background-color: var(--surface-color);
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+      border-radius: 5px;
+      box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.06);
+    }
+
+    .member-hero .member-photo {
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .member-hero .member-stats span {
+      font-family: var(--nav-font);
+      font-size: 13px;
+      color: color-mix(in srgb, var(--default-color), transparent 40%);
+    }
+
+    .member-hero .member-stats strong {
+      display: block;
+      font-size: 22px;
+      color: var(--heading-color);
+    }
+
+    .member-hero .social-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 70%);
+      color: color-mix(in srgb, var(--default-color), transparent 30%);
+      margin-right: 8px;
+      transition: 0.3s;
+    }
+
+    .member-hero .social-links a:hover {
+      color: var(--contrast-color);
+      background: var(--accent-color);
+      border-color: var(--accent-color);
+    }
+  </style>
+
+  <!-- =======================================================
+  * Template Name: Naseri.Dev-Simple-Blog
+  * Template URL: https://bootstrapmade.com/Naseri.Dev-Simple-Blog-bootstrap-blog-template/
+  * Updated: Aug 08 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body class="team-member-page">
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container position-relative d-flex align-items-center justify-content-between">
+
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="assets/img/logo.png" alt=""> -->
+        <h1 class="sitename">Naseri.Dev-Simple-Blog</h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="single-post.html">Single Post</a></li>
+          <li class="dropdown"><a href="#"><span>Categories</span> <i
+                class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="category.html">Category 1</a></li>
+              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i
+                    class="bi bi-chevron-down toggle-dropdown"></i></a>
+                <ul>
+                  <li><a href="#">Deep Dropdown 1</a></li>
+                  <li><a href="#">Deep Dropdown 2</a></li>
+                  <li><a href="#">Deep Dropdown 3</a></li>
+                  <li><a href="#">Deep Dropdown 4</a></li>
+                  <li><a href="#">Deep Dropdown 5</a></li>
+                </ul>
+              </li>
+              <li><a href="category.html">Category 2</a></li>
+              <li><a href="category.html">Category 3</a></li>
+              <li><a href="category.html">Category 4</a></li>
+            </ul>
+          </li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+      <div class="header-social-links">
+        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">Team Member</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">Team</a></li>
+            <li class="current">Jane Smith</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Team Member Section -->
+    <section id="team-member" class="team-member section">
+      <div class="container">
+
+        <!-- Member Hero Card -->
+        <div class="member-hero p-4 p-lg-5 mb-5" data-aos="fade-up">
+          <div class="row gy-4 align-items-center">
+            <div class="col-lg-8">
+              <div class="d-flex flex-column flex-sm-row align-items-center align-items-sm-start gap-4">
+                <img src="assets/img/blog/blog-author.jpg" class="member-photo rounded-circle flex-shrink-0" alt="Jane Smith">
+                <div class="text-center text-sm-start">
+                  <p class="text-uppercase small mb-1" style="color: color-mix(in srgb, var(--default-color), transparent 40%); letter-spacing: 0.08rem;">Content Editor</p>
+                  <h2 class="mb-2">Jane Smith</h2>
+                  <p class="mb-3">
+                    Itaque quidem optio quia voluptatibus dolorem dolor. Modi eum sed possimus accusantium.
+                    Quas repellat voluptatem officia numquam sint aspernatur voluptas. Jane covers culture,
+                    business and lifestyle stories for the blog.
+                  </p>
+                  <div class="social-links mb-3">
+                    <a href="https://x.com/#"><i class="bi bi-twitter-x"></i></a>
+                    <a href="https://facebook.com/#"><i class="bi bi-facebook"></i></a>
+                    <a href="https://instagram.com/#"><i class="bi bi-instagram"></i></a>
+                    <a href="https://linkedin.com/#"><i class="bi bi-linkedin"></i></a>
+                  </div>
+                  <a href="team-member-send-message.html" class="btn btn-primary"><i class="bi bi-envelope me-1"></i>Send Message</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="member-stats d-flex justify-content-around text-center border-start ps-lg-4" style="border-color: color-mix(in srgb, var(--default-color), transparent 90%) !important;">
+                <div>
+                  <strong>24</strong>
+                  <span>Articles</span>
+                </div>
+                <div>
+                  <strong>48.5k</strong>
+                  <span>Views</span>
+                </div>
+                <div>
+                  <strong>128</strong>
+                  <span>Comments</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- End Member Hero Card -->
+
+        <div class="row gy-4">
+
+          <!-- Member Articles -->
+          <div class="col-lg-8">
+            <div data-aos="fade-up" data-aos-delay="100">
+
+              <!-- Section Title -->
+              <div class="container section-title px-0" data-aos="fade-up">
+                <div class="section-title-container d-flex align-items-center justify-content-between">
+                  <h2>Articles by Jane</h2>
+                  <p><a href="category.html">See All Articles</a></p>
+                </div>
+              </div><!-- End Section Title -->
+
+              <!-- Blog Posts Section -->
+              <section id="blog-posts" class="blog-posts section pt-0">
+                <div class="container px-0">
+                  <div class="row gy-4">
+
+                    <div class="col-lg-6">
+                      <article class="position-relative h-100">
+                        <div class="post-img position-relative overflow-hidden">
+                          <img src="assets/img/blog/blog-1.jpg" class="img-fluid" alt="">
+                          <span class="post-date">December 12</span>
+                        </div>
+                        <div class="post-content d-flex flex-column">
+                          <h3 class="post-title">Dolorum optio tempore voluptas dignissimos cumque fuga qui quibusdam quia</h3>
+                          <div class="meta d-flex align-items-center">
+                            <div class="d-flex align-items-center">
+                              <i class="bi bi-person"></i> <span class="ps-2">Jane Smith</span>
+                            </div>
+                            <span class="px-3 text-black-50">/</span>
+                            <div class="d-flex align-items-center">
+                              <i class="bi bi-folder2"></i> <span class="ps-2">Business</span>
+                            </div>
+                          </div>
+                          <p>
+                            Similique neque nam consequuntur ad non maxime aliquam quas. Quibusdam animi praesentium.
+                            Aliquam et laboriosam eius aut nostrum quidem aliquid dicta.
+                          </p>
+                          <hr>
+                          <a href="single-post.html" class="readmore stretched-link"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+                        </div>
+                      </article>
+                    </div><!-- End post list item -->
+
+                    <div class="col-lg-6">
+                      <article class="position-relative h-100">
+                        <div class="post-img position-relative overflow-hidden">
+                          <img src="assets/img/blog/blog-2.jpg" class="img-fluid" alt="">
+                          <span class="post-date">December 02</span>
+                        </div>
+                        <div class="post-content d-flex flex-column">
+                          <h3 class="post-title">Nisi magni odit consequatur autem nulla dolorem</h3>
+                          <div class="meta d-flex align-items-center">
+                            <div class="d-flex align-items-center">
+                              <i class="bi bi-person"></i> <span class="ps-2">Jane Smith</span>
+                            </div>
+                            <span class="px-3 text-black-50">/</span>
+                            <div class="d-flex align-items-center">
+                              <i class="bi bi-folder2"></i> <span class="ps-2">Culture</span>
+                            </div>
+                          </div>
+                          <p>
+                            Incidunt voluptate sit temporibus aperiam. Quia vitae aut sint ullam quis illum voluptatum et.
+                            Quo libero rerum voluptatem pariatur nam.
+                          </p>
+                          <hr>
+                          <a href="single-post.html" class="readmore stretched-link"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+                        </div>
+                      </article>
+                    </div><!-- End post list item -->
+
+                    <div class="col-lg-6">
+                      <article class="position-relative h-100">
+                        <div class="post-img position-relative overflow-hidden">
+                          <img src="assets/img/blog/blog-3.jpg" class="img-fluid" alt="">
+                          <span class="post-date">November 24</span>
+                        </div>
+                        <div class="post-content d-flex flex-column">
+                          <h3 class="post-title">Possimus soluta ut id suscipit ea ut. In quo quia et soluta libero sit sint.</h3>
+                          <div class="meta d-flex align-items-center">
+                            <div class="d-flex align-items-center">
+                              <i class="bi bi-person"></i> <span class="ps-2">Jane Smith</span>
+                            </div>
+                            <span class="px-3 text-black-50">/</span>
+                            <div class="d-flex align-items-center">
+                              <i class="bi bi-folder2"></i> <span class="ps-2">Sport</span>
+                            </div>
+                          </div>
+                          <p>
+                            Aut iste neque ut illum qui perspiciatis similique recusandae non. Fugit autem dolorem labore
+                            omnis et. Eum temporibus fugiat voluptate enim tenetur sunt omnis.
+                          </p>
+                          <hr>
+                          <a href="single-post.html" class="readmore stretched-link"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+                        </div>
+                      </article>
+                    </div><!-- End post list item -->
+
+                    <div class="col-lg-6">
+                      <article class="position-relative h-100">
+                        <div class="post-img position-relative overflow-hidden">
+                          <img src="assets/img/blog/blog-4.jpg" class="img-fluid" alt="">
+                          <span class="post-date">November 10</span>
+                        </div>
+                        <div class="post-content d-flex flex-column">
+                          <h3 class="post-title">Non rem rerum nam cum quo minus. Dolor distinctio deleniti explicabo eius exercitationem.</h3>
+                          <div class="meta d-flex align-items-center">
+                            <div class="d-flex align-items-center">
+                              <i class="bi bi-person"></i> <span class="ps-2">Jane Smith</span>
+                            </div>
+                            <span class="px-3 text-black-50">/</span>
+                            <div class="d-flex align-items-center">
+                              <i class="bi bi-folder2"></i> <span class="ps-2">Lifestyle</span>
+                            </div>
+                          </div>
+                          <p>
+                            Aspernatur rerum perferendis et sint. Voluptates cupiditate voluptas atque quae. Rem veritatis
+                            rerum enim et autem. Saepe atque cum eligendi eaque iste omnis a qui.
+                          </p>
+                          <hr>
+                          <a href="single-post.html" class="readmore stretched-link"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+                        </div>
+                      </article>
+                    </div><!-- End post list item -->
+
+                  </div>
+                </div>
+              </section><!-- /Blog Posts Section -->
+
+              <!-- Blog Pagination Section -->
+              <section id="blog-pagination" class="blog-pagination section pt-0">
+                <div class="container px-0">
+                  <div class="d-flex justify-content-center">
+                    <ul>
+                      <li><a href="#"><i class="bi bi-chevron-left"></i></a></li>
+                      <li><a href="#" class="active">1</a></li>
+                      <li><a href="#">2</a></li>
+                      <li><a href="#">3</a></li>
+                      <li><a href="#"><i class="bi bi-chevron-right"></i></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </section><!-- /Blog Pagination Section -->
+
+            </div>
+          </div><!-- End Member Articles -->
+
+          <!-- Sidebar -->
+          <div class="col-lg-4 sidebar">
+            <div class="widgets-container mt-0" data-aos="fade-up" data-aos-delay="200">
+
+              <!-- Send Message CTA Widget -->
+              <div class="widget-item text-center">
+                <i class="bi bi-envelope-paper fs-1" style="color: var(--accent-color);"></i>
+                <h3 class="widget-title border-0 ps-0 mt-2">Contact Jane</h3>
+                <p class="small text-muted">Have a question, a story tip or feedback on an article? Send Jane a direct message.</p>
+                <a href="team-member-send-message.html" class="btn btn-primary w-100"><i class="bi bi-envelope me-1"></i>Send Message</a>
+              </div><!--/Send Message CTA Widget -->
+
+              <!-- Search Widget -->
+              <div class="search-widget widget-item">
+                <h3 class="widget-title">Search Her Articles</h3>
+                <form action="">
+                  <input type="text" placeholder="Search articles...">
+                  <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+                </form>
+              </div><!--/Search Widget -->
+
+              <!-- Recent Posts Widget -->
+              <div class="recent-posts-widget widget-item">
+                <h3 class="widget-title">More by Jane</h3>
+                <div class="post-item">
+                  <img src="assets/img/blog/blog-recent-1.jpg" alt="" class="flex-shrink-0">
+                  <div>
+                    <h4><a href="single-post.html">Nihil blanditiis at in nihil autem</a></h4>
+                    <time datetime="2024-10-28">Oct 28, 2024</time>
+                  </div>
+                </div><!-- End recent post item-->
+                <div class="post-item">
+                  <img src="assets/img/blog/blog-recent-2.jpg" alt="" class="flex-shrink-0">
+                  <div>
+                    <h4><a href="single-post.html">Quidem autem et impedit</a></h4>
+                    <time datetime="2024-10-14">Oct 14, 2024</time>
+                  </div>
+                </div><!-- End recent post item-->
+                <div class="post-item">
+                  <img src="assets/img/blog/blog-recent-3.jpg" alt="" class="flex-shrink-0">
+                  <div>
+                    <h4><a href="single-post.html">Id quia et et ut maxime similique occaecati ut</a></h4>
+                    <time datetime="2024-09-30">Sep 30, 2024</time>
+                  </div>
+                </div><!-- End recent post item-->
+              </div><!--/Recent Posts Widget -->
+
+              <!-- Tags Widget -->
+              <div class="tags-widget widget-item">
+                <h3 class="widget-title">Jane's Topics</h3>
+                <ul>
+                  <li><a href="category.html">Business</a></li>
+                  <li><a href="category.html">Culture</a></li>
+                  <li><a href="category.html">Lifestyle</a></li>
+                  <li><a href="category.html">Sport</a></li>
+                  <li><a href="#">Creative</a></li>
+                  <li><a href="#">Tips</a></li>
+                  <li><a href="#">Marketing</a></li>
+                </ul>
+              </div><!--/Tags Widget -->
+
+            </div>
+          </div><!-- End Sidebar -->
+
+        </div>
+      </div>
+    </section><!-- /Team Member Section -->
+
+  </main>
+
+  <footer id="footer" class="footer dark-background">
+
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span class="sitename">Naseri.Dev-Simple-Blog</span>
+          </a>
+          <div class="footer-contact pt-3">
+            <p>A108 Adam Street</p>
+            <p>New York, NY 535022</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+            <p><strong>Email:</strong> <span>info@example.com</span></p>
+          </div>
+          <div class="social-links d-flex mt-4">
+            <a href=""><i class="bi bi-twitter-x"></i></a>
+            <a href=""><i class="bi bi-facebook"></i></a>
+            <a href=""><i class="bi bi-instagram"></i></a>
+            <a href=""><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Terms of service</a></li>
+            <li><a href="#">Privacy policy</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Our Services</h4>
+          <ul>
+            <li><a href="#">Web Design</a></li>
+            <li><a href="#">Web Development</a></li>
+            <li><a href="#">Product Management</a></li>
+            <li><a href="#">Marketing</a></li>
+            <li><a href="#">Graphic Design</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Hic solutasetp</h4>
+          <ul>
+            <li><a href="#">Molestiae accusamus iure</a></li>
+            <li><a href="#">Excepturi dignissimos</a></li>
+            <li><a href="#">Suscipit distinctio</a></li>
+            <li><a href="#">Dilecta</a></li>
+            <li><a href="#">Sit quas consectetur</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Nobis illum</h4>
+          <ul>
+            <li><a href="#">Ipsam</a></li>
+            <li><a href="#">Laudantium dolorum</a></li>
+            <li><a href="#">Dinera</a></li>
+            <li><a href="#">Trodelas</a></li>
+            <li><a href="#">Flexo</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">Naseri.Dev-Simple-Blog</strong> <span>All Rights
+          Reserved</span></p>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you've purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a
+          href="https://themewagon.com">ThemeWagon
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
