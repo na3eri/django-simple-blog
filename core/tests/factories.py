@@ -13,6 +13,8 @@ from django.db.models.signals import post_save
 from django.utils import timezone
 from taggit.models import Tag
 
+from tests.cms.cms_test_app.models import TestServiceModel
+
 
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -214,3 +216,14 @@ class TagFactory(factory.django.DjangoModelFactory):
     article = factory.SubFactory(ArticleFactory)
 
     name = factory.Sequence(lambda n: f"test {n}")
+
+
+@factory.django.mute_signals(post_save)
+class TestServiceModelFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = TestServiceModel
+
+    page = factory.SubFactory(PageFactory)
+    title = factory.Sequence(
+        lambda n: f"test {n}",
+    )
