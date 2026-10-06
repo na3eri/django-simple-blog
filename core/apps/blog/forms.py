@@ -1,4 +1,4 @@
-from apps.blog.models import Comment
+from apps.blog.models import Comment, Message
 from django.forms import (
     EmailInput,
     HiddenInput,
@@ -6,6 +6,7 @@ from django.forms import (
     ModelForm,
     Textarea,
     TextInput,
+    Select,
 )
 
 
@@ -48,3 +49,54 @@ class CommentForm(ModelForm):
 
             self.fields["name"].initial = user_data["full_name"]
             self.fields["email"].initial = user_data["email"]
+
+
+class MessageForm(ModelForm):
+    profile_id = IntegerField(required=False, widget=HiddenInput())
+    parent_id = IntegerField(required=False, widget=HiddenInput())
+
+    class Meta:
+        model = Message
+        fields = [
+            "name",
+            "email",
+            "subject",
+            "topic",
+            "body",
+        ]
+        widgets = {
+            "name": TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Your Name",
+                    "required": True,
+                }
+            ),
+            "email": EmailInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Your Email",
+                    "required": True,
+                }
+            ),
+            "subject": TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Subject",
+                    "required": True,
+                }
+            ),
+            "topic": Select(
+                attrs={
+                    "class": "form-control",
+                }
+            ),
+            "body": Textarea(
+                attrs={
+                    "class": "form-control",
+                    "rows": 6,
+                    "placeholder": "Write your message...",
+                    "required": True,
+                }
+            ),
+        }

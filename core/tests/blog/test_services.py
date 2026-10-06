@@ -1,13 +1,10 @@
-from random import randint
-
-import factory
-import pytest
-from apps.blog.forms import CommentForm
-from apps.blog.models import Article, Comment
+from apps.blog.forms import CommentForm, MessageForm
+from apps.blog.models import Article, Comment, Message
 from apps.blog.services.aboutpage_service import AboutPageService
 from apps.blog.services.article_service import ArticleService
 from apps.blog.services.articles_list_service import ArticleListPageService
 from apps.blog.services.contact_service import ContactPageService
+from apps.blog.services.message_service import MessageService
 from apps.blog.services.homepage_service import (
     Component,
     ComponentA,
@@ -23,6 +20,12 @@ from apps.cms.models import (
 )
 from django.core.paginator import Page as DjangoPage
 from django.http.response import Http404
+
+
+from random import randint
+
+import factory
+import pytest
 
 pytestmark = pytest.mark.django_db
 
@@ -618,3 +621,229 @@ class TestHomePageService:
             home_page_cat_two.component_type: ComponentB(cat_two.name).build(),
             home_page_cat_three.component_type: ComponentC(cat_three.name).build(),
         }
+
+
+class TestMessageService:
+    def test_init_object_variables(self):
+        service = MessageService()
+
+        assert service.model == Message
+        assert service.form == MessageForm
+
+    def test_build_form_method(self):
+        service = MessageService()
+
+        assert isinstance(service.build_form(), MessageForm)
+
+    def test_build_form_authenticated_user(
+        self,
+        profile_factory,
+    ):
+        profile = profile_factory()
+        user = profile.user
+
+        post_data = {
+            "name": "fake name",
+            "email": "fake@example.com",
+            "subject": "test subject",
+            "topic": Message.TopicChoices.FEEDBACK,
+            "body": "test body",
+        }
+
+        service = MessageService()
+        form = service.build_form(
+            post_data=post_data,
+            user=user,
+        )
+
+        assert form.data["name"] == user.profile.full_name
+        assert form.data["email"] == user.email
+
+    def test_send_message_invalid_form(self):
+        service = MessageService()
+
+        post_data = {
+            "name": "",
+            "email": "",
+            "subject": "",
+            "topic": "",
+            "body": "",
+        }
+
+        result = service.send_message(post_data=post_data)
+
+        assert result["status"] is False
+        assert isinstance(result["form"], MessageForm)
+        assert result["detail"] == "Form is invalid"
+
+    def test_send_message_method(self):
+        service = MessageService()
+
+        post_data = {
+            "name": "test name",
+            "email": "test@example.com",
+            "subject": "test subject",
+            "topic": Message.TopicChoices.FEEDBACK,
+            "body": "test body",
+        }
+
+        result = service.send_message(post_data=post_data)
+
+        assert result["status"] is True
+        assert result["detail"] == "Message was sent"
+
+        message = Message.objects.first()
+
+        assert message.name == "test name"
+        assert message.email == "test@example.com"
+        assert message.subject == "test subject"
+        assert message.topic == Message.TopicChoices.FEEDBACK
+        assert message.body == "test body"
+
+    def test_send_message_with_profile(
+        self,
+        profile_factory,
+    ):
+        profile = profile_factory()
+
+        post_data = {
+            "name": "test name",
+            "email": "test@example.com",
+            "subject": "test subject",
+            "topic": Message.TopicChoices.FEEDBACK,
+            "body": "test body",
+            "profile_id": profile.id,
+        }
+
+        service = MessageService()
+        result = service.send_message(post_data=post_data)
+
+        assert result["status"] is True
+
+        message = Message.objects.first()
+
+        assert message.user_profile == profile
+
+    def test_send_message_with_parent(
+        self,
+        message_factory,
+    ):
+        parent_message = message_factory()
+
+        post_data = {
+            "name": "test name",
+            "email": "test@example.com",
+            "subject": "test subject",
+            "topic": Message.TopicChoices.FEEDBACK,
+            "body": "test body",
+            "parent_id": parent_message.id,
+        }
+
+        service = MessageService()
+        result = service.send_message(post_data=post_data)
+
+        assert result["status"] is True
+
+        message = Message.objects.exclude(id=parent_message.id).first()
+
+        assert message.parent == parent_message
+
+    def test_send_message_with_profile_and_parent(
+        self,
+        profile_factory,
+        message_factory,
+    ):
+        profile = profile_factory()
+        parent_message = message_factory()
+
+        post_data = {
+            "name": "test name",
+            "email": "test@example.com",
+            "subject": "test subject",
+            "topic": Message.TopicChoices.FEEDBACK,
+            "body": "test body",
+            "profile_id": profile.id,
+            "parent_id": parent_message.id,
+        }
+
+        service = MessageService()
+        result = service.send_message(post_data=post_data)
+
+        assert result["status"] is True
+
+        message = Message.objects.exclude(id=parent_message.id).first()
+
+        assert message.user_profile == profile
+        assert message.parent == parent_message
+
+    def test_send_message_with_nonexistent_profile(
+        self,
+    ):
+        service = MessageService()
+
+        post_data = {
+            "name": "test name",
+            "email": "test@example.com",
+            "subject": "test subject",
+            "topic": Message.TopicChoices.FEEDBACK,
+            "body": "test body",
+            "profile_id": 999,
+        }
+
+        result = service.send_message(post_data=post_data)
+
+        assert result["status"] is True
+
+        message = Message.objects.first()
+
+        assert message.user_profile is None
+
+    def test_send_message_with_nonexistent_parent(
+        self,
+    ):
+        service = MessageService()
+
+        post_data = {
+            "name": "test name",
+            "email": "test@example.com",
+            "subject": "test subject",
+            "topic": Message.TopicChoices.FEEDBACK,
+            "body": "test body",
+            "parent_id": 999,
+        }
+
+        result = service.send_message(post_data=post_data)
+
+        assert result["status"] is True
+
+        message = Message.objects.first()
+
+        assert message.parent is None
+
+    def test_send_message_authenticated_user(
+        self,
+        profile_factory,
+    ):
+        profile = profile_factory()
+        user = profile.user
+
+        post_data = {
+            "name": "fake name",
+            "email": "fake@example.com",
+            "subject": "test subject",
+            "topic": Message.TopicChoices.FEEDBACK,
+            "body": "test body",
+        }
+
+        service = MessageService()
+        result = service.send_message(
+            post_data=post_data,
+            user=user,
+        )
+
+        assert result["status"] is True
+
+        message = Message.objects.first()
+
+        assert message.name == user.profile.full_name
+        assert message.email == user.email
