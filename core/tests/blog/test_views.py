@@ -189,3 +189,67 @@ class TestArticleListView:
         response = client.get(url)
 
         assert response.status_code == 200
+
+
+class TestContactView:
+    def test_contact_view_url(self, client, contact_page_data_factory):
+        contact_data = contact_page_data_factory()
+        url = reverse("contact")
+        response = client.get(url)
+
+        assert response.status_code == 200
+
+    def test_contact_view_post_method(
+        self,
+        client,
+        contact_page_data_factory,
+        message_factory,
+    ):
+        contact_data = contact_page_data_factory()
+        url = reverse("contact")
+
+        post_data = {
+            "name": "test name",
+            "email": "test@example.com",
+            "subject": "test subject",
+            "topic": "feedback",
+            "body": "test body",
+        }
+
+        response = client.post(url, data=post_data)
+
+        assert response.status_code == 302
+        assert response.url == url
+
+        message = message_factory._meta.model.objects.first()
+
+        assert message.name == "test name"
+        assert message.email == "test@example.com"
+        assert message.subject == "test subject"
+        assert message.topic == "feedback"
+        assert message.body == "test body"
+
+    def test_contact_view_post_method_invalid(
+        self,
+        client,
+        contact_page_data_factory,
+    ):
+        contact_data = contact_page_data_factory()
+        url = reverse("contact")
+
+        post_data = {
+            "name": "",
+            "email": "",
+            "subject": "",
+            "topic": "",
+            "body": "",
+        }
+
+        response = client.post(url, data=post_data)
+
+        assert response.status_code == 200
+        assert "form" in response.context
+
+        form = response.context["form"]
+
+        assert not form.is_valid()

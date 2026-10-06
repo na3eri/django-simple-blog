@@ -1,12 +1,12 @@
-from apps.blog.forms import CommentForm
-from apps.blog.models import Article
+from django.contrib import messages
+
 from apps.blog.services.aboutpage_service import AboutPageService
 from apps.blog.services.article_service import ArticleService
 from apps.blog.services.articles_list_service import ArticleListPageService
 from apps.blog.services.contact_service import ContactPageService
 from apps.blog.services.homepage_service import HomePageService
-from apps.cms.models import HomePageCategory, HomePageSlider
-from django.shortcuts import get_object_or_404, redirect, render
+from apps.blog.services.message_service import MessageService
+from django.shortcuts import redirect, render
 
 
 # Create your views here.
@@ -34,9 +34,25 @@ def about_view(request):
 
 def contact_view(request):
     service = ContactPageService()
+    message_service = MessageService()
+    form = message_service.build_form()
+
+    if request.method == "POST":
+        result = message_service.send_message(
+            post_data=request.POST,
+            user=request.user,
+        )
+
+        if result["status"]:
+            messages.success(request, result["detail"])
+            return redirect("contact")
+
+        messages.error(request, result["detail"])
+        form = result["form"]
 
     context = {
         "contact_data": service.build_data(),
+        "form": form,
     }
     return render(request, "blog/contact.html", context)
 
