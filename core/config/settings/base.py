@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "apps.teammember_profile.apps.TeammemberProfileConfig",
     "apps.users.apps.UsersConfig",
     "apps.blog.apps.BlogConfig",
     "apps.cms.apps.CmsConfig",
