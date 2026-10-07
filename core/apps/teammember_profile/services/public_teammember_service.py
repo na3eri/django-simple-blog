@@ -24,9 +24,12 @@ class PublicTeamMemberService:
     def get_context(self, view_context) -> dict:
         return {
             "profile_instance": self.user_profile,
-            "total_views": Article.objects.published()
-            .filter(user_profile=self.user_profile)
-            .aggregate(Sum("views"))["views__sum"]
+            "total_views": int(
+                Article.objects.published()
+                .filter(user_profile=self.user_profile)
+                .aggregate(Sum("views"))["views__sum"]
+                / 1000
+            )
             or 0,
             "total_comments": Comment.objects.approved()
             .filter(article__user_profile=self.user_profile)
