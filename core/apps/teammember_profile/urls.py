@@ -5,6 +5,7 @@ from apps.teammember_profile.views import (
     MessageView,
     ProfileDashboardView,
     ProfileArticlesListView,
+    ProfileCreateArticleView,
 )
 
 urlpatterns = [
@@ -23,5 +24,10 @@ urlpatterns = [
         "profile/<int:pk>/articles/<str:status>/",
         ProfileArticlesListView.as_view(),
         name="profile-articles",
+    ),
+    path(
+        "profile/<int:pk>/create-article/",
+        ProfileCreateArticleView.as_view(),
+        name="profile-create-article",
     ),
 ]

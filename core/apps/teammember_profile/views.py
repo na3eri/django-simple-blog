@@ -6,9 +6,12 @@ from django.http import Http404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, TemplateView
 
-from apps.blog.forms import MessageForm
+from apps.blog.forms import MessageForm, ArticleForm
 from apps.blog.models import Article, Message
 from apps.teammember_profile.services.message_page_service import MessagePageService
+from apps.teammember_profile.services.profile_article_service import (
+    ProfileCreateArticleService,
+)
 from apps.teammember_profile.services.profile_articles_list_view_service import (
     ProfileArticlesListService,
 )
@@ -106,7 +109,7 @@ class ProfileDashboardView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class ProfileArticlesListView(ListView):
+class ProfileArticlesListView(LoginRequiredMixin, ListView):
     model = Article
     paginate_by = 6
     template_name = "teammember_profile/user-profile-articles.html"
@@ -132,3 +135,43 @@ class ProfileArticlesListView(ListView):
         context = super().get_context_data(**kwargs)
         context.update(self.service.get_context(view_context=context))
         return context
+
+
+class ProfileCreateArticleView(LoginRequiredMixin, CreateView):
+    model = Article
+    form_class = ArticleForm
+    template_name = "teammember_profile/user-profile-create-article.html"
+
+    def get_success_url(self):
+        if self.service.article.status != "draft":
+            print("TOUCHED", self.service.article.status)
+            return self.service.article.get_absolute_url()
+        return reverse_lazy(
+            "profile-articles", kwargs={"pk": self.kwargs["pk"], "status": "all"}
+        )
+
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+        self.service = ProfileCreateArticleService(
+            profile_id=self.kwargs["pk"],
+        )
+        if self.service.user_profile is None:
+            raise Http404
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context.update(self.service.get_context(view_context=context))
+        return context
+
+    def form_valid(self, form):
+        article = form.save(commit=False)
+        article.user_profile = self.service.user_profile
+        article.save()
+
+        form.save_m2m()
+
+        self.service.set_article(article)
+
+        print("STATUS ->", article.status)
+
+        return super().form_valid(form)

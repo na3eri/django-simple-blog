@@ -128,7 +128,7 @@ class Article(models.Model):
     objects = ArticleQuerySet.as_manager()
 
     class Meta:
-        ordering = ("-published_at",)
+        ordering = ("-published_at", "-created_at")
 
     def save(self, *args, **kwargs):
         base_slug = slugify(self.title)
