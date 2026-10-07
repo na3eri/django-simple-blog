@@ -9,6 +9,9 @@ from django.views.generic import ListView, CreateView, TemplateView
 from apps.blog.forms import MessageForm
 from apps.blog.models import Article, Message
 from apps.teammember_profile.services.message_page_service import MessagePageService
+from apps.teammember_profile.services.profile_articles_list_view_service import (
+    ProfileArticlesListService,
+)
 from apps.teammember_profile.services.profile_dashboard_service import (
     ProfileDashboardService,
 )
@@ -96,6 +99,34 @@ class ProfileDashboardView(LoginRequiredMixin, TemplateView):
         self.service = ProfileDashboardService(self.kwargs["pk"])
         if self.service.user_profile is None:
             raise Http404
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context.update(self.service.get_context(view_context=context))
+        return context
+
+
+class ProfileArticlesListView(ListView):
+    model = Article
+    paginate_by = 6
+    template_name = "teammember_profile/user-profile-articles.html"
+    context_object_name = "articles"
+
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+        self.service = ProfileArticlesListService(
+            profile_id=self.kwargs["pk"],
+            status=self.kwargs["status"],
+            search_query=self.request.GET.get("q"),
+        )
+        if self.service.user_profile is None:
+            raise Http404
+
+        if self.service.status is None:
+            raise Http404
+
+    def get_queryset(self):
+        return self.service.get_articles()
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)

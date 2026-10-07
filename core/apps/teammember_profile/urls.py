@@ -4,6 +4,7 @@ from apps.teammember_profile.views import (
     TeamMemberPublicView,
     MessageView,
     ProfileDashboardView,
+    ProfileArticlesListView,
 )
 
 urlpatterns = [
@@ -17,5 +18,10 @@ urlpatterns = [
         "profile/<int:pk>/dashboard/",
         ProfileDashboardView.as_view(),
         name="profile-dashboard",
+    ),
+    path(
+        "profile/<int:pk>/articles/<str:status>/",
+        ProfileArticlesListView.as_view(),
+        name="profile-articles",
     ),
 ]
