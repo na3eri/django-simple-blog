@@ -167,3 +167,5 @@ EMAIL_HOST_PASSWORD = os.environ.get("DJANGO_EMAIL_HOST_PASSWORD")
 MESSAGE_TAGS = {
     messages.ERROR: "danger",
 }
+
+LOGIN_URL = "signin"
