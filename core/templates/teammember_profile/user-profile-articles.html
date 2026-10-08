@@ -80,7 +80,7 @@
                                     <strong>{{ total_articles }}</strong> in
                                     total.</p>
                             </div>
-                            <a href="user-profile-create-article.html" class="btn btn-primary"><i
+                            <a href="{% url 'profile-create-article' %}" class="btn btn-primary"><i
                                     class="bi bi-plus-lg me-1"></i>Create New Article</a>
                         </div>
 
@@ -91,22 +91,22 @@
                                     <div class="col-md-7">
                                         <ul class="nav nav-pills gap-2">
                                             <li class="nav-item"><a
-                                                    href="{% url 'profile-articles' pk=profile_instance.id status='all' %}"
+                                                    href="{% url 'profile-articles' status='all' %}"
                                                     class="nav-link {% if status == 'all' %} active {% endif %}">All
                                                 ({{ total_articles }})</a></li>
                                             <li class="nav-item"><a
-                                                    href="{% url 'profile-articles' pk=profile_instance.id status='published' %}"
+                                                    href="{% url 'profile-articles' status='published' %}"
                                                     class="nav-link {% if status == 'published' %} active {% endif %}">Published
                                                 ({{ total_published_articles }})</a></li>
                                             <li class="nav-item"><a
-                                                    href="{% url 'profile-articles' pk=profile_instance.id status='draft' %}"
+                                                    href="{% url 'profile-articles' status='draft' %}"
                                                     class="nav-link {% if status == 'draft' %} active {% endif %}">Drafts
                                                 ({{ total_draft_articles }})</a></li>
                                         </ul>
                                     </div>
                                     <div class="col-md-5">
                                         <div class="search-widget mb-0">
-                                            <form action="{% url 'profile-articles' pk=profile_instance.id status=status %}" id="searchForm">
+                                            <form action="{% url 'profile-articles' status=status %}" id="searchForm">
                                                 <input type="text" id="searchInput" placeholder="Search my articles...">
                                                 <button type="submit" title="Search"><i class="bi bi-search"></i>
                                                 </button>
@@ -158,11 +158,18 @@
                                                     <a href="{{ article.get_absolute_url }}"
                                                        class="btn btn-sm btn-outline-secondary"
                                                        title="View"><i class="bi bi-eye"></i></a>
-                                                    <a href="user-profile-create-article.html"
+                                                    <a href="{% url 'profile-update-article' pk=article.id %}"
                                                        class="btn btn-sm btn-outline-primary" title="Edit"><i
                                                             class="bi bi-pencil"></i></a>
-                                                    <a href="#" class="btn btn-sm btn-outline-danger" title="Delete"><i
-                                                            class="bi bi-trash"></i></a>
+                                                    <form action="{% url 'profile-articles' status=status %}"
+                                                          method="post"
+                                                          class="d-inline">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" value="{{ article.id }}" name="article_id">
+                                                        <button class="btn btn-sm btn-outline-danger"
+                                                                name="action" value="delete" title="Delete"><i
+                                                                class="bi bi-trash"></i></button>
+                                                    </form>
                                                 </td>
                                             </tr>
 

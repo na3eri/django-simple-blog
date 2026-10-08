@@ -6,28 +6,51 @@ from apps.teammember_profile.views import (
     ProfileDashboardView,
     ProfileArticlesListView,
     ProfileCreateArticleView,
+    ProfileUpdateArticleView,
+    ProfileCommentsView,
 )
 
+
 urlpatterns = [
-    path("team-member/<int:pk>/", TeamMemberPublicView.as_view(), name="teammember"),
+    # -----------------------------------------------------
+    # Public Team Member
+    # -----------------------------------------------------
+    path(
+        "team-member/<int:pk>/",
+        TeamMemberPublicView.as_view(),
+        name="teammember",
+    ),
     path(
         "team-member/<int:pk>/send-message/",
         MessageView.as_view(),
         name="teammember-send-message",
     ),
+    # -----------------------------------------------------
+    # Private Profile
+    # -----------------------------------------------------
     path(
-        "profile/<int:pk>/dashboard/",
+        "profile/dashboard/",
         ProfileDashboardView.as_view(),
         name="profile-dashboard",
     ),
     path(
-        "profile/<int:pk>/articles/<str:status>/",
+        "profile/articles/<str:status>/",
         ProfileArticlesListView.as_view(),
         name="profile-articles",
     ),
     path(
-        "profile/<int:pk>/create-article/",
+        "profile/create-article/",
         ProfileCreateArticleView.as_view(),
         name="profile-create-article",
+    ),
+    path(
+        "profile/edit-article/<int:pk>/",
+        ProfileUpdateArticleView.as_view(),
+        name="profile-update-article",
+    ),
+    path(
+        "profile/comments/<str:status>/",
+        ProfileCommentsView.as_view(),
+        name="profile-comments",
     ),
 ]

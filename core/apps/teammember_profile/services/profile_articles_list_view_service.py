@@ -1,23 +1,16 @@
 from django.db.models.query_utils import Q
+from django.utils import timezone
 
 from apps.blog.models import Article
-from apps.users.models import Profile
 
 
 class ProfileArticlesListService:
-    def __init__(self, profile_id, status, search_query=None):
-        self.user_profile = self.get_profile(profile_id)
+    def __init__(self, user, status, search_query=None):
+        self.user = user
+        self.user_profile = user.profile
         self.status = self.set_status(status)
         self.article_model = Article
         self.search_query = search_query
-
-    @staticmethod
-    def get_profile(profile_id):
-        try:
-            profile = Profile.objects.get(pk=profile_id)
-        except Profile.DoesNotExist:
-            profile = None
-        return profile
 
     @staticmethod
     def set_status(status: str):
@@ -57,22 +50,28 @@ class ProfileArticlesListService:
 
         if self.status == "published":
             articles = self.article_model.objects.published().filter(
-                user_profile=self.user_profile
+                user_profile=self.user_profile,
+                is_deleted=False,
             )
 
         if self.status == "draft":
             articles = self.article_model.objects.filter(
-                Q(user_profile=self.user_profile)
-                & Q(status=Article.StatusChoices.DRAFT)
+                user_profile=self.user_profile,
+                status=Article.StatusChoices.DRAFT,
+                is_deleted=False,
             )
 
         if self.status == "all":
-            articles = self.article_model.objects.filter(user_profile=self.user_profile)
+            articles = self.article_model.objects.filter(
+                user_profile=self.user_profile,
+                is_deleted=False,
+            )
 
         if self.search_query:
             articles = articles.filter(
-                Q(title__icontains=self.search_query)
-                | Q(excerpt__icontains=self.search_query)
+                title__icontains=self.search_query,
+                excerpt__icontains=self.search_query,
+                is_deleted=False,
             )
 
         return articles
@@ -91,3 +90,26 @@ class ProfileArticlesListService:
             ),
         }
         return context
+
+    def delete_article(self, article_id):
+        try:
+            article = self.article_model.objects.get(
+                id=article_id,
+                user_profile=self.user_profile,
+            )
+        except self.article_model.DoesNotExist:
+            return False
+
+        if article.is_deleted:
+            return True
+
+        article.is_deleted = True
+        article.deleted_at = timezone.now()
+        article.save(
+            update_fields=[
+                "is_deleted",
+                "deleted_at",
+            ],
+        )
+
+        return True

@@ -92,7 +92,7 @@
                         <div class="card border-0 shadow-sm">
                             <div class="card-body p-4 p-lg-5">
                                 <form method="post"
-                                      action="{% url 'profile-create-article' pk=profile_instance.id %}"
+                                      action="{% url 'profile-create-article' %}"
                                       enctype="multipart/form-data"
                                       class="article-form php-email-form">
 
@@ -339,7 +339,7 @@
                                                 Submit Article
                                             </button>
 
-                                            <a href="{% url 'profile-articles' pk=profile_instance.id status='all' %}"
+                                            <a href="{% url 'profile-articles' status='all' %}"
                                                class="btn btn-link text-decoration-none">
                                                 Cancel
                                             </a>

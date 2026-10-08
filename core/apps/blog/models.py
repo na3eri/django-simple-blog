@@ -229,5 +229,8 @@ class Message(models.Model):
 
     objects = MessageQuerySet.as_manager()
 
+    class Meta:
+        ordering = ("-created_at",)
+
     def __str__(self):
         return self.name
