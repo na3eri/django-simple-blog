@@ -128,7 +128,7 @@ class Article(models.Model):
     objects = ArticleQuerySet.as_manager()
 
     class Meta:
-        ordering = ("-published_at",)
+        ordering = ("-published_at", "-created_at")
 
     def save(self, *args, **kwargs):
         base_slug = slugify(self.title)
@@ -228,6 +228,9 @@ class Message(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     objects = MessageQuerySet.as_manager()
+
+    class Meta:
+        ordering = ("-created_at",)
 
     def __str__(self):
         return self.name

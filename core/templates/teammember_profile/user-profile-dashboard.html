@@ -1,527 +1,278 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Dashboard - Naseri.Dev-Simple-Blog Bootstrap Template</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+{% load static %}
+{% block title %}Profile Dashboard{% endblock title %}
+{% block page_name %}Profile Dashboard{% endblock page_name %}
+{% block page_name_crumbs %}Profile Dashboard{% endblock page_name_crumbs %}
 
-  <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+{% block extra_head %}
+    <style>
+        .profile-menu .list-group-item {
+            border: 0;
+            padding: 12px 16px;
+            color: var(--default-color);
+            font-family: var(--nav-font);
+            font-size: 14px;
+            background: transparent;
+        }
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap"
-    rel="stylesheet">
+        .profile-menu .list-group-item i {
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
 
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+        .profile-menu .list-group-item:hover,
+        .profile-menu .list-group-item.active {
+            background: color-mix(in srgb, var(--accent-color), transparent 92%);
+            color: var(--accent-color);
+            font-weight: 600;
+        }
 
-  <!-- Main CSS File -->
-  <link href="assets/css/main.css" rel="stylesheet">
+        .profile-menu .list-group-item.active {
+            border-left: 3px solid var(--accent-color);
+        }
 
-  <style>
-    .profile-menu .list-group-item {
-      border: 0;
-      padding: 12px 16px;
-      color: var(--default-color);
-      font-family: var(--nav-font);
-      font-size: 14px;
-      background: transparent;
-    }
+        .stat-card {
+            background-color: var(--surface-color);
+            border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+            border-radius: 5px;
+            padding: 24px;
+            height: 100%;
+            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.06);
+        }
 
-    .profile-menu .list-group-item i {
-      margin-right: 10px;
-      color: var(--accent-color);
-    }
+        .stat-card .stat-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: color-mix(in srgb, var(--accent-color), transparent 88%);
+            color: var(--accent-color);
+            font-size: 22px;
+            margin-bottom: 14px;
+        }
 
-    .profile-menu .list-group-item:hover,
-    .profile-menu .list-group-item.active {
-      background: color-mix(in srgb, var(--accent-color), transparent 92%);
-      color: var(--accent-color);
-      font-weight: 600;
-    }
+        .stat-card h3 {
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
 
-    .profile-menu .list-group-item.active {
-      border-left: 3px solid var(--accent-color);
-    }
+        .stat-card p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: color-mix(in srgb, var(--default-color), transparent 40%);
+        }
 
-    .stat-card {
-      background-color: var(--surface-color);
-      border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
-      border-radius: 5px;
-      padding: 24px;
-      height: 100%;
-      box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.06);
-    }
+        .profile-table th {
+            font-family: var(--nav-font);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+            color: color-mix(in srgb, var(--default-color), transparent 40%);
+            border-bottom: 2px solid color-mix(in srgb, var(--default-color), transparent 85%);
+        }
 
-    .stat-card .stat-icon {
-      width: 48px;
-      height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 8px;
-      background: color-mix(in srgb, var(--accent-color), transparent 88%);
-      color: var(--accent-color);
-      font-size: 22px;
-      margin-bottom: 14px;
-    }
+        .profile-table td {
+            vertical-align: middle;
+            font-size: 14px;
+        }
 
-    .stat-card h3 {
-      font-size: 30px;
-      font-weight: 700;
-      margin-bottom: 2px;
-    }
+        .profile-table .thumb {
+            width: 64px;
+            border-radius: 4px;
+            margin-right: 12px;
+        }
+    </style>
+{% endblock extra_head %}
 
-    .stat-card p {
-      margin-bottom: 0;
-      font-size: 14px;
-      color: color-mix(in srgb, var(--default-color), transparent 40%);
-    }
-
-    .profile-table th {
-      font-family: var(--nav-font);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.05rem;
-      color: color-mix(in srgb, var(--default-color), transparent 40%);
-      border-bottom: 2px solid color-mix(in srgb, var(--default-color), transparent 85%);
-    }
-
-    .profile-table td {
-      vertical-align: middle;
-      font-size: 14px;
-    }
-
-    .profile-table .thumb {
-      width: 64px;
-      border-radius: 4px;
-      margin-right: 12px;
-    }
-  </style>
-
-  <!-- =======================================================
-  * Template Name: Naseri.Dev-Simple-Blog
-  * Template URL: https://bootstrapmade.com/Naseri.Dev-Simple-Blog-bootstrap-blog-template/
-  * Updated: Aug 08 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
-</head>
-
-<body class="user-profile-dashboard-page">
-
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container position-relative d-flex align-items-center justify-content-between">
-
-      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <!-- <img src="assets/img/logo.png" alt=""> -->
-        <h1 class="sitename">Naseri.Dev-Simple-Blog</h1>
-      </a>
-
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="single-post.html">Single Post</a></li>
-          <li class="dropdown"><a href="#"><span>Categories</span> <i
-                class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="category.html">Category 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i
-                    class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="#">Deep Dropdown 1</a></li>
-                  <li><a href="#">Deep Dropdown 2</a></li>
-                  <li><a href="#">Deep Dropdown 3</a></li>
-                  <li><a href="#">Deep Dropdown 4</a></li>
-                  <li><a href="#">Deep Dropdown 5</a></li>
-                </ul>
-              </li>
-              <li><a href="category.html">Category 2</a></li>
-              <li><a href="category.html">Category 3</a></li>
-              <li><a href="category.html">Category 4</a></li>
-            </ul>
-          </li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-
-      <div class="header-social-links">
-        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-      </div>
-
-    </div>
-  </header>
-
-  <main class="main">
-
-    <!-- Page Title -->
-    <div class="page-title">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0">Dashboard</h1>
-        <nav class="breadcrumbs">
-          <ol>
-            <li><a href="index.html">Home</a></li>
-            <li class="current">Dashboard</li>
-          </ol>
-        </nav>
-      </div>
-    </div><!-- End Page Title -->
+{% block content %}
 
     <!-- Profile Dashboard Section -->
     <section id="profile-dashboard" class="profile-dashboard section">
-      <div class="container">
-        <div class="row gy-4">
+        <div class="container">
+            <div class="row gy-4">
 
-          <!-- Profile Sidebar -->
-          <div class="col-lg-3">
-            <div class="widgets-container mt-0" data-aos="fade-up">
+                {% include 'teammember_profile/components/private_sidebar.html' %}
 
-              <div class="blog-author-widget-2 widget-item">
-                <div class="d-flex flex-column align-items-center">
-                  <img src="assets/img/blog/blog-author.jpg" class="rounded-circle flex-shrink-0" alt="Team member photo">
-                  <h4>Jane Smith</h4>
-                  <p class="mb-1">Content Editor</p>
-                  <div class="social-links">
-                    <a href="https://x.com/#"><i class="bi bi-twitter-x"></i></a>
-                    <a href="https://facebook.com/#"><i class="bi bi-facebook"></i></a>
-                    <a href="https://instagram.com/#"><i class="bi bi-instagram"></i></a>
-                    <a href="https://linkedin.com/#"><i class="bi bi-linkedin"></i></a>
-                  </div>
-                  <a href="user-profile-edit.html" class="btn btn-outline-secondary btn-sm mt-3"><i class="bi bi-pencil me-1"></i>Edit Profile</a>
-                </div>
-              </div><!--/Author Widget -->
+                <!-- Dashboard Content -->
+                <div class="col-lg-9">
+                    <div data-aos="fade-up" data-aos-delay="100">
 
-              <div class="widget-item">
-                <h3 class="widget-title">My Menu</h3>
-                <div class="list-group list-group-flush profile-menu">
-                  <a href="user-profile-dashboard.html" class="list-group-item list-group-item-action active"><i class="bi bi-speedometer2"></i>Dashboard</a>
-                  <a href="user-profile-articles.html" class="list-group-item list-group-item-action"><i class="bi bi-file-earmark-text"></i>My Articles</a>
-                  <a href="user-profile-create-article.html" class="list-group-item list-group-item-action"><i class="bi bi-plus-circle"></i>Create Article</a>
-                  <a href="user-profile-articles-comments.html" class="list-group-item list-group-item-action"><i class="bi bi-chat-dots"></i>Comments</a>
-                  <a href="user-profile-articles-messages.html" class="list-group-item list-group-item-action"><i class="bi bi-envelope"></i>Messages<span class="badge text-bg-danger rounded-pill ms-2">3</span></a>
-                  <a href="user-profile-edit.html" class="list-group-item list-group-item-action"><i class="bi bi-gear"></i>Profile Settings</a>
-                  <a href="login.html" class="list-group-item list-group-item-action"><i class="bi bi-box-arrow-right"></i>Logout</a>
-                </div>
-              </div>
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
+                            <div>
+                                <h2 class="mb-1">Welcome back, {{ profile_instance.full_name|title }}</h2>
+                                <p class="text-muted mb-0">Here is an overview of your publishing activity.</p>
+                            </div>
+                            <a href="{% url 'profile-create-article' %}" class="btn btn-primary"><i
+                                    class="bi bi-plus-lg me-1"></i>New Article</a>
+                        </div>
+
+                        <!-- Stats -->
+                        <div class="row gy-4 mb-4">
+                            <div class="col-md-6 col-xl-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="bi bi-file-earmark-text"></i></div>
+                                    <h3>{{ total_articles }}</h3>
+                                    <p>Total Articles</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="bi bi-chat-dots"></i></div>
+                                    <h3>{{ total_comments }}</h3>
+                                    {% if total_pending_comments %}
+                                        <p>Total Comments <span
+                                                class="badge text-bg-warning ms-1">{{ total_pending_comments }} pending</span>
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="bi bi-envelope"></i></div>
+                                    <h3>{{ total_messages }}</h3>
+                                    {% if total_unread_messages %}
+                                        <p>Messages <span class="badge text-bg-danger ms-1">{{ total_unread_messages }} unread</span>
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="bi bi-eye"></i></div>
+                                    <h3>{{ total_views }}k</h3>
+                                    <p>Total Article Views</p>
+                                </div>
+                            </div>
+                        </div><!-- End Stats -->
+
+                        <!-- Recent Articles -->
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <h3 class="card-title mb-0">Recent Articles</h3>
+                                    <a href="user-profile-articles.html" class="btn btn-sm btn-outline-secondary">View
+                                        All</a>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table profile-table align-middle mb-0">
+                                        <thead>
+                                        <tr>
+                                            <th>Article</th>
+                                            <th>Category</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th class="text-end">Views</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for article in recent_articles %}
+
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="{{ article.image.url }}" class="thumb" alt="">
+                                                        <a href="{{ article.get_absolute_url }}" class="fw-semibold">
+                                                            {{ article.title }}
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                                <td>{{ article.category.name|title }}</td>
+                                                <td>{{ article.created_at|date:"M d, Y" }}</td>
+                                                <td><span
+                                                        class="badge text-bg-success">{{ article.status|upper }}</span>
+                                                </td>
+                                                <td class="text-end">{{ article.views }}</td>
+                                            </tr>
+
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div><!-- End Recent Articles -->
+
+                        <div class="row gy-4">
+                            <!-- Latest Comments -->
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                            <h3 class="card-title mb-0">Latest Comments</h3>
+                                            <a href="user-profile-articles-comments.html"
+                                               class="btn btn-sm btn-outline-secondary">Manage</a>
+                                        </div>
+                                        {% for comment in latest_comments %}
+
+                                            <div class="d-flex gap-3 border-bottom pb-3 mb-3">
+                                                {% if comment.user_profile %}
+                                                    <img src="{{ comment.user_profile.image.url }}"
+                                                         class="rounded-circle flex-shrink-0"
+                                                         width="48" height="48" alt="">
+                                                {% else %}
+                                                    <img src="assets/img/blog/comments-1.jpg"
+                                                         class="rounded-circle flex-shrink-0"
+                                                         width="48" alt="">
+                                                {% endif %}
+
+                                                <div>
+                                                    <p class="mb-1"><strong>Georgia Reader</strong> <span
+                                                            class="text-muted">on</span> <a href="single-post.html">
+                                                        {{ comment.name }}
+                                                    </a></p>
+                                                    <p class="text-muted small mb-1">
+                                                        {{ comment.body|truncatechars:30 }}
+                                                    </p>
+                                                    <small class="text-muted"><i
+                                                            class="bi bi-clock me-1"></i>{{ comment.created_at|timesince }}
+                                                    </small>
+                                                </div>
+                                            </div>
+
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Latest Messages -->
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                            <h3 class="card-title mb-0">Latest Messages</h3>
+                                            <a href="user-profile-articles-messages.html"
+                                               class="btn btn-sm btn-outline-secondary">Inbox</a>
+                                        </div>
+                                        <div class="list-group list-group-flush">
+                                            {% for message in latest_messages %}
+
+                                                <a href="user-profile-articles-messages.html"
+                                                   class="list-group-item px-0">
+                                                    <div class="d-flex w-100 justify-content-between">
+                                                        <h6 class="mb-1">{{ message.name }} <span
+                                                                class="badge text-bg-danger ms-1">New</span></h6>
+                                                        <small class="text-muted">{{ message.created_at|timesince }}</small>
+                                                    </div>
+                                                    <p class="mb-1 small text-muted">
+                                                        {{ message.body }}
+                                                    </p>
+                                                </a>
+
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div><!-- End Dashboard Content -->
 
             </div>
-          </div><!-- End Profile Sidebar -->
-
-          <!-- Dashboard Content -->
-          <div class="col-lg-9">
-            <div data-aos="fade-up" data-aos-delay="100">
-
-              <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
-                <div>
-                  <h2 class="mb-1">Welcome back, Jane</h2>
-                  <p class="text-muted mb-0">Here is an overview of your publishing activity.</p>
-                </div>
-                <a href="user-profile-create-article.html" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>New Article</a>
-              </div>
-
-              <!-- Stats -->
-              <div class="row gy-4 mb-4">
-                <div class="col-md-6 col-xl-3">
-                  <div class="stat-card">
-                    <div class="stat-icon"><i class="bi bi-file-earmark-text"></i></div>
-                    <h3>24</h3>
-                    <p>Total Articles</p>
-                  </div>
-                </div>
-                <div class="col-md-6 col-xl-3">
-                  <div class="stat-card">
-                    <div class="stat-icon"><i class="bi bi-chat-dots"></i></div>
-                    <h3>128</h3>
-                    <p>Total Comments <span class="badge text-bg-warning ms-1">5 pending</span></p>
-                  </div>
-                </div>
-                <div class="col-md-6 col-xl-3">
-                  <div class="stat-card">
-                    <div class="stat-icon"><i class="bi bi-envelope"></i></div>
-                    <h3>12</h3>
-                    <p>Messages <span class="badge text-bg-danger ms-1">3 unread</span></p>
-                  </div>
-                </div>
-                <div class="col-md-6 col-xl-3">
-                  <div class="stat-card">
-                    <div class="stat-icon"><i class="bi bi-eye"></i></div>
-                    <h3>48.5k</h3>
-                    <p>Total Article Views</p>
-                  </div>
-                </div>
-              </div><!-- End Stats -->
-
-              <!-- Recent Articles -->
-              <div class="card border-0 shadow-sm mb-4">
-                <div class="card-body p-4">
-                  <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h3 class="card-title mb-0">Recent Articles</h3>
-                    <a href="user-profile-articles.html" class="btn btn-sm btn-outline-secondary">View All</a>
-                  </div>
-                  <div class="table-responsive">
-                    <table class="table profile-table align-middle mb-0">
-                      <thead>
-                        <tr>
-                          <th>Article</th>
-                          <th>Category</th>
-                          <th>Date</th>
-                          <th>Status</th>
-                          <th class="text-end">Views</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <img src="assets/img/blog/blog-1.jpg" class="thumb" alt="">
-                              <a href="single-post.html" class="fw-semibold">Dolorum optio tempore voluptas dignissimos</a>
-                            </div>
-                          </td>
-                          <td>Business</td>
-                          <td>Dec 12, 2024</td>
-                          <td><span class="badge text-bg-success">Published</span></td>
-                          <td class="text-end">8,412</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <img src="assets/img/blog/blog-2.jpg" class="thumb" alt="">
-                              <a href="single-post.html" class="fw-semibold">Nisi magni odit consequatur autem nulla</a>
-                            </div>
-                          </td>
-                          <td>Culture</td>
-                          <td>Dec 02, 2024</td>
-                          <td><span class="badge text-bg-success">Published</span></td>
-                          <td class="text-end">5,309</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <img src="assets/img/blog/blog-3.jpg" class="thumb" alt="">
-                              <a href="single-post.html" class="fw-semibold">Possimus soluta ut id suscipit ea ut</a>
-                            </div>
-                          </td>
-                          <td>Sport</td>
-                          <td>Nov 24, 2024</td>
-                          <td><span class="badge text-bg-warning">Draft</span></td>
-                          <td class="text-end">—</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <img src="assets/img/blog/blog-4.jpg" class="thumb" alt="">
-                              <a href="single-post.html" class="fw-semibold">Non rem rerum nam cum quo minus</a>
-                            </div>
-                          </td>
-                          <td>Lifestyle</td>
-                          <td>Nov 10, 2024</td>
-                          <td><span class="badge text-bg-success">Published</span></td>
-                          <td class="text-end">3,976</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div><!-- End Recent Articles -->
-
-              <div class="row gy-4">
-                <!-- Latest Comments -->
-                <div class="col-md-6">
-                  <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body p-4">
-                      <div class="d-flex align-items-center justify-content-between mb-3">
-                        <h3 class="card-title mb-0">Latest Comments</h3>
-                        <a href="user-profile-articles-comments.html" class="btn btn-sm btn-outline-secondary">Manage</a>
-                      </div>
-                      <div class="d-flex gap-3 border-bottom pb-3 mb-3">
-                        <img src="assets/img/blog/comments-1.jpg" class="rounded-circle flex-shrink-0" width="48" alt="">
-                        <div>
-                          <p class="mb-1"><strong>Georgia Reader</strong> <span class="text-muted">on</span> <a href="single-post.html">Dolorum optio tempore</a></p>
-                          <p class="text-muted small mb-1">"Et rerum totam nisi. Molestiae vel quam dolorum..."</p>
-                          <small class="text-muted"><i class="bi bi-clock me-1"></i>2 hours ago</small>
-                        </div>
-                      </div>
-                      <div class="d-flex gap-3 border-bottom pb-3 mb-3">
-                        <img src="assets/img/blog/comments-2.jpg" class="rounded-circle flex-shrink-0" width="48" alt="">
-                        <div>
-                          <p class="mb-1"><strong>Aron Alvarado</strong> <span class="text-muted">on</span> <a href="single-post.html">Nisi magni odit</a></p>
-                          <p class="text-muted small mb-1">"Ipsam tempora sequi voluptatem quis sapiente non..."</p>
-                          <small class="text-muted"><i class="bi bi-clock me-1"></i>Yesterday</small>
-                        </div>
-                      </div>
-                      <div class="d-flex gap-3">
-                        <img src="assets/img/blog/comments-5.jpg" class="rounded-circle flex-shrink-0" width="48" alt="">
-                        <div>
-                          <p class="mb-1"><strong>Nolan Davidson</strong> <span class="text-muted">on</span> <a href="single-post.html">Non rem rerum nam</a></p>
-                          <p class="text-muted small mb-1">"Distinctio nesciunt rerum reprehenderit sed..."</p>
-                          <small class="text-muted"><i class="bi bi-clock me-1"></i>2 days ago</small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Latest Messages -->
-                <div class="col-md-6">
-                  <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body p-4">
-                      <div class="d-flex align-items-center justify-content-between mb-3">
-                        <h3 class="card-title mb-0">Latest Messages</h3>
-                        <a href="user-profile-articles-messages.html" class="btn btn-sm btn-outline-secondary">Inbox</a>
-                      </div>
-                      <div class="list-group list-group-flush">
-                        <a href="user-profile-articles-messages.html" class="list-group-item px-0">
-                          <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-1">John Doe <span class="badge text-bg-danger ms-1">New</span></h6>
-                            <small class="text-muted">1h ago</small>
-                          </div>
-                          <p class="mb-1 small text-muted">Question about the Business article series...</p>
-                        </a>
-                        <a href="user-profile-articles-messages.html" class="list-group-item px-0">
-                          <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-1">Julia Parker <span class="badge text-bg-danger ms-1">New</span></h6>
-                            <small class="text-muted">5h ago</small>
-                          </div>
-                          <p class="mb-1 small text-muted">Can I contribute a guest post on Culture?...</p>
-                        </a>
-                        <a href="user-profile-articles-messages.html" class="list-group-item px-0">
-                          <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-1">Maria Doe</h6>
-                            <small class="text-muted">2d ago</small>
-                          </div>
-                          <p class="mb-1 small text-muted">Thanks for the quick reply last week...</p>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div><!-- End Dashboard Content -->
-
         </div>
-      </div>
     </section><!-- /Profile Dashboard Section -->
 
-  </main>
-
-  <footer id="footer" class="footer dark-background">
-
-    <div class="container footer-top">
-      <div class="row gy-4">
-        <div class="col-lg-4 col-md-6 footer-about">
-          <a href="index.html" class="logo d-flex align-items-center">
-            <span class="sitename">Naseri.Dev-Simple-Blog</span>
-          </a>
-          <div class="footer-contact pt-3">
-            <p>A108 Adam Street</p>
-            <p>New York, NY 535022</p>
-            <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-            <p><strong>Email:</strong> <span>info@example.com</span></p>
-          </div>
-          <div class="social-links d-flex mt-4">
-            <a href=""><i class="bi bi-twitter-x"></i></a>
-            <a href=""><i class="bi bi-facebook"></i></a>
-            <a href=""><i class="bi bi-instagram"></i></a>
-            <a href=""><i class="bi bi-linkedin"></i></a>
-          </div>
-        </div>
-
-        <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Useful Links</h4>
-          <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About us</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Terms of service</a></li>
-            <li><a href="#">Privacy policy</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Our Services</h4>
-          <ul>
-            <li><a href="#">Web Design</a></li>
-            <li><a href="#">Web Development</a></li>
-            <li><a href="#">Product Management</a></li>
-            <li><a href="#">Marketing</a></li>
-            <li><a href="#">Graphic Design</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Hic solutasetp</h4>
-          <ul>
-            <li><a href="#">Molestiae accusamus iure</a></li>
-            <li><a href="#">Excepturi dignissimos</a></li>
-            <li><a href="#">Suscipit distinctio</a></li>
-            <li><a href="#">Dilecta</a></li>
-            <li><a href="#">Sit quas consectetur</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Nobis illum</h4>
-          <ul>
-            <li><a href="#">Ipsam</a></li>
-            <li><a href="#">Laudantium dolorum</a></li>
-            <li><a href="#">Dinera</a></li>
-            <li><a href="#">Trodelas</a></li>
-            <li><a href="#">Flexo</a></li>
-          </ul>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">Naseri.Dev-Simple-Blog</strong> <span>All Rights
-          Reserved</span></p>
-      <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you've purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a
-          href="https://themewagon.com">ThemeWagon
-      </div>
-    </div>
-
-  </footer>
-
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Preloader -->
-  <div id="preloader"></div>
-
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-
-  <!-- Main JS File -->
-  <script src="assets/js/main.js"></script>
-
-</body>
-
-</html>
+{% endblock content %}

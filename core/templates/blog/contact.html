@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="col-lg-8">
-                    <form method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+                    <form action="{% url 'contact' %}" class="php-email-form" method="post" data-aos="fade-up" data-aos-delay="200">
                         {% csrf_token %}
 
                         {{ form.profile_id }}
@@ -125,11 +125,6 @@
                             </div>
 
                             <div class="col-md-12 text-center">
-                                <div class="loading">Loading</div>
-                                <div class="error-message"></div>
-                                <div class="sent-message">
-                                    Your message has been sent. Thank you!
-                                </div>
 
                                 <button type="submit">
                                     <i class="bi bi-send me-1"></i>
@@ -141,6 +136,7 @@
                     </form>
                 </div>
                 <!-- End Contact Form -->
+
             </div>
 
         </div>

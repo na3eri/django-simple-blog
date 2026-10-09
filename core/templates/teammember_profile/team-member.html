@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 
+{% load static %}
+{% block title %}Team Member: {{ profile_instance.full_name }}{% endblock title %}
+{% block page_name %}Team Member: {{ profile_instance.full_name }}{% endblock page_name %}
+{% block page_name_crumbs %}{{ profile_instance.full_name }}{% endblock page_name_crumbs %}
+
 {% block extra_head %}
     <style>
         .member-hero {
@@ -59,7 +64,8 @@
                 <div class="row gy-4 align-items-center">
                     <div class="col-lg-8">
                         <div class="d-flex flex-column flex-sm-row align-items-center align-items-sm-start gap-4">
-                            <img src="{{ profile_instance.image.url }}" class="member-photo rounded-circle flex-shrink-0"
+                            <img src="{{ profile_instance.image.url }}"
+                                 class="member-photo rounded-circle flex-shrink-0"
                                  alt="Jane Smith">
                             <div class="text-center text-sm-start">
                                 <p class="text-uppercase small mb-1"
@@ -76,7 +82,7 @@
                                     <a href="{{ profile_instance.instagram_url }}"><i class="bi bi-instagram"></i></a>
                                     <a href="{{ profile_instance.linkedin_url }}"><i class="bi bi-linkedin"></i></a>
                                 </div>
-                                <a href="team-member-send-message.html" class="btn btn-primary"><i
+                                <a href="{% url 'teammember-send-message' pk=profile_instance.id %}" class="btn btn-primary"><i
                                         class="bi bi-envelope me-1"></i>Send Message</a>
                             </div>
                         </div>
@@ -121,37 +127,38 @@
                                 <div class="row gy-4">
                                     {% for article in articles %}
 
-                                    <div class="col-lg-6">
-                                        <article class="position-relative h-100">
-                                            <div class="post-img position-relative overflow-hidden">
-                                                <img src="{{ article.image.url }}" class="img-fluid" alt="">
-                                                <span class="post-date">{{ article.published_at|date:"M d, Y" }}</span>
-                                            </div>
-                                            <div class="post-content d-flex flex-column">
-                                                <h3 class="post-title">
-                                                    {{ article.title }}
-                                                </h3>
-                                                <div class="meta d-flex align-items-center">
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="bi bi-person"></i> <span
-                                                            class="ps-2">{{ article.user_profile.full_name }}</span>
-                                                    </div>
-                                                    <span class="px-3 text-black-50">/</span>
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="bi bi-folder2"></i> <span class="ps-2">
+                                        <div class="col-lg-6">
+                                            <article class="position-relative h-100">
+                                                <div class="post-img position-relative overflow-hidden">
+                                                    <img src="{{ article.image.url }}" class="img-fluid" alt="">
+                                                    <span class="post-date">{{ article.published_at|date:"M d, Y" }}</span>
+                                                </div>
+                                                <div class="post-content d-flex flex-column">
+                                                    <h3 class="post-title">
+                                                        {{ article.title }}
+                                                    </h3>
+                                                    <div class="meta d-flex align-items-center">
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="bi bi-person"></i> <span
+                                                                class="ps-2">{{ article.user_profile.full_name }}</span>
+                                                        </div>
+                                                        <span class="px-3 text-black-50">/</span>
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="bi bi-folder2"></i> <span class="ps-2">
                                                         {{ article.category.name|title }}
                                                     </span>
+                                                        </div>
                                                     </div>
+                                                    <p>
+                                                        {{ article.excerpt }}
+                                                    </p>
+                                                    <hr>
+                                                    <a href="{{ article.get_absolute_url }}"
+                                                       class="readmore stretched-link"><span>Read More</span><i
+                                                            class="bi bi-arrow-right"></i></a>
                                                 </div>
-                                                <p>
-                                                    {{ article.excerpt }}
-                                                </p>
-                                                <hr>
-                                                <a href="{{ article.get_absolute_url }}" class="readmore stretched-link"><span>Read More</span><i
-                                                        class="bi bi-arrow-right"></i></a>
-                                            </div>
-                                        </article>
-                                    </div><!-- End post list item -->
+                                            </article>
+                                        </div><!-- End post list item -->
 
                                     {% endfor %}
 

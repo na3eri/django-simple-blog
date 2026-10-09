@@ -9,6 +9,13 @@ from django.forms import (
     Select,
 )
 
+from django.forms import (
+    ClearableFileInput,
+    CheckboxInput,
+)
+
+from apps.blog.models import Article
+
 
 class CommentForm(ModelForm):
     parent_id = IntegerField(
@@ -97,6 +104,82 @@ class MessageForm(ModelForm):
                     "rows": 6,
                     "placeholder": "Write your message...",
                     "required": True,
+                }
+            ),
+        }
+
+
+class ArticleForm(ModelForm):
+    class Meta:
+        model = Article
+
+        fields = [
+            "title",
+            "category",
+            "tags",
+            "image",
+            "excerpt",
+            "content",
+            "status",
+            "is_comment_enabled",
+        ]
+
+        widgets = {
+            "title": TextInput(
+                attrs={
+                    "class": "form-control",
+                    "id": "article-title",
+                    "placeholder": "Enter a compelling headline...",
+                }
+            ),
+            "category": Select(
+                attrs={
+                    "class": "form-select",
+                    "id": "article-category",
+                }
+            ),
+            "tags": TextInput(
+                attrs={
+                    "class": "form-control",
+                    "id": "article-tags",
+                    "placeholder": "e.g. Tips, Marketing, Creative",
+                }
+            ),
+            "image": ClearableFileInput(
+                attrs={
+                    "class": "form-control",
+                    "id": "article-image",
+                    "accept": "image/*",
+                }
+            ),
+            "excerpt": Textarea(
+                attrs={
+                    "class": "form-control",
+                    "id": "article-excerpt",
+                    "rows": 3,
+                    "placeholder": (
+                        "A short 1–2 sentence summary shown on listing pages..."
+                    ),
+                }
+            ),
+            "content": Textarea(
+                attrs={
+                    "class": "form-control",
+                    "id": "article-content",
+                    "rows": 10,
+                    "placeholder": "Write your article here...",
+                }
+            ),
+            "status": Select(
+                attrs={
+                    "class": "form-select",
+                    "id": "article-status",
+                }
+            ),
+            "is_comment_enabled": CheckboxInput(
+                attrs={
+                    "class": "form-check-input",
+                    "id": "allow-comments",
                 }
             ),
         }
