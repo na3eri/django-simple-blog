@@ -57,7 +57,6 @@ class ArticleService:
                     "parent_id",
                     "The selected parent comment does not exist.",
                 )
-
                 return {
                     "status": False,
                     "article": article,

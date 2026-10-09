@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "apps.teammember_profile.apps.TeammemberProfileConfig",
     "apps.users.apps.UsersConfig",
     "apps.blog.apps.BlogConfig",
     "apps.cms.apps.CmsConfig",
@@ -166,3 +167,5 @@ EMAIL_HOST_PASSWORD = os.environ.get("DJANGO_EMAIL_HOST_PASSWORD")
 MESSAGE_TAGS = {
     messages.ERROR: "danger",
 }
+
+LOGIN_URL = "signin"

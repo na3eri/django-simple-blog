@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}Profile Dashboard{% endblock title %}
+{% block page_name %}Profile Dashboard{% endblock page_name %}
+{% block page_name_crumbs %}Profile Dashboard{% endblock page_name_crumbs %}
+
+{% block extra_head %}
+    <style>
+        .profile-menu .list-group-item {
+            border: 0;
+            padding: 12px 16px;
+            color: var(--default-color);
+            font-family: var(--nav-font);
+            font-size: 14px;
+            background: transparent;
+        }
+
+        .profile-menu .list-group-item i {
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+
+        .profile-menu .list-group-item:hover,
+        .profile-menu .list-group-item.active {
+            background: color-mix(in srgb, var(--accent-color), transparent 92%);
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .profile-menu .list-group-item.active {
+            border-left: 3px solid var(--accent-color);
+        }
+
+        .stat-card {
+            background-color: var(--surface-color);
+            border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+            border-radius: 5px;
+            padding: 24px;
+            height: 100%;
+            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .stat-card .stat-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: color-mix(in srgb, var(--accent-color), transparent 88%);
+            color: var(--accent-color);
+            font-size: 22px;
+            margin-bottom: 14px;
+        }
+
+        .stat-card h3 {
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .stat-card p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: color-mix(in srgb, var(--default-color), transparent 40%);
+        }
+
+        .profile-table th {
+            font-family: var(--nav-font);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+            color: color-mix(in srgb, var(--default-color), transparent 40%);
+            border-bottom: 2px solid color-mix(in srgb, var(--default-color), transparent 85%);
+        }
+
+        .profile-table td {
+            vertical-align: middle;
+            font-size: 14px;
+        }
+
+        .profile-table .thumb {
+            width: 64px;
+            border-radius: 4px;
+            margin-right: 12px;
+        }
+    </style>
+{% endblock extra_head %}
+
+{% block content %}
+
+    <!-- Profile Dashboard Section -->
+    <section id="profile-dashboard" class="profile-dashboard section">
+        <div class="container">
+            <div class="row gy-4">
+
+                {% include 'teammember_profile/components/private_sidebar.html' %}
+
+                <!-- Dashboard Content -->
+                <div class="col-lg-9">
+                    <div data-aos="fade-up" data-aos-delay="100">
+
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
+                            <div>
+                                <h2 class="mb-1">Welcome back, {{ profile_instance.full_name|title }}</h2>
+                                <p class="text-muted mb-0">Here is an overview of your publishing activity.</p>
+                            </div>
+                            <a href="{% url 'profile-create-article' %}" class="btn btn-primary"><i
+                                    class="bi bi-plus-lg me-1"></i>New Article</a>
+                        </div>
+
+                        <!-- Stats -->
+                        <div class="row gy-4 mb-4">
+                            <div class="col-md-6 col-xl-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="bi bi-file-earmark-text"></i></div>
+                                    <h3>{{ total_articles }}</h3>
+                                    <p>Total Articles</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="bi bi-chat-dots"></i></div>
+                                    <h3>{{ total_comments }}</h3>
+                                    {% if total_pending_comments %}
+                                        <p>Total Comments <span
+                                                class="badge text-bg-warning ms-1">{{ total_pending_comments }} pending</span>
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="bi bi-envelope"></i></div>
+                                    <h3>{{ total_messages }}</h3>
+                                    {% if total_unread_messages %}
+                                        <p>Messages <span class="badge text-bg-danger ms-1">{{ total_unread_messages }} unread</span>
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="bi bi-eye"></i></div>
+                                    <h3>{{ total_views }}k</h3>
+                                    <p>Total Article Views</p>
+                                </div>
+                            </div>
+                        </div><!-- End Stats -->
+
+                        <!-- Recent Articles -->
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <h3 class="card-title mb-0">Recent Articles</h3>
+                                    <a href="user-profile-articles.html" class="btn btn-sm btn-outline-secondary">View
+                                        All</a>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table profile-table align-middle mb-0">
+                                        <thead>
+                                        <tr>
+                                            <th>Article</th>
+                                            <th>Category</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th class="text-end">Views</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for article in recent_articles %}
+
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="{{ article.image.url }}" class="thumb" alt="">
+                                                        <a href="{{ article.get_absolute_url }}" class="fw-semibold">
+                                                            {{ article.title }}
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                                <td>{{ article.category.name|title }}</td>
+                                                <td>{{ article.created_at|date:"M d, Y" }}</td>
+                                                <td><span
+                                                        class="badge text-bg-success">{{ article.status|upper }}</span>
+                                                </td>
+                                                <td class="text-end">{{ article.views }}</td>
+                                            </tr>
+
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div><!-- End Recent Articles -->
+
+                        <div class="row gy-4">
+                            <!-- Latest Comments -->
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                            <h3 class="card-title mb-0">Latest Comments</h3>
+                                            <a href="user-profile-articles-comments.html"
+                                               class="btn btn-sm btn-outline-secondary">Manage</a>
+                                        </div>
+                                        {% for comment in latest_comments %}
+
+                                            <div class="d-flex gap-3 border-bottom pb-3 mb-3">
+                                                {% if comment.user_profile %}
+                                                    <img src="{{ comment.user_profile.image.url }}"
+                                                         class="rounded-circle flex-shrink-0"
+                                                         width="48" height="48" alt="">
+                                                {% else %}
+                                                    <img src="assets/img/blog/comments-1.jpg"
+                                                         class="rounded-circle flex-shrink-0"
+                                                         width="48" alt="">
+                                                {% endif %}
+
+                                                <div>
+                                                    <p class="mb-1"><strong>Georgia Reader</strong> <span
+                                                            class="text-muted">on</span> <a href="single-post.html">
+                                                        {{ comment.name }}
+                                                    </a></p>
+                                                    <p class="text-muted small mb-1">
+                                                        {{ comment.body|truncatechars:30 }}
+                                                    </p>
+                                                    <small class="text-muted"><i
+                                                            class="bi bi-clock me-1"></i>{{ comment.created_at|timesince }}
+                                                    </small>
+                                                </div>
+                                            </div>
+
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Latest Messages -->
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                            <h3 class="card-title mb-0">Latest Messages</h3>
+                                            <a href="user-profile-articles-messages.html"
+                                               class="btn btn-sm btn-outline-secondary">Inbox</a>
+                                        </div>
+                                        <div class="list-group list-group-flush">
+                                            {% for message in latest_messages %}
+
+                                                <a href="user-profile-articles-messages.html"
+                                                   class="list-group-item px-0">
+                                                    <div class="d-flex w-100 justify-content-between">
+                                                        <h6 class="mb-1">{{ message.name }} <span
+                                                                class="badge text-bg-danger ms-1">New</span></h6>
+                                                        <small class="text-muted">{{ message.created_at|timesince }}</small>
+                                                    </div>
+                                                    <p class="mb-1 small text-muted">
+                                                        {{ message.body }}
+                                                    </p>
+                                                </a>
+
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div><!-- End Dashboard Content -->
+
+            </div>
+        </div>
+    </section><!-- /Profile Dashboard Section -->
+
+{% endblock content %}

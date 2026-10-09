@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}Team Member: {{ profile_instance.full_name }}{% endblock title %}
+{% block page_name %}Team Member: {{ profile_instance.full_name }}{% endblock page_name %}
+{% block page_name_crumbs %}
+    TeamMember
+    <li><a href="#"></a></li>
+    {{ profile_instance.full_name }}
+{% endblock page_name_crumbs %}
+
+{% block content %}
+
+    <!-- Send Message Section -->
+    <section id="send-message" class="contact section">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row gy-4">
+
+                <div class="col-lg-4">
+                    <!-- Recipient Card -->
+                    <div class="blog-author-widget widget-item">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="d-flex align-items-center w-100">
+                                <img src="{{ profile_instance.image.url }}" class="rounded-circle flex-shrink-0"
+                                     alt="Jane Smith">
+                                <div>
+                                    <h4>
+                                        <a href="{% url 'teammember' pk=profile_instance.id %}">
+                                            {{ profile_instance.full_name }}
+                                        </a>
+                                    </h4>
+                                    <p class="small text-muted mb-1">{{ profile_instance.job_title|upper }}</p>
+                                    <div class="social-links">
+                                        <a href="{{ profile_instance.x_url }}"><i class="bi bi-twitter-x"></i></a>
+                                        <a href="{{ profile_instance.facebook_url }}"><i class="bi bi-facebook"></i></a>
+                                        <a href="{{ profile_instance.instagram_url }}"><i class="bi bi-instagram"></i></a>
+                                        <a href="{{ profile_instance.linkedin_url }}"><i class="bi bi-linkedin"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>
+                                {{ profile_instance.short_bio }}
+                            </p>
+                            <a href="team-member.html" class="btn btn-outline-secondary btn-sm mt-2"><i
+                                    class="bi bi-arrow-left me-1"></i>Back to Profile</a>
+                        </div>
+                    </div><!--/Recipient Card -->
+
+                    <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
+                        <i class="bi bi-envelope flex-shrink-0"></i>
+                        <div>
+                            <h3>Direct Message</h3>
+                            <p>Your message goes straight to {{ profile_instance.full_name }}'s inbox in her team dashboard.</p>
+                        </div>
+                    </div><!-- End Info Item -->
+
+                    <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
+                        <i class="bi bi-shield-check flex-shrink-0"></i>
+                        <div>
+                            <h3>Privacy</h3>
+                            <p>Your email address is only shared with {{ profile_instance.full_name }} so she can reply to you.</p>
+                        </div>
+                    </div><!-- End Info Item -->
+
+                </div>
+
+                <div class="col-lg-8">
+                    <form action="{% url 'teammember-send-message' pk=profile_instance.id %}" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+                        {% csrf_token %}
+
+                        {{ form.profile_id }}
+                        {{ form.parent_id }}
+
+                        <div class="col-12">
+                            <div class="alert alert-light border d-flex align-items-center gap-3 mb-0" role="note">
+                                <img src="{{ profile_instance.image.url }}" class="rounded-circle flex-shrink-0"
+                                     width="48" alt="Jane Smith">
+                                <div>
+                                    <strong>To: {{ profile_instance.full_name }}</strong> <span class="text-muted">({{ profile_instance.job_title|upper }})</span>
+                                    <span class="d-block small text-muted">
+                                        Re: a message from a
+                                        {% if request.user.is_authenticated %}
+                                            {{ profile_instance.job_title|lower }}
+                                        {% else %}
+                                            blog reader
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row gy-4">
+
+                            {% if request.user.is_authenticated %}
+                                <div class="col-md-6">
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            value="{{ request.user.profile.full_name }}"
+                                            readonly
+                                    >
+                                </div>
+
+                                <div class="col-md-6">
+                                    <input
+                                            type="email"
+                                            class="form-control"
+                                            value="{{ request.user.email }}"
+                                            readonly
+                                    >
+                                </div>
+                            {% else %}
+                                <div class="col-md-6">
+                                    {{ form.name }}
+                                    {% if form.name.errors %}
+                                        <div class="text-danger small">
+                                            {{ form.name.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-6">
+                                    {{ form.email }}
+                                    {% if form.email.errors %}
+                                        <div class="text-danger small">
+                                            {{ form.email.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            <div class="col-md-12">
+                                {{ form.subject }}
+                                {% if form.subject.errors %}
+                                    <div class="text-danger small">
+                                        {{ form.subject.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-12">
+                                {{ form.topic }}
+                                {% if form.topic.errors %}
+                                    <div class="text-danger small">
+                                        {{ form.topic.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-12">
+                                {{ form.body }}
+                                {% if form.body.errors %}
+                                    <div class="text-danger small">
+                                        {{ form.body.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <div class="loading">Loading</div>
+                                <div class="error-message"></div>
+                                <div class="sent-message">
+                                    Your message has been sent. Thank you!
+                                </div>
+
+                                <button type="submit">
+                                    <i class="bi bi-send me-1"></i>
+                                    Send Message
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <!-- End Contact Form -->
+
+
+            </div>
+
+        </div>
+    </section><!-- /Send Message Section -->
+
+{% endblock content %}

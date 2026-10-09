@@ -30,6 +30,7 @@ urlpatterns = [
     path("", include("apps.cms.urls")),
     path("", include("apps.users.urls")),
     path("", include("apps.blog.urls")),
+    path("", include("apps.teammember_profile.urls")),
 ]
 
 

@@ -1,5 +1,5 @@
 import pytest
-from apps.blog.models import Article, Comment
+from apps.blog.models import Article, Comment, Message
 
 pytestmark = pytest.mark.django_db
 
@@ -173,3 +173,68 @@ class TestCommentQueryset:
         queryset = Comment.objects.by_id(comment.id)
 
         assert queryset == comment
+
+
+class TestMessageQueryset:
+    def test_active_method(self, message_factory):
+        active_message = message_factory(is_deleted=False)
+        deleted_message = message_factory(is_deleted=True)
+
+        queryset = Message.objects.active()
+
+        assert queryset.count() == 1
+        assert queryset.first() == active_message
+
+    def test_read_method(self, message_factory):
+        read_message = message_factory(is_read=True)
+        unread_message = message_factory(is_read=False)
+
+        queryset = Message.objects.read()
+
+        assert queryset.count() == 1
+        assert queryset.first() == read_message
+
+    def test_unread_method(self, message_factory):
+        read_message = message_factory(is_read=True)
+        unread_message = message_factory(is_read=False)
+
+        queryset = Message.objects.unread()
+
+        assert queryset.count() == 1
+        assert queryset.first() == unread_message
+
+    def test_archived_method(self, message_factory):
+        archived_message = message_factory(is_archived=True)
+        unarchived_message = message_factory(is_archived=False)
+
+        queryset = Message.objects.archived()
+
+        assert queryset.count() == 1
+        assert queryset.first() == archived_message
+
+    def test_unarchived_method(self, message_factory):
+        archived_message = message_factory(is_archived=True)
+        unarchived_message = message_factory(is_archived=False)
+
+        queryset = Message.objects.unarchived()
+
+        assert queryset.count() == 1
+        assert queryset.first() == unarchived_message
+
+    def test_deleted_method(self, message_factory):
+        deleted_message = message_factory(is_deleted=True)
+        active_message = message_factory(is_deleted=False)
+
+        queryset = Message.objects.deleted()
+
+        assert queryset.count() == 1
+        assert queryset.first() == deleted_message
+
+    def test_not_deleted_method(self, message_factory):
+        deleted_message = message_factory(is_deleted=True)
+        active_message = message_factory(is_deleted=False)
+
+        queryset = Message.objects.not_deleted()
+
+        assert queryset.count() == 1
+        assert queryset.first() == active_message

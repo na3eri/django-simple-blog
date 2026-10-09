@@ -6,6 +6,29 @@ from taggit.managers import TaggableManager
 
 
 # ==========  Custom Managers  ==========
+class MessageQuerySet(models.QuerySet):
+    def active(self):
+        return self.filter(is_deleted=False)
+
+    def read(self):
+        return self.filter(is_read=True)
+
+    def unread(self):
+        return self.filter(is_read=False)
+
+    def archived(self):
+        return self.filter(is_archived=True)
+
+    def unarchived(self):
+        return self.filter(is_archived=False)
+
+    def deleted(self):
+        return self.filter(is_deleted=True)
+
+    def not_deleted(self):
+        return self.filter(is_deleted=False)
+
+
 class ArticleQuerySet(models.QuerySet):
     def published(self):
         return self.filter(
@@ -105,7 +128,7 @@ class Article(models.Model):
     objects = ArticleQuerySet.as_manager()
 
     class Meta:
-        ordering = ("-published_at",)
+        ordering = ("-published_at", "-created_at")
 
     def save(self, *args, **kwargs):
         base_slug = slugify(self.title)
@@ -203,6 +226,11 @@ class Message(models.Model):
     is_deleted = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = MessageQuerySet.as_manager()
+
+    class Meta:
+        ordering = ("-created_at",)
 
     def __str__(self):
         return self.name
