@@ -1,0 +1,10 @@
+<div class="widget-item">
+    <h3 class="widget-title">Folders</h3>
+    <div class="list-group list-group-flush profile-menu">
+        <a href="{% url 'profile-messages' status='inbox' %}" class="list-group-item list-group-item-action {% if status == 'inbox' %}active{% endif %}"><i class="bi bi-inbox"></i>Inbox<span
+                class="badge text-bg-danger rounded-pill ms-2">{{ total_unread_messages }}</span></a>
+        <a href="{% url 'profile-messages' status='sent' %}" class="list-group-item list-group-item-action {% if status == 'sent' %}active{% endif %}"><i class="bi bi-send"></i>Sent</a>
+        <a href="{% url 'profile-messages' status='read' %}" class="list-group-item list-group-item-action {% if status == 'read' %}active{% endif %}"><i class="bi bi-eye"></i>Read</a>
+        <a href="{% url 'profile-messages' status='archived' %}" class="list-group-item list-group-item-action {% if status == 'archived' %}active{% endif %}"><i class="bi bi-archive"></i>Archived</a>
+    </div>
+</div>

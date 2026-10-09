@@ -1,570 +1,259 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Messages - Naseri.Dev-Simple-Blog Bootstrap Template</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+{% load static %}
+{% block title %}Profile Messages{% endblock title %}
+{% block page_name %}Profile Messages{% endblock page_name %}
+{% block page_name_crumbs %}Profile Messages{% endblock page_name_crumbs %}
 
-  <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+{% block extra_head %}
+    <style>
+        .profile-menu .list-group-item {
+            border: 0;
+            padding: 12px 16px;
+            color: var(--default-color);
+            font-family: var(--nav-font);
+            font-size: 14px;
+            background: transparent;
+        }
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap"
-    rel="stylesheet">
+        .profile-menu .list-group-item i {
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
 
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+        .profile-menu .list-group-item:hover,
+        .profile-menu .list-group-item.active {
+            background: color-mix(in srgb, var(--accent-color), transparent 92%);
+            color: var(--accent-color);
+            font-weight: 600;
+        }
 
-  <!-- Main CSS File -->
-  <link href="assets/css/main.css" rel="stylesheet">
+        .profile-menu .list-group-item.active {
+            border-left: 3px solid var(--accent-color);
+        }
 
-  <style>
-    .profile-menu .list-group-item {
-      border: 0;
-      padding: 12px 16px;
-      color: var(--default-color);
-      font-family: var(--nav-font);
-      font-size: 14px;
-      background: transparent;
-    }
+        .message-item {
+            background-color: var(--surface-color);
+            border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+            border-radius: 5px;
+        }
 
-    .profile-menu .list-group-item i {
-      margin-right: 10px;
-      color: var(--accent-color);
-    }
+        .message-item.unread {
+            border-left: 4px solid var(--accent-color);
+        }
 
-    .profile-menu .list-group-item:hover,
-    .profile-menu .list-group-item.active {
-      background: color-mix(in srgb, var(--accent-color), transparent 92%);
-      color: var(--accent-color);
-      font-weight: 600;
-    }
+        .message-item .sender-img {
+            width: 52px;
+            height: 52px;
+            object-fit: cover;
+        }
 
-    .profile-menu .list-group-item.active {
-      border-left: 3px solid var(--accent-color);
-    }
+        .message-item .accordion-button {
+            background: transparent;
+            box-shadow: none;
+        }
 
-    .message-item {
-      background-color: var(--surface-color);
-      border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
-      border-radius: 5px;
-    }
+        .message-item .accordion-button:not(.collapsed) {
+            color: var(--accent-color);
+            background: color-mix(in srgb, var(--accent-color), transparent 94%);
+        }
 
-    .message-item.unread {
-      border-left: 4px solid var(--accent-color);
-    }
+        .message-item .accordion-body {
+            border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+        }
 
-    .message-item .sender-img {
-      width: 52px;
-      height: 52px;
-      object-fit: cover;
-    }
+        .reply-box textarea {
+            font-size: 14px;
+        }
 
-    .message-item .accordion-button {
-      background: transparent;
-      box-shadow: none;
-    }
+        .reply-box textarea:focus {
+            border-color: var(--accent-color);
+            box-shadow: none;
+        }
+    </style>
 
-    .message-item .accordion-button:not(.collapsed) {
-      color: var(--accent-color);
-      background: color-mix(in srgb, var(--accent-color), transparent 94%);
-    }
+{% endblock extra_head %}
 
-    .message-item .accordion-body {
-      border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
-    }
-
-    .reply-box textarea {
-      font-size: 14px;
-    }
-
-    .reply-box textarea:focus {
-      border-color: var(--accent-color);
-      box-shadow: none;
-    }
-  </style>
-
-  <!-- =======================================================
-  * Template Name: Naseri.Dev-Simple-Blog
-  * Template URL: https://bootstrapmade.com/Naseri.Dev-Simple-Blog-bootstrap-blog-template/
-  * Updated: Aug 08 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
-</head>
-
-<body class="user-profile-articles-messages-page">
-
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container position-relative d-flex align-items-center justify-content-between">
-
-      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <!-- <img src="assets/img/logo.png" alt=""> -->
-        <h1 class="sitename">Naseri.Dev-Simple-Blog</h1>
-      </a>
-
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="single-post.html">Single Post</a></li>
-          <li class="dropdown"><a href="#"><span>Categories</span> <i
-                class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="category.html">Category 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i
-                    class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="#">Deep Dropdown 1</a></li>
-                  <li><a href="#">Deep Dropdown 2</a></li>
-                  <li><a href="#">Deep Dropdown 3</a></li>
-                  <li><a href="#">Deep Dropdown 4</a></li>
-                  <li><a href="#">Deep Dropdown 5</a></li>
-                </ul>
-              </li>
-              <li><a href="category.html">Category 2</a></li>
-              <li><a href="category.html">Category 3</a></li>
-              <li><a href="category.html">Category 4</a></li>
-            </ul>
-          </li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-
-      <div class="header-social-links">
-        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-      </div>
-
-    </div>
-  </header>
-
-  <main class="main">
-
-    <!-- Page Title -->
-    <div class="page-title">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0">Messages</h1>
-        <nav class="breadcrumbs">
-          <ol>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="user-profile-dashboard.html">Dashboard</a></li>
-            <li class="current">Messages</li>
-          </ol>
-        </nav>
-      </div>
-    </div><!-- End Page Title -->
+{% block content %}
 
     <!-- Messages Section -->
     <section id="profile-messages" class="profile-messages section">
-      <div class="container">
-        <div class="row gy-4">
+        <div class="container">
+            <div class="row gy-4">
 
-          <!-- Profile Sidebar -->
-          <div class="col-lg-3">
-            <div class="widgets-container mt-0" data-aos="fade-up">
+                {% include 'teammember_profile/components/private_sidebar.html' with extra_sidebar_template='teammember_profile/components/messages_extra_sidebar.html' %}
 
-              <div class="blog-author-widget-2 widget-item">
-                <div class="d-flex flex-column align-items-center">
-                  <img src="assets/img/blog/blog-author.jpg" class="rounded-circle flex-shrink-0" alt="Team member photo">
-                  <h4>Jane Smith</h4>
-                  <p class="mb-1">Content Editor</p>
-                  <div class="social-links">
-                    <a href="https://x.com/#"><i class="bi bi-twitter-x"></i></a>
-                    <a href="https://facebook.com/#"><i class="bi bi-facebook"></i></a>
-                    <a href="https://instagram.com/#"><i class="bi bi-instagram"></i></a>
-                    <a href="https://linkedin.com/#"><i class="bi bi-linkedin"></i></a>
-                  </div>
-                  <a href="user-profile-edit.html" class="btn btn-outline-secondary btn-sm mt-3"><i class="bi bi-pencil me-1"></i>Edit Profile</a>
-                </div>
-              </div><!--/Author Widget -->
+                <!-- Messages Content -->
+                <div class="col-lg-9">
+                    <div data-aos="fade-up" data-aos-delay="100">
 
-              <div class="widget-item">
-                <h3 class="widget-title">My Menu</h3>
-                <div class="list-group list-group-flush profile-menu">
-                  <a href="user-profile-dashboard.html" class="list-group-item list-group-item-action"><i class="bi bi-speedometer2"></i>Dashboard</a>
-                  <a href="user-profile-articles.html" class="list-group-item list-group-item-action"><i class="bi bi-file-earmark-text"></i>My Articles</a>
-                  <a href="user-profile-create-article.html" class="list-group-item list-group-item-action"><i class="bi bi-plus-circle"></i>Create Article</a>
-                  <a href="user-profile-articles-comments.html" class="list-group-item list-group-item-action"><i class="bi bi-chat-dots"></i>Comments</a>
-                  <a href="user-profile-articles-messages.html" class="list-group-item list-group-item-action active"><i class="bi bi-envelope"></i>Messages<span class="badge text-bg-danger rounded-pill ms-2">3</span></a>
-                  <a href="user-profile-edit.html" class="list-group-item list-group-item-action"><i class="bi bi-gear"></i>Profile Settings</a>
-                  <a href="login.html" class="list-group-item list-group-item-action"><i class="bi bi-box-arrow-right"></i>Logout</a>
-                </div>
-              </div>
+                        <div class="mb-4">
+                            <h2 class="mb-1">Inbox</h2>
+                            <p class="text-muted mb-0">Messages sent by readers through the contact form. Click a
+                                message to
+                                read it and reply.</p>
+                        </div>
 
-              <div class="widget-item">
-                <h3 class="widget-title">Folders</h3>
-                <div class="list-group list-group-flush profile-menu">
-                  <a href="#" class="list-group-item list-group-item-action active"><i class="bi bi-inbox"></i>Inbox<span class="badge text-bg-danger rounded-pill ms-2">3</span></a>
-                  <a href="#" class="list-group-item list-group-item-action"><i class="bi bi-send"></i>Sent</a>
-                  <a href="#" class="list-group-item list-group-item-action"><i class="bi bi-archive"></i>Archived</a>
-                  <a href="#" class="list-group-item list-group-item-action"><i class="bi bi-trash"></i>Trash</a>
-                </div>
-              </div>
+                        <!-- Toolbar -->
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-body p-3">
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-md-5">
+                                        <div class="search-widget mb-0">
+                                            <form action="{% url 'profile-messages' status=status %}" id="searchForm">
+                                                <input type="text" placeholder="Search messages..." id="searchInput">
+                                                <button type="submit" title="Search"><i class="bi bi-search"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    {% if messages_objects %}
+
+                                        <div class="col-md-7 d-flex justify-content-md-end gap-2">
+                                            <form action="{% url 'profile-messages' status=status %}" method="post">
+                                                {% csrf_token %}
+                                                <button class="btn btn-sm btn-outline-secondary" name="action"
+                                                        value="readall">
+                                                    <i class="bi bi-check-all me-1"></i>Mark All as Read
+                                                </button>
+                                            </form>
+                                        </div>
+
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div><!-- End Toolbar -->
+
+                        <div class="accordion d-flex flex-column gap-3" id="messagesAccordion">
+                            {% if not messages_objects %}
+                                <div class="card p-5">
+                                    <h3>Nothing found</h3>
+                                </div>
+                            {% endif %}
+                            {% for message in messages_objects %}
+                                <!-- Message -->
+                                <div class="message-item {% if not message.is_read %}unread{% endif %} accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}"
+                                                type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#message-{{ message.id }}"
+                                                aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+                                                aria-controls="message-{{ message.id }}">
+                <span class="d-flex align-items-center gap-3 w-100 pe-2">
+                    {% if message.user_profile %}
+                        <img src="{{ message.user_profile.image.url }}" class="sender-img rounded-circle flex-shrink-0"
+                             alt="">
+                    {% else %}
+                        <img src="{% static 'img/placeholder.png' %}" class="sender-img rounded-circle flex-shrink-0"
+                             alt="">
+                    {% endif %}
+                    <span class="flex-grow-1">
+                        <span class="d-flex align-items-center gap-2 flex-wrap">
+                            <strong>{{ message.name }}</strong>
+                            {% if not message.is_read %}<span class="badge text-bg-danger">New</span>{% endif %}
+                        </span>
+                        <span class="d-block small text-muted">{{ message.subject }}</span>
+                    </span>
+                    <small class="text-muted text-nowrap">1h ago</small>
+                </span>
+                                        </button>
+                                    </h2>
+                                    <div id="message-{{ message.id }}"
+                                         class="accordion-collapse collapse {% if forloop.first %}show{% endif %}"
+                                         data-bs-parent="#messagesAccordion">
+                                        <div class="accordion-body">
+                                            <p class="mb-1"><strong>From:</strong> {{ message.name }}
+                                                &lt;{{ message.email }}&gt;</p>
+                                            <p class="mb-3"><strong>Subject:</strong> {{ message.subject }}
+                                                series
+                                            </p>
+                                            <p>
+                                                {{ message.body }}
+                                            </p>
+                                            <p class="text-muted small"><i class="bi bi-clock me-1"></i>
+                                                Received {{ message.created_at|date:"M d, Y" }} at
+                                                {{ message.created_at|date:"H:m:s" }}{% if not message.user_profile %}
+                                                    via contact page{% endif %}</p>
+                                            <form
+                                                    action="{% url 'profile-messages' status=status %}"
+                                                    method="post"
+                                                    class="reply-box mt-3">
+
+                                                {% csrf_token %}
+
+                                                <input
+                                                        type="hidden"
+                                                        name="message_id"
+                                                        value="{{ message.id }}">
+
+                                                <label
+                                                        for="reply-{{ message.id }}"
+                                                        class="form-label small fw-semibold">
+                                                    Reply to {{ message.name }}
+                                                </label>
+                                                {% if message.user_profile %}
+                                                    <textarea
+                                                            id="reply-{{ message.id }}"
+                                                            name="reply_body"
+                                                            class="form-control"
+                                                            rows="3"
+                                                            placeholder="Write your reply..."></textarea>
+                                                {% endif %}
+
+                                                <div class="d-flex gap-2 mt-2">
+                                                    {% if message.user_profile %}
+                                                        <!-- Reply -->
+                                                        <button
+                                                                type="submit"
+                                                                name="action"
+                                                                value="reply"
+                                                                class="btn btn-sm btn-primary">
+                                                            <i class="bi bi-reply-fill me-1"></i>
+                                                            Send Reply
+                                                        </button>
+                                                    {% endif %}
+
+                                                    <!-- Archive -->
+                                                    <button
+                                                            type="submit"
+                                                            name="action"
+                                                            value="archive"
+                                                            class="btn btn-sm btn-outline-secondary">
+                                                        <i class="bi bi-archive me-1"></i>
+                                                        Archive
+                                                    </button>
+
+                                                    <!-- Delete -->
+                                                    <button
+                                                            type="submit"
+                                                            name="action"
+                                                            value="delete"
+                                                            class="btn btn-sm btn-outline-danger">
+                                                        <i class="bi bi-trash me-1"></i>
+                                                        Delete
+                                                    </button>
+
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Message -->
+                            {% endfor %}
+                        </div><!-- End Accordion -->
+                        <br>
+                        {% include 'teammember_profile/components/paginator.html' %}
+
+                    </div>
+                </div><!-- End Messages Content -->
 
             </div>
-          </div><!-- End Profile Sidebar -->
-
-          <!-- Messages Content -->
-          <div class="col-lg-9">
-            <div data-aos="fade-up" data-aos-delay="100">
-
-              <div class="mb-4">
-                <h2 class="mb-1">Inbox</h2>
-                <p class="text-muted mb-0">Messages sent by readers through the contact form. Click a message to read it and reply.</p>
-              </div>
-
-              <!-- Toolbar -->
-              <div class="card border-0 shadow-sm mb-4">
-                <div class="card-body p-3">
-                  <div class="row g-3 align-items-center">
-                    <div class="col-md-5">
-                      <div class="search-widget mb-0">
-                        <form action="">
-                          <input type="text" placeholder="Search messages...">
-                          <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-                        </form>
-                      </div>
-                    </div>
-                    <div class="col-md-7 d-flex justify-content-md-end gap-2">
-                      <a href="#" class="btn btn-sm btn-outline-secondary"><i class="bi bi-check-all me-1"></i>Mark All as Read</a>
-                      <a href="#" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash me-1"></i>Delete Selected</a>
-                    </div>
-                  </div>
-                </div>
-              </div><!-- End Toolbar -->
-
-              <div class="accordion d-flex flex-column gap-3" id="messagesAccordion">
-
-                <!-- Message 1 (unread) -->
-                <div class="message-item unread accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#message-1" aria-expanded="true" aria-controls="message-1">
-                      <span class="d-flex align-items-center gap-3 w-100 pe-2">
-                        <img src="assets/img/blog/comments-1.jpg" class="sender-img rounded-circle flex-shrink-0" alt="">
-                        <span class="flex-grow-1">
-                          <span class="d-flex align-items-center gap-2 flex-wrap">
-                            <strong>John Doe</strong>
-                            <span class="badge text-bg-danger">New</span>
-                          </span>
-                          <span class="d-block small text-muted">Question about the Business article series</span>
-                        </span>
-                        <small class="text-muted text-nowrap">1h ago</small>
-                      </span>
-                    </button>
-                  </h2>
-                  <div id="message-1" class="accordion-collapse collapse show" data-bs-parent="#messagesAccordion">
-                    <div class="accordion-body">
-                      <p class="mb-1"><strong>From:</strong> John Doe &lt;john.doe@example.com&gt;</p>
-                      <p class="mb-3"><strong>Subject:</strong> Question about the Business article series</p>
-                      <p>
-                        Similique neque nam consequuntur ad non maxime aliquam quas. Quibusdam animi praesentium.
-                        Aliquam et laboriosam eius aut nostrum quidem aliquid dicta. Could you cover remote
-                        work taxation for freelancers in your next article?
-                      </p>
-                      <p class="text-muted small"><i class="bi bi-clock me-1"></i>Received Dec 12, 2024 — 14:05 via the contact form</p>
-                      <form action="" class="reply-box mt-3">
-                        <label for="reply-1" class="form-label small fw-semibold">Reply to John Doe</label>
-                        <textarea id="reply-1" class="form-control" rows="3" placeholder="Write your reply..."></textarea>
-                        <div class="d-flex gap-2 mt-2">
-                          <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-reply-fill me-1"></i>Send Reply</button>
-                          <a href="#" class="btn btn-sm btn-outline-secondary"><i class="bi bi-archive me-1"></i>Archive</a>
-                          <a href="#" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash me-1"></i>Delete</a>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div><!-- End Message 1 -->
-
-                <!-- Message 2 (unread) -->
-                <div class="message-item unread accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#message-2" aria-expanded="false" aria-controls="message-2">
-                      <span class="d-flex align-items-center gap-3 w-100 pe-2">
-                        <img src="assets/img/blog/comments-2.jpg" class="sender-img rounded-circle flex-shrink-0" alt="">
-                        <span class="flex-grow-1">
-                          <span class="d-flex align-items-center gap-2 flex-wrap">
-                            <strong>Julia Parker</strong>
-                            <span class="badge text-bg-danger">New</span>
-                          </span>
-                          <span class="d-block small text-muted">Guest post proposal on Culture</span>
-                        </span>
-                        <small class="text-muted text-nowrap">5h ago</small>
-                      </span>
-                    </button>
-                  </h2>
-                  <div id="message-2" class="accordion-collapse collapse" data-bs-parent="#messagesAccordion">
-                    <div class="accordion-body">
-                      <p class="mb-1"><strong>From:</strong> Julia Parker &lt;julia.parker@example.com&gt;</p>
-                      <p class="mb-3"><strong>Subject:</strong> Guest post proposal on Culture</p>
-                      <p>
-                        Incidunt voluptate sit temporibus aperiam. Quia vitae aut sint ullam quis illum voluptatum et.
-                        I would love to contribute a guest post about independent bookshops and reading culture.
-                        Would you be open to a collaboration?
-                      </p>
-                      <p class="text-muted small"><i class="bi bi-clock me-1"></i>Received Dec 12, 2024 — 09:48 via the contact form</p>
-                      <form action="" class="reply-box mt-3">
-                        <label for="reply-2" class="form-label small fw-semibold">Reply to Julia Parker</label>
-                        <textarea id="reply-2" class="form-control" rows="3" placeholder="Write your reply..."></textarea>
-                        <div class="d-flex gap-2 mt-2">
-                          <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-reply-fill me-1"></i>Send Reply</button>
-                          <a href="#" class="btn btn-sm btn-outline-secondary"><i class="bi bi-archive me-1"></i>Archive</a>
-                          <a href="#" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash me-1"></i>Delete</a>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div><!-- End Message 2 -->
-
-                <!-- Message 3 (unread) -->
-                <div class="message-item unread accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#message-3" aria-expanded="false" aria-controls="message-3">
-                      <span class="d-flex align-items-center gap-3 w-100 pe-2">
-                        <img src="assets/img/blog/comments-4.jpg" class="sender-img rounded-circle flex-shrink-0" alt="">
-                        <span class="flex-grow-1">
-                          <span class="d-flex align-items-center gap-2 flex-wrap">
-                            <strong>Sianna Ramsay</strong>
-                            <span class="badge text-bg-danger">New</span>
-                          </span>
-                          <span class="d-block small text-muted">Broken image on Lifestyle article</span>
-                        </span>
-                        <small class="text-muted text-nowrap">1d ago</small>
-                      </span>
-                    </button>
-                  </h2>
-                  <div id="message-3" class="accordion-collapse collapse" data-bs-parent="#messagesAccordion">
-                    <div class="accordion-body">
-                      <p class="mb-1"><strong>From:</strong> Sianna Ramsay &lt;sianna.r@example.com&gt;</p>
-                      <p class="mb-3"><strong>Subject:</strong> Broken image on Lifestyle article</p>
-                      <p>
-                        Et dignissimos impedit nulla et quo distinctio ex nemo. Just letting you know that one of the
-                        images in "10 Life-Changing Hacks Every Working Mom Should Know" does not load on mobile.
-                      </p>
-                      <p class="text-muted small"><i class="bi bi-clock me-1"></i>Received Dec 11, 2024 — 16:20 via the contact form</p>
-                      <form action="" class="reply-box mt-3">
-                        <label for="reply-3" class="form-label small fw-semibold">Reply to Sianna Ramsay</label>
-                        <textarea id="reply-3" class="form-control" rows="3" placeholder="Write your reply..."></textarea>
-                        <div class="d-flex gap-2 mt-2">
-                          <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-reply-fill me-1"></i>Send Reply</button>
-                          <a href="#" class="btn btn-sm btn-outline-secondary"><i class="bi bi-archive me-1"></i>Archive</a>
-                          <a href="#" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash me-1"></i>Delete</a>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div><!-- End Message 3 -->
-
-                <!-- Message 4 (read) -->
-                <div class="message-item accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#message-4" aria-expanded="false" aria-controls="message-4">
-                      <span class="d-flex align-items-center gap-3 w-100 pe-2">
-                        <img src="assets/img/blog/comments-5.jpg" class="sender-img rounded-circle flex-shrink-0" alt="">
-                        <span class="flex-grow-1">
-                          <strong>Maria Doe</strong>
-                          <span class="d-block small text-muted">Thanks for the quick reply last week</span>
-                        </span>
-                        <small class="text-muted text-nowrap">2d ago</small>
-                      </span>
-                    </button>
-                  </h2>
-                  <div id="message-4" class="accordion-collapse collapse" data-bs-parent="#messagesAccordion">
-                    <div class="accordion-body">
-                      <p class="mb-1"><strong>From:</strong> Maria Doe &lt;maria.doe@example.com&gt;</p>
-                      <p class="mb-3"><strong>Subject:</strong> Thanks for the quick reply last week</p>
-                      <p>
-                        Aut iste neque ut illum qui perspiciatis similique recusandae non. Fugit autem dolorem labore
-                        omnis et. Just wanted to say thanks — the updated Sport article looks great now.
-                      </p>
-                      <p class="text-muted small"><i class="bi bi-clock me-1"></i>Received Dec 10, 2024 — 11:12 via the contact form</p>
-                      <form action="" class="reply-box mt-3">
-                        <label for="reply-4" class="form-label small fw-semibold">Reply to Maria Doe</label>
-                        <textarea id="reply-4" class="form-control" rows="3" placeholder="Write your reply..."></textarea>
-                        <div class="d-flex gap-2 mt-2">
-                          <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-reply-fill me-1"></i>Send Reply</button>
-                          <a href="#" class="btn btn-sm btn-outline-secondary"><i class="bi bi-archive me-1"></i>Archive</a>
-                          <a href="#" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash me-1"></i>Delete</a>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div><!-- End Message 4 -->
-
-                <!-- Message 5 (read) -->
-                <div class="message-item accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#message-5" aria-expanded="false" aria-controls="message-5">
-                      <span class="d-flex align-items-center gap-3 w-100 pe-2">
-                        <img src="assets/img/blog/comments-6.jpg" class="sender-img rounded-circle flex-shrink-0" alt="">
-                        <span class="flex-grow-1">
-                          <strong>John Parker</strong>
-                          <span class="d-block small text-muted">Interview request for the podcast</span>
-                        </span>
-                        <small class="text-muted text-nowrap">4d ago</small>
-                      </span>
-                    </button>
-                  </h2>
-                  <div id="message-5" class="accordion-collapse collapse" data-bs-parent="#messagesAccordion">
-                    <div class="accordion-body">
-                      <p class="mb-1"><strong>From:</strong> John Parker &lt;john.parker@example.com&gt;</p>
-                      <p class="mb-3"><strong>Subject:</strong> Interview request for the podcast</p>
-                      <p>
-                        In itaque assumenda aliquam voluptatem qui temporibus iusto nisi quia. We run a weekly
-                        podcast on digital publishing and would love to have you as a guest. Would next Thursday work?
-                      </p>
-                      <p class="text-muted small"><i class="bi bi-clock me-1"></i>Received Dec 08, 2024 — 15:44 via the contact form</p>
-                      <form action="" class="reply-box mt-3">
-                        <label for="reply-5" class="form-label small fw-semibold">Reply to John Parker</label>
-                        <textarea id="reply-5" class="form-control" rows="3" placeholder="Write your reply..."></textarea>
-                        <div class="d-flex gap-2 mt-2">
-                          <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-reply-fill me-1"></i>Send Reply</button>
-                          <a href="#" class="btn btn-sm btn-outline-secondary"><i class="bi bi-archive me-1"></i>Archive</a>
-                          <a href="#" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash me-1"></i>Delete</a>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div><!-- End Message 5 -->
-
-              </div><!-- End Accordion -->
-
-              <!-- Pagination -->
-              <div class="d-flex justify-content-center mt-4">
-                <div class="blog-pagination section pt-0">
-                  <ul>
-                    <li><a href="#"><i class="bi bi-chevron-left"></i></a></li>
-                    <li><a href="#" class="active">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#"><i class="bi bi-chevron-right"></i></a></li>
-                  </ul>
-                </div>
-              </div><!-- End Pagination -->
-
-            </div>
-          </div><!-- End Messages Content -->
-
         </div>
-      </div>
     </section><!-- /Messages Section -->
 
-  </main>
+{% endblock content %}
 
-  <footer id="footer" class="footer dark-background">
-
-    <div class="container footer-top">
-      <div class="row gy-4">
-        <div class="col-lg-4 col-md-6 footer-about">
-          <a href="index.html" class="logo d-flex align-items-center">
-            <span class="sitename">Naseri.Dev-Simple-Blog</span>
-          </a>
-          <div class="footer-contact pt-3">
-            <p>A108 Adam Street</p>
-            <p>New York, NY 535022</p>
-            <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-            <p><strong>Email:</strong> <span>info@example.com</span></p>
-          </div>
-          <div class="social-links d-flex mt-4">
-            <a href=""><i class="bi bi-twitter-x"></i></a>
-            <a href=""><i class="bi bi-facebook"></i></a>
-            <a href=""><i class="bi bi-instagram"></i></a>
-            <a href=""><i class="bi bi-linkedin"></i></a>
-          </div>
-        </div>
-
-        <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Useful Links</h4>
-          <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About us</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Terms of service</a></li>
-            <li><a href="#">Privacy policy</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Our Services</h4>
-          <ul>
-            <li><a href="#">Web Design</a></li>
-            <li><a href="#">Web Development</a></li>
-            <li><a href="#">Product Management</a></li>
-            <li><a href="#">Marketing</a></li>
-            <li><a href="#">Graphic Design</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Hic solutasetp</h4>
-          <ul>
-            <li><a href="#">Molestiae accusamus iure</a></li>
-            <li><a href="#">Excepturi dignissimos</a></li>
-            <li><a href="#">Suscipit distinctio</a></li>
-            <li><a href="#">Dilecta</a></li>
-            <li><a href="#">Sit quas consectetur</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Nobis illum</h4>
-          <ul>
-            <li><a href="#">Ipsam</a></li>
-            <li><a href="#">Laudantium dolorum</a></li>
-            <li><a href="#">Dinera</a></li>
-            <li><a href="#">Trodelas</a></li>
-            <li><a href="#">Flexo</a></li>
-          </ul>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">Naseri.Dev-Simple-Blog</strong> <span>All Rights
-          Reserved</span></p>
-      <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you've purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a
-          href="https://themewagon.com">ThemeWagon
-      </div>
-    </div>
-
-  </footer>
-
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Preloader -->
-  <div id="preloader"></div>
-
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-
-  <!-- Main JS File -->
-  <script src="assets/js/main.js"></script>
-
-</body>
-
-</html>
+{% block extra_scripts %}
+    <script src="{% static 'js/pagination.js' %}"></script>
+{% endblock extra_scripts %}

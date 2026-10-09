@@ -6,17 +6,10 @@ from apps.users.models import Profile
 
 
 class PublicTeamMemberService:
-    def __init__(self, profile_id):
+    def __init__(self, user):
         self.profile_model = Profile
-        self.user_profile = self.get_profile(profile_id=profile_id)
-
-    def get_profile(self, profile_id: int) -> Profile:
-        try:
-            instance = self.profile_model.objects.get(id=profile_id)
-        except self.profile_model.DoesNotExist:
-            return None
-
-        return instance
+        self.user = user
+        self.user_profile = user.profile
 
     def get_articles(self):
         return Article.objects.published().filter(user_profile=self.user_profile)

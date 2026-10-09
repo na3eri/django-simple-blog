@@ -29,6 +29,9 @@ from apps.teammember_profile.services.profile_comments_service import (
 from apps.teammember_profile.services.profile_dashboard_service import (
     ProfileDashboardService,
 )
+from apps.teammember_profile.services.profile_messages_service import (
+    ProfileMessagesService,
+)
 from apps.teammember_profile.services.public_teammember_service import (
     PublicTeamMemberService,
 )
@@ -45,7 +48,7 @@ class TeamMemberPublicView(ListView):
         super().setup(request, *args, **kwargs)
 
         self.service = PublicTeamMemberService(
-            profile_id=self.kwargs["pk"],
+            user=request.user,
         )
 
         if self.service.user_profile is None:
@@ -79,7 +82,7 @@ class MessageView(CreateView):
         super().setup(request, *args, **kwargs)
 
         self.service = MessagePageService(
-            profile_id=self.kwargs["pk"],
+            user=request.user,
         )
 
         if self.service.user_profile is None:
@@ -127,7 +130,7 @@ class ProfileDashboardView(LoginRequiredMixin, TemplateView):
         super().setup(request, *args, **kwargs)
 
         self.service = ProfileDashboardService(
-            request.user.id,
+            user=request.user,
         )
 
         if self.service.user_profile is None:
@@ -353,5 +356,79 @@ class ProfileCommentsView(LoginRequiredMixin, ListView):
                 messages.success(request, "Reply was sent")
             else:
                 messages.error(request, "Reply wasn't sent")
+
+        return redirect(request.path)
+
+
+class ProfileMessagesView(LoginRequiredMixin, ListView):
+    model = Message
+    paginate_by = 5
+    template_name = "teammember_profile/user-profile-articles-messages.html"
+    context_object_name = "messages_objects"
+
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+
+        self.service = ProfileMessagesService(
+            user=request.user,
+            status=self.kwargs["status"],
+            search_query=request.GET.get("q"),
+        )
+
+        if self.service.user_profile is None:
+            raise Http404
+
+        if self.service.status is None:
+            raise Http404
+
+    def get_queryset(self):
+        return self.service.get_messages()
+
+    def get_context_data(
+        self,
+        **kwargs: Any,
+    ) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+
+        context.update(self.service.get_context(view_context=context))
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        action = request.POST.get("action")
+
+        if action == "readall":
+            result = self.service.set_all_messages_as_read()
+            if result:
+                messages.success(request, "Set all messages as read")
+            else:
+                messages.error(request, "Failed to set all messages as read")
+
+        if action == "delete":
+            message_id = request.POST.get("message_id")
+            result = self.service.delete_message(message_id)
+            if result:
+                messages.success(request, "Message was deleted")
+            else:
+                messages.error(request, "Failed to delete message")
+
+        if action == "archive":
+            message_id = request.POST.get("message_id")
+            result = self.service.archive_message(message_id)
+            if result:
+                messages.success(request, "Message was archived")
+            else:
+                messages.error(request, "Failed to archive message")
+
+        if action == "reply":
+            message_id = request.POST.get("message_id")
+            reply_body = self.request.POST.get("reply_body")
+            if reply_body:
+                result = self.service.reply_message(message_id, reply_body)
+
+                if result:
+                    messages.success(request, "Reply was sent")
+                else:
+                    messages.error(request, "Failed to reply message")
 
         return redirect(request.path)

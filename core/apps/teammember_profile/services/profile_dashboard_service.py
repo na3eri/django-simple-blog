@@ -8,16 +8,15 @@ from apps.teammember_profile.services.message_page_service import (
 
 
 class ProfileDashboardService:
-    def __init__(self, profile_id):
-        self.user_profile = self.get_profile(profile_id)
+    def __init__(self, user):
+        self.user = user
+        self.user_profile = user.profile
 
         self.article_model = Article
         self.comment_model = Comment
 
         self.message_service = (
-            MessagePageService(user_id=self.user_profile.user_id)
-            if self.user_profile
-            else None
+            MessagePageService(user=self.user) if self.user_profile else None
         )
 
     def get_profile(self, profile_id):

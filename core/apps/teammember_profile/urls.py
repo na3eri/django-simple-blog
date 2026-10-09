@@ -8,6 +8,7 @@ from apps.teammember_profile.views import (
     ProfileCreateArticleView,
     ProfileUpdateArticleView,
     ProfileCommentsView,
+    ProfileMessagesView,
 )
 
 
@@ -52,5 +53,10 @@ urlpatterns = [
         "profile/comments/<str:status>/",
         ProfileCommentsView.as_view(),
         name="profile-comments",
+    ),
+    path(
+        "profile/messages/<str:status>/",
+        ProfileMessagesView.as_view(),
+        name="profile-messages",
     ),
 ]

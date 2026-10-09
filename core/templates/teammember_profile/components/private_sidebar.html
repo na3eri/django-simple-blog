@@ -40,7 +40,12 @@
                 <a href="login.html" class="list-group-item list-group-item-action"><i
                         class="bi bi-box-arrow-right"></i>Logout</a>
             </div>
+
         </div>
+
+        {% if extra_sidebar_template %}
+            {% include extra_sidebar_template %}
+        {% endif %}
 
     </div>
 </div><!-- End Profile Sidebar -->
