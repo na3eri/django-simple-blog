@@ -8,7 +8,7 @@
             <h3 class="widget-title border-0 ps-0 mt-2">Contact Jane</h3>
             <p class="small text-muted">Have a question, a story tip or feedback on an article? Send
                 Jane a direct message.</p>
-            <a href="team-member-send-message.html" class="btn btn-primary w-100"><i
+            <a href="{% url 'teammember-send-message' pk=profile_instance.id %}" class="btn btn-primary w-100"><i
                     class="bi bi-envelope me-1"></i>Send Message</a>
         </div><!--/Send Message CTA Widget -->
 

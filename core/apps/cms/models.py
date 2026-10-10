@@ -140,3 +140,20 @@ class HomePageCategory(models.Model):
 
     def __str__(self):
         return f"{self.id} - Page: {self.page.name} - Category: {self.category.name} - Home Category"
+
+
+class SiteSetting(models.Model):
+    key = models.CharField(max_length=50, unique=True)
+    value = models.CharField(max_length=800)
+    type = models.CharField(max_length=50)
+    description = models.CharField(max_length=50, blank=True, null=True)
+    detail = models.TextField(blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.key} - {self.type}"

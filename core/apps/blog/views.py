@@ -115,6 +115,9 @@ def single_view(request, slug):
 
     article = article_service.get_published_article(slug)
 
+    article.views += 1
+    article.save(update_fields=["views"])
+
     context = {
         "article": article,
         "categories": article_list_service.build_categories(),

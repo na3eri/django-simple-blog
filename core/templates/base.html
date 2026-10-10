@@ -17,8 +17,8 @@
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap"
-        rel="stylesheet">
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap"
+            rel="stylesheet">
 
     <!-- Vendor CSS Files -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -30,13 +30,13 @@
     <link href="{% static 'css/main.css' %}" rel="stylesheet">
 
     {% block extra_head %}
-        
+
     {% endblock extra_head %}
-        
+
 </head>
 
 <body class="starter-page-page">
-    {% if messages %}
+{% if messages %}
     <div id="flash-messages">
         {% for message in messages %}
             <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show shadow" role="alert">
@@ -45,216 +45,216 @@
             </div>
         {% endfor %}
     </div>
-    {% endif %}
+{% endif %}
 
-    <header id="header" class="header d-flex align-items-center sticky-top">
-        <div class="container position-relative d-flex align-items-center justify-content-between">
+<header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container position-relative d-flex align-items-center justify-content-between">
 
-            <a href="#" class="logo d-flex align-items-center me-auto me-xl-0">
-                <!-- Uncomment the line below if you also wish to use an image logo -->
-                <!-- <img src="{% static 'img/logo.png' %}" alt=""> -->
-                <h1 class="sitename">Naseri.Dev-Simple-Blog</h1>
-            </a>
+        <a href="#" class="logo d-flex align-items-center me-auto me-xl-0">
+            <!-- Uncomment the line below if you also wish to use an image logo -->
+            <!-- <img src="{% static 'img/logo.png' %}" alt=""> -->
+            <h1 class="sitename">{{ site_name }}</h1>
+        </a>
 
-            <nav id="navmenu" class="navmenu">
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li class="dropdown"><a href="#"><span>Categories</span> <i
-                                class="bi bi-chevron-down toggle-dropdown"></i></a>
-                        <ul>
-                            <li><a href="#">Category 1</a></li>
-                            <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i
-                                        class="bi bi-chevron-down toggle-dropdown"></i></a>
-                                <ul>
-                                    <li><a href="#">Deep Dropdown 1</a></li>
-                                    <li><a href="#">Deep Dropdown 2</a></li>
-                                    <li><a href="#">Deep Dropdown 3</a></li>
-                                    <li><a href="#">Deep Dropdown 4</a></li>
-                                    <li><a href="#">Deep Dropdown 5</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Category 2</a></li>
-                            <li><a href="#">Category 3</a></li>
-                            <li><a href="#">Category 4</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown"><a href="#"><span>Team Members</span> <i
-                                class="bi bi-chevron-down toggle-dropdown"></i></a>
-                        <ul>
-                            <li><a href="#">Team Member</a></li>
-                            <li><a href="#">Team Member</a></li>
-                            <li><a href="#">Team Member</a></li>
-                            <li><a href="#">Team Member</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">About</a></li>
+        <nav id="navmenu" class="navmenu">
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'blog' %}">Blog</a></li>
+                <li class="dropdown">
+                    <ul>
+                        <li><a href="#">something</a></li>
+                        {% for category in navbar_items.categories %}
+                            <li><a href="{% url 'category' category_slug=category.slug %}">{{ category.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li class="dropdown"><a href="#"><span>Team Members</span> <i
+                        class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                        {% for team_member in navbar_items.team_members %}
+                            <li><a href="{% url 'teammember' pk=team_member.id %}">{{ team_member.full_name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                {% if request.user.is_authenticated %}
                     <li class="dropdown"><a href="#"><span>Profile</span> <i
-                                class="bi bi-chevron-down toggle-dropdown"></i></a>
+                            class="bi bi-chevron-down toggle-dropdown"></i></a>
                         <ul>
-                            <li><a href="#">Dashboard</a></li>
-                            <li class="dropdown"><a href="#"><span>My Articles</span> <i
-                                        class="bi bi-chevron-down toggle-dropdown"></i></a>
+                            <li><a href="{% url 'profile-dashboard' %}">Dashboard</a></li>
+                            <li class="dropdown"><a
+                                    href="{% url 'profile-articles' status='all' %}"><span>My Articles</span> <i
+                                    class="bi bi-chevron-down toggle-dropdown"></i></a>
                                 <ul>
-                                    <li><a href="#">Create Article</a></li>
-                                    <li><a href="#">Comments</a></li>
+                                    <li><a href="{% url 'profile-create-article' %}">Create Article</a></li>
+                                    <li><a href="{% url 'profile-comments' status='all' %}">Comments</a></li>
                                 </ul>
                             </li>
-                            <li><a href="#">Messages</a></li>
-                            <li><a href="#">Profile Settings</a></li>
-                            <li><a href="#">Signout</a></li>
+                            <li><a href="{% url 'profile-messages' status='inbox' %}">Messages</a></li>
+                            <li><a href="{% url 'profile-edit' pk=request.user.profile.id %}">Profile Edit</a></li>
+                            <li><a href="{% url 'signout' %}">Signout</a></li>
                         </ul>
                     </li>
-                </ul>
-                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-            </nav>
+                    {% if request.user.is_superuser %}
+                        <li class="dropdown"><a href="#"><span>CMS</span> <i
+                                class="bi bi-chevron-down toggle-dropdown"></i></a>
+                            <ul>
+                                <li><a href="{% url 'cms_dashboard' %}">CMS Dashboard</a></li>
+                                <li><a href="{% url 'cms_homepage' %}">CMS Homepage</a></li>
+                                <li><a href="{% url 'cms_aboutpage' %}">CMS Aboutpage</a></li>
+                                <li><a href="{% url 'cms_contactpage' %}">CMS Contactpage</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                {% else %}
+                    <li>
+                        <a href="{% url 'signin' %}"><span>Signin</span></i></a>
+                    </li>
+                {% endif %}
+            </ul>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
 
-            <div class="header-social-links">
-                <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-            </div>
-
+        <div class="header-social-links">
+            <a href="{{ site_x_url }}" class="twitter"><i class="bi bi-twitter-x"></i></a>
+            <a href="{{ site_facebook_url }}" class="facebook"><i class="bi bi-facebook"></i></a>
+            <a href="{{ site_instagram_url }}" class="instagram"><i class="bi bi-instagram"></i></a>
+            <a href="{{ site_linkedin_url }}" class="linkedin"><i class="bi bi-linkedin"></i></a>
         </div>
-    </header>
 
-    <main class="main">
+    </div>
+</header>
 
-        <!-- Page Title -->
-        <div class="page-title">
-            <div class="container d-lg-flex justify-content-between align-items-center">
-                <h1 class="mb-2 mb-lg-0">
-                    {% block page_name %}Base Page{% endblock page_name %}
-                </h1>
-                <nav class="breadcrumbs">
-                    <ol>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#"></a></li>
+<main class="main">
 
-                        {% block page_name_crumbs %}
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="container d-lg-flex justify-content-between align-items-center">
+            <h1 class="mb-2 mb-lg-0">
+                {% block page_name %}Base Page{% endblock page_name %}
+            </h1>
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#"></a></li>
+
+                    {% block page_name_crumbs %}
                         <li class="current">Base Page</li>
-                        {% endblock page_name_crumbs %}
-                    </ol>
-                </nav>
-            </div>
-        </div><!-- End Page Title -->
-
-        {% block content %}
-
-        {% endblock content %}
-
-    </main>
-
-    <footer id="footer" class="footer dark-background">
-
-        <div class="container footer-top">
-            <div class="row gy-4">
-                <div class="col-lg-4 col-md-6 footer-about">
-                    <a href="#" class="logo d-flex align-items-center">
-                        <span class="sitename">Naseri.Dev-Simple-Blog</span>
-                    </a>
-                    <div class="footer-contact pt-3">
-                        <p>A108 Adam Street</p>
-                        <p>New York, NY 535022</p>
-                        <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-                        <p><strong>Email:</strong> <span>info@example.com</span></p>
-                    </div>
-                    <div class="social-links d-flex mt-4">
-                        <a href=""><i class="bi bi-twitter-x"></i></a>
-                        <a href=""><i class="bi bi-facebook"></i></a>
-                        <a href=""><i class="bi bi-instagram"></i></a>
-                        <a href=""><i class="bi bi-linkedin"></i></a>
-                    </div>
-                </div>
-
-                <div class="col-lg-2 col-md-3 footer-links">
-                    <h4>Useful Links</h4>
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">About us</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-2 col-md-3 footer-links">
-                    <h4>Team Members</h4>
-                    <ul>
-                        <li><a href="#">Team Member Public Profile</a></li>
-                        <li><a href="#">Team Member Public Profile</a></li>
-                        <li><a href="#">Team Member Public Profile</a></li>
-                        <li><a href="#">Team Member Public Profile</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-2 col-md-3 footer-links">
-                    <h4>Most Popular</h4>
-                    <ul>
-                        <li><a href="#">Most Popular Post</a></li>
-                        <li><a href="#">Most Popular Post</a></li>
-                        <li><a href="#">Most Popular Post</a></li>
-                        <li><a href="#">Most Popular Post</a></li>
-                        <li><a href="#">Most Popular Post</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-2 col-md-3 footer-links">
-                    <h4>Last Articles</h4>
-                    <ul>
-                        <li><a href="#">Last Article</a></li>
-                        <li><a href="#">Last Article</a></li>
-                        <li><a href="#">Last Article</a></li>
-                        <li><a href="#">Last Article</a></li>
-                        <li><a href="#">Last Article</a></li>
-                    </ul>
-                </div>
-
-            </div>
+                    {% endblock page_name_crumbs %}
+                </ol>
+            </nav>
         </div>
+    </div><!-- End Page Title -->
 
-        <div class="container copyright text-center mt-4">
-            <p>© <span>Copyright</span> <strong class="px-1 sitename">Naseri.Dev-Simple-Blog</strong> <span>All Rights
+    {% block content %}
+
+    {% endblock content %}
+
+</main>
+
+<footer id="footer" class="footer dark-background">
+
+    <div class="container footer-top">
+        <div class="row gy-4">
+            <div class="col-lg-4 col-md-6 footer-about">
+                <a href="#" class="logo d-flex align-items-center">
+                    <span class="sitename">{{ site_name }}</span>
+                </a>
+                <div class="footer-contact pt-3">
+                    <p>{{ address }}</p>
+                    <p class="mt-3"><strong>Phone:</strong> <span>{{ phone_number }}</span></p>
+                    <p><strong>Email:</strong> <span>{{ email }}</span></p>
+                </div>
+                <div class="social-links d-flex mt-4">
+                    <a href="{{ site_x_url }}"><i class="bi bi-twitter-x"></i></a>
+                    <a href="{{ site_facebook_url }}"><i class="bi bi-facebook"></i></a>
+                    <a href="{{ site_instagram_url }}"><i class="bi bi-instagram"></i></a>
+                    <a href="{{ site_instagram_url }}"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-3 footer-links">
+                <h4>Useful Links</h4>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'blog' %}">Blog</a></li>
+                    <li><a href="{% url 'about' %}">About us</a></li>
+                    <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-2 col-md-3 footer-links">
+                <h4>Team Members</h4>
+                <ul>
+                    {% for team_member in footer_items.team_members %}
+                        <li><a href="{% url 'teammember' pk=team_member.id %}">{{ team_member.full_name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-lg-2 col-md-3 footer-links">
+                <h4>Most Popular</h4>
+                <ul>
+                    {% for article in footer_items.most_popular %}
+                        <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-lg-2 col-md-3 footer-links">
+                <h4>Last Articles</h4>
+                <ul>
+                    {% for article in footer_items.last_articles %}
+                        <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">{{ site_name }}</strong> <span>All Rights
                     Reserved</span></p>
-            <div class="credits">
-                <!-- All the links in the footer should remain intact. -->
-                <!-- You can delete the links only if you've purchased the pro version. -->
-                <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-                Designed by <a href="https://bootstrapmade.com/">Hossein Naseri</a> Distributed by <a
-                    href=“https://na3eri.ir />Naseri.Dev
-            </div>
+        <div class="credits">
+            <!-- All the links in the footer should remain intact. -->
+            <!-- You can delete the links only if you've purchased the pro version. -->
+            <!-- Licensing information: https://bootstrapmade.com/license/ -->
+            <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+            Designed by <a href="https://bootstrapmade.com/">Hossein Naseri</a> Distributed by <a
+                href=“https://na3eri.ir/>Naseri.Dev
         </div>
+    </div>
 
-    </footer>
+</footer>
 
-    <!-- Scroll Top -->
-    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-            class="bi bi-arrow-up-short"></i></a>
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
 
-    <!-- Preloader -->
-    <div id="preloader"></div>
+<!-- Preloader -->
+<div id="preloader"></div>
 
-    
-    {% block extra_modals %}
-        
-    {% endblock extra_modals %}
-        
 
-    <!-- Vendor JS Files -->
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
-    <script src="{% static 'vendor/aos/aos.js' %}"></script>
-    <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+{% block extra_modals %}
 
-    <!-- Main JS File -->
-    <script src="{% static 'js/main.js' %}"></script>
+{% endblock extra_modals %}
 
-    
-    {% block extra_scripts %}
-        
-    {% endblock extra_scripts %}
+
+<!-- Vendor JS Files -->
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+<script src="{% static 'vendor/aos/aos.js' %}"></script>
+<script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+
+<!-- Main JS File -->
+<script src="{% static 'js/main.js' %}"></script>
+
+
+{% block extra_scripts %}
+
+{% endblock extra_scripts %}
 
 
 </body>
