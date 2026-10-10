@@ -14,7 +14,7 @@
                     <a href="{{ profile_instance.instagram_url }}"><i class="bi bi-instagram"></i></a>
                     <a href="{{ profile_instance.linkedin_url }}"><i class="bi bi-linkedin"></i></a>
                 </div>
-                <a href="user-profile-edit.html" class="btn btn-outline-secondary btn-sm mt-3"><i
+                <a href="{% url 'profile-edit' pk=request.user.profile.id %}" class="btn btn-outline-secondary btn-sm mt-3"><i
                         class="bi bi-pencil me-1"></i>Edit Profile</a>
             </div>
         </div><!--/Author Widget -->
@@ -22,22 +22,22 @@
         <div class="widget-item">
             <h3 class="widget-title">My Menu</h3>
             <div class="list-group list-group-flush profile-menu">
-                <a href="user-profile-dashboard.html" class="list-group-item list-group-item-action active"><i
+                <a href="{% url 'profile-dashboard' %}" class="list-group-item list-group-item-action"><i
                         class="bi bi-speedometer2"></i>Dashboard</a>
-                <a href="user-profile-articles.html" class="list-group-item list-group-item-action"><i
+                <a href="{% url 'profile-articles' status='all' %}" class="list-group-item list-group-item-action"><i
                         class="bi bi-file-earmark-text"></i>My Articles</a>
-                <a href="user-profile-create-article.html" class="list-group-item list-group-item-action"><i
+                <a href="{% url 'profile-create-article' %}" class="list-group-item list-group-item-action"><i
                         class="bi bi-plus-circle"></i>Create Article</a>
-                <a href="user-profile-articles-comments.html"
+                <a href="{% url 'profile-comments' status='all' %}"
                    class="list-group-item list-group-item-action"><i
                         class="bi bi-chat-dots"></i>Comments</a>
-                <a href="user-profile-articles-messages.html"
+                <a href="{% url 'profile-messages' status='inbox' %}"
                    class="list-group-item list-group-item-action"><i
                         class="bi bi-envelope"></i>Messages<span
                         class="badge text-bg-danger rounded-pill ms-2">3</span></a>
-                <a href="user-profile-edit.html" class="list-group-item list-group-item-action"><i
+                <a href="{% url 'profile-edit' pk=request.user.profile.id %}" class="list-group-item list-group-item-action"><i
                         class="bi bi-gear"></i>Profile Settings</a>
-                <a href="login.html" class="list-group-item list-group-item-action"><i
+                <a href="{% url 'signout' %}" class="list-group-item list-group-item-action"><i
                         class="bi bi-box-arrow-right"></i>Logout</a>
             </div>
 

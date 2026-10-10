@@ -29,6 +29,7 @@ from apps.teammember_profile.services.profile_comments_service import (
 from apps.teammember_profile.services.profile_dashboard_service import (
     ProfileDashboardService,
 )
+from apps.teammember_profile.services.profile_edit_service import ProfileEditService
 from apps.teammember_profile.services.profile_messages_service import (
     ProfileMessagesService,
 )
@@ -36,6 +37,8 @@ from apps.teammember_profile.services.public_teammember_service import (
     PublicTeamMemberService,
 )
 from apps.blog.models import Comment
+from apps.users.forms import ProfileForm
+from apps.users.models import Profile
 
 
 class TeamMemberPublicView(ListView):
@@ -48,7 +51,7 @@ class TeamMemberPublicView(ListView):
         super().setup(request, *args, **kwargs)
 
         self.service = PublicTeamMemberService(
-            user=request.user,
+            profile_id=self.kwargs["pk"],
         )
 
         if self.service.user_profile is None:
@@ -260,7 +263,6 @@ class ProfileUpdateArticleView(LoginRequiredMixin, UpdateView):
         if self.service.article is None:
             raise Http404
 
-        # بررسی مالکیت مقاله
         if self.service.article.user_profile.user_id != request.user.id:
             raise Http404
 
@@ -432,3 +434,35 @@ class ProfileMessagesView(LoginRequiredMixin, ListView):
                     messages.error(request, "Failed to reply message")
 
         return redirect(request.path)
+
+
+class ProfileEditView(LoginRequiredMixin, UpdateView):
+    model = Profile
+    form_class = ProfileForm
+    template_name = "teammember_profile/user-profile-edit.html"
+
+    def get_success_url(self) -> str:
+        return reverse_lazy("profile-edit", kwargs={"pk": self.kwargs.get("pk")})
+
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+
+        self.service = ProfileEditService(
+            user=request.user,
+        )
+
+        if self.service.user_profile is None:
+            raise Http404
+
+    def get_queryset(self):
+        return self.service.get_queryset()
+
+    def get_context_data(
+        self,
+        **kwargs: Any,
+    ) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+
+        context.update(self.service.get_context(view_context=context))
+
+        return context

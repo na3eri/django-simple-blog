@@ -9,13 +9,11 @@ from apps.teammember_profile.views import (
     ProfileUpdateArticleView,
     ProfileCommentsView,
     ProfileMessagesView,
+    ProfileEditView,
 )
 
 
 urlpatterns = [
-    # -----------------------------------------------------
-    # Public Team Member
-    # -----------------------------------------------------
     path(
         "team-member/<int:pk>/",
         TeamMemberPublicView.as_view(),
@@ -26,9 +24,6 @@ urlpatterns = [
         MessageView.as_view(),
         name="teammember-send-message",
     ),
-    # -----------------------------------------------------
-    # Private Profile
-    # -----------------------------------------------------
     path(
         "profile/dashboard/",
         ProfileDashboardView.as_view(),
@@ -58,5 +53,10 @@ urlpatterns = [
         "profile/messages/<str:status>/",
         ProfileMessagesView.as_view(),
         name="profile-messages",
+    ),
+    path(
+        "profile/<int:pk>/edit/",
+        ProfileEditView.as_view(),
+        name="profile-edit",
     ),
 ]
