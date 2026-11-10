@@ -6,14 +6,14 @@ from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import (
-    ListView,
     CreateView,
+    ListView,
     TemplateView,
     UpdateView,
 )
 
-from apps.blog.forms import MessageForm, ArticleForm
-from apps.blog.models import Article, Message
+from apps.blog.forms import ArticleForm, MessageForm
+from apps.blog.models import Article, Comment, Message
 from apps.teammember_profile.services.message_page_service import (
     MessagePageService,
 )
@@ -36,7 +36,6 @@ from apps.teammember_profile.services.profile_messages_service import (
 from apps.teammember_profile.services.public_teammember_service import (
     PublicTeamMemberService,
 )
-from apps.blog.models import Comment
 from apps.users.forms import ProfileForm
 from apps.users.models import Profile
 
@@ -51,7 +50,7 @@ class TeamMemberPublicView(ListView):
         super().setup(request, *args, **kwargs)
 
         self.service = PublicTeamMemberService(
-            profile_id=self.kwargs["pk"],
+            profile_id=request.user.profile.id,
         )
 
         if self.service.user_profile is None:

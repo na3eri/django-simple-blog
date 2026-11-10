@@ -11,6 +11,7 @@ from django.shortcuts import redirect, render
 
 # Create your views here.
 def home_view(request):
+    test_name = "Farzad"
     service = HomePageService()
 
     context = {

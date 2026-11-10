@@ -5,6 +5,7 @@ from tests.cms.cms_test_app.models import TestServiceModel
 
 
 class TestService(BaseService):
+    __test__ = False
     model = TestServiceModel
     form = TestServiceModelForm
     max_items = 3

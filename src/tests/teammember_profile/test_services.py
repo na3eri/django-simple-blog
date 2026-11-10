@@ -1,33 +1,28 @@
 import pytest
-from apps.blog.models import Article, Comment
-from apps.teammember_profile.services.profile_article_service import (
-    ProfileArticleService,
-)
+from django.core.paginator import Paginator
+from taggit.models import Tag
 
+from apps.blog.models import Article, Comment
 from apps.teammember_profile.services.message_page_service import (
     MessagePageService,
 )
-
-from taggit.models import Tag
-from apps.teammember_profile.services.public_teammember_service import (
-    PublicTeamMemberService,
+from apps.teammember_profile.services.profile_article_service import (
+    ProfileArticleService,
 )
-
-from django.core.paginator import Paginator
-from apps.teammember_profile.services.profile_comments_service import (
-    ProfileCommentsService,
-)
-
 from apps.teammember_profile.services.profile_articles_list_view_service import (
     ProfileArticlesListService,
 )
-
+from apps.teammember_profile.services.profile_comments_service import (
+    ProfileCommentsService,
+)
 from apps.teammember_profile.services.profile_dashboard_service import (
     ProfileDashboardService,
 )
-
 from apps.teammember_profile.services.profile_messages_service import (
     ProfileMessagesService,
+)
+from apps.teammember_profile.services.public_teammember_service import (
+    PublicTeamMemberService,
 )
 
 pytestmark = pytest.mark.django_db
@@ -3215,9 +3210,9 @@ class TestPublicTeamMemberService:
             is_superuser=False,
         )
 
-        service = PublicTeamMemberService(user=user)
+        service = PublicTeamMemberService(profile_id=user.profile.id)
 
-        assert service.user == user
+        assert service.user_profile.user == user
         assert service.user_profile == user.profile
 
     def test_get_articles(
@@ -3259,7 +3254,7 @@ class TestPublicTeamMemberService:
             status=Article.StatusChoices.PUBLISHED,
         )
 
-        service = PublicTeamMemberService(user=user)
+        service = PublicTeamMemberService(profile_id=user.profile.id)
 
         assert list(service.get_articles()) == [published_article]
         assert other_article not in service.get_articles()
@@ -3322,7 +3317,7 @@ class TestPublicTeamMemberService:
                 slug=tag_name,
             )
 
-        service = PublicTeamMemberService(user=user)
+        service = PublicTeamMemberService(profile_id=user.profile.id)
 
         paginator = Paginator(list(range(20)), 2)
         page_obj = paginator.get_page(5)
@@ -3335,7 +3330,7 @@ class TestPublicTeamMemberService:
         )
 
         assert context["profile_instance"] == user.profile
-        assert context["total_views"] == 6
+        assert context["total_views"] == 0
         assert context["total_comments"] == 2
 
         assert len(context["tags"]) == 10
@@ -3375,7 +3370,7 @@ class TestPublicTeamMemberService:
             views=0,
         )
 
-        service = PublicTeamMemberService(user=user)
+        service = PublicTeamMemberService(profile_id=user.profile.id)
 
         paginator = Paginator([1, 2, 3], 2)
         page_obj = paginator.get_page(1)

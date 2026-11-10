@@ -96,7 +96,7 @@ class ProfileCommentsService:
                 | Q(article__title__icontains=self.search_query)
             )
 
-        return queryset
+        return queryset.order_by("-created_at")
 
     def get_context(self, view_context):
         return {
