@@ -1,5 +1,15 @@
 # Media
-core/media/*/
+src/media/
+media/
+core/media/
+
+# Database files
+postgres/
+postgres/db/
+
+# Backup tmp files
+*.bkp
+docs/database/*.drawio.bkp
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

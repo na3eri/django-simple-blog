@@ -3,7 +3,7 @@
   <img src="docs/assets/images/info.png">
 
   <br>
-  
+
   <a href="https://github.com/na3eri/django-simple-blog/stargazers">
     <img src="https://img.shields.io/github/stars/na3eri/django-simple-blog?style=for-the-badge&logo=github&color=yellow" alt="Stars">
   </a>
@@ -27,3 +27,27 @@
 <h1 align="center">Django Simple Blog</h1>
 <h3 align="center">A simple and lightweight blog built with Django, designed for easy post management and publishing.</h3>
 
+---
+
+# Guideline
+- [Guideline](#guideline)
+- [Demo](#demo)
+  - [Homepage](#homepage)
+- [Database Schema](#database-schema)
+
+---
+
+<br>
+
+# Demo
+
+## Homepage
+
+---
+
+<br>
+
+# Database Schema
+<img src="docs/database/database-schema.png">
+
+---
