@@ -1,0 +1,49 @@
+services:
+  simple_blog_db:
+    container_name: simple_blog_db
+    image: postgres:15-alpine
+    volumes:
+      - ./postgres/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    expose:
+      - 5432
+    ports:
+    - "5432:5432"
+    restart: always
+  
+  simple_blog:
+    container_name: simple_blog
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./src:/usr/src/app
+    working_dir: /usr/src/app
+    command: python3 manage.py runserver 0.0.0.0:8000
+    ports:
+      -  8000:8000
+    env_file:
+      - ./src/.env
+    restart: always
+    depends_on:
+      - simple_blog_db
+
+  simple_blog_smtp4dev:
+    image: rnwood/smtp4dev:v3
+    restart: always
+    ports:
+      - "5000:80"
+      - "25:25"
+      - "143:143"
+    volumes:
+      - smtp4dev-data:/smtp4dev
+    environment:
+      - ServerOptions__HostName=smtp4dev
+
+volumes:
+  smtp4dev-data:
+

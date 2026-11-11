@@ -97,8 +97,12 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("PGDB_NAME", "postgres"),
+        "USER": os.environ.get("PGDB_USER", "postgres"),
+        "PASSWORD": os.environ.get("PGDB_PASSWORD", "postgres"),
+        "HOST": os.environ.get("PGDB_HOST", "simple_blog_db"),
+        "PORT": os.environ.get("PGDB_PORT", "5432"),
     }
 }
 
@@ -158,11 +162,11 @@ AUTH_USER_MODEL = "users.User"
 
 # SMTP gmail settings
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get("DJANGO_EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("DJANGO_EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = False
+EMAIL_HOST = "simple_blog_smtp4dev"
+EMAIL_PORT = 25
+EMAIL_HOST_USER = ""
+EMAIL_HOST_PASSWORD = ""
 
 
 MESSAGE_TAGS = {

@@ -117,9 +117,9 @@ class HomePageService:
         most_viewed_articles = list(Article.objects.popular()[:6])
 
         return {
-            "head_article": articles[0],
-            "first_column": articles[1:4],
-            "second_column": articles[4:7],
+            "head_article": Component.get_item(articles, 0),
+            "first_column": Component.get_item(articles, start=1, end=4),
+            "second_column": Component.get_item(articles, start=4, end=7),
             "most_viewed": most_viewed_articles,
         }
 
